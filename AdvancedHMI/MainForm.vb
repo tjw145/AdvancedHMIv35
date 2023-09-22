@@ -43,12 +43,12 @@ Public Class MainForm
 
     Private Sub BasicButton2_Click(sender As Object, e As EventArgs) Handles StartButton.Click
 
-        If GlobalInstances.MotionProfile1.() Then
+        'If GlobalInstances.MotionProfile1.() Then
 
 
-        End If
-        StartButton.BackColor = Color.FromArgb(24, 25, 27)
-        taskbarProgress.ProgressState = taskbarProgress.ProgressState.Normal
+        'End If
+        'StartButton.BackColor = Color.FromArgb(24, 25, 27)
+        'taskbarProgress.ProgressState = taskbarProgress.ProgressState.Normal
 
     End Sub
 
@@ -69,12 +69,6 @@ Public Class MainForm
 
 
     End Sub
-
-
-    Dim loggerInterval As Integer
-
-    Dim elapsedTime As String
-    Dim experimentStopwatch As New Stopwatch
 
     Dim Log As New ExperimentLog
 
@@ -161,7 +155,8 @@ Public Class MainForm
 
     Private Sub Button1_Click_2(sender As Object, e As EventArgs) Handles SetupButton.Click
 
-        ExperimentSetupWindow.ShowDialog()
+        'ExperimentSetupWindow.ShowDialog()
+        Form1.ShowDialog()
 
     End Sub
 

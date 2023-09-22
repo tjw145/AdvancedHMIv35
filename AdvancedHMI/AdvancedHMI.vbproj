@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <UseWindowsForms>true</UseWindowsForms>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -81,6 +82,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -102,6 +104,13 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MotionSolution.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GlobalInstances.vb" />
     <Compile Include="MotionProfile.vb" />
     <Compile Include="Dialog1.Designer.vb">
@@ -154,12 +163,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Page2.Designer.vb">
-      <DependentUpon>Page2.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Page2.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialog2.resx">
       <DependentUpon>Dialog2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormChangeControls\MainMenuDriven\MainMenu.resx">
       <DependentUpon>MainMenu.vb</DependentUpon>
@@ -180,10 +186,6 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Page2.resx">
-      <DependentUpon>Page2.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

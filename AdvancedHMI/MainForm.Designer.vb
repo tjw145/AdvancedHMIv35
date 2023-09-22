@@ -23,7 +23,6 @@ Partial Class MainForm
     ' <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ForceItemsIntoToolBox1 = New MfgControl.AdvancedHMI.Drivers.ForceItemsIntoToolbox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -46,9 +45,9 @@ Partial Class MainForm
         Me.DisplacementChart = New AdvancedHMIControls.BasicTrendChart()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.RecordButton = New System.Windows.Forms.CheckBox()
         Me.ForceChart = New AdvancedHMIControls.BasicTrendChart()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.RecordButton = New System.Windows.Forms.CheckBox()
         Me.ExperimentRecording = New System.Windows.Forms.Timer(Me.components)
         Me.SetupButton = New System.Windows.Forms.Button()
         Me.StartButton = New AdvancedHMIControls.BasicButton()
@@ -171,7 +170,7 @@ Partial Class MainForm
         Me.DRO_N.NumberOfDigits = 3
         Me.DRO_N.PLCAddressKeypad = ""
         Me.DRO_N.PLCAddressText = ""
-        Me.DRO_N.PLCAddressValue = CType(resources.GetObject("DRO_N.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.DRO_N.PLCAddressValue = Nothing
         Me.DRO_N.PLCAddressVisible = ""
         Me.DRO_N.ResolutionOfLastDigit = New Decimal(New Integer() {1, 0, 0, 0})
         Me.DRO_N.ShowOffSegments = True
@@ -214,7 +213,7 @@ Partial Class MainForm
         Me.DRO_mm.NumberOfDigits = 3
         Me.DRO_mm.PLCAddressKeypad = ""
         Me.DRO_mm.PLCAddressText = ""
-        Me.DRO_mm.PLCAddressValue = CType(resources.GetObject("DRO_mm.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.DRO_mm.PLCAddressValue = Nothing
         Me.DRO_mm.PLCAddressVisible = ""
         Me.DRO_mm.ResolutionOfLastDigit = New Decimal(New Integer() {1, 0, 0, 0})
         Me.DRO_mm.ShowOffSegments = True
@@ -398,7 +397,7 @@ Partial Class MainForm
         '
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(5, 9)
+        Me.Label2.Location = New System.Drawing.Point(3, 9)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(138, 18)
         Me.Label2.TabIndex = 26
@@ -443,6 +442,23 @@ Partial Class MainForm
         Me.Label3.TabIndex = 26
         Me.Label3.Text = "Force, N"
         '
+        'RecordButton
+        '
+        Me.RecordButton.Appearance = System.Windows.Forms.Appearance.Button
+        Me.RecordButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
+        Me.RecordButton.FlatAppearance.BorderColor = System.Drawing.Color.Red
+        Me.RecordButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
+        Me.RecordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.RecordButton.Font = New System.Drawing.Font("OCR A Extended", 27.75!)
+        Me.RecordButton.ForeColor = System.Drawing.Color.Red
+        Me.RecordButton.Location = New System.Drawing.Point(306, 9)
+        Me.RecordButton.Name = "RecordButton"
+        Me.RecordButton.Size = New System.Drawing.Size(60, 60)
+        Me.RecordButton.TabIndex = 37
+        Me.RecordButton.Text = "●"
+        Me.RecordButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.RecordButton.UseVisualStyleBackColor = False
+        '
         'ForceChart
         '
         Me.ForceChart.BackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
@@ -464,23 +480,6 @@ Partial Class MainForm
         '
         'SaveFileDialog
         '
-        '
-        'RecordButton
-        '
-        Me.RecordButton.Appearance = System.Windows.Forms.Appearance.Button
-        Me.RecordButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.RecordButton.FlatAppearance.BorderColor = System.Drawing.Color.Red
-        Me.RecordButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.RecordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RecordButton.Font = New System.Drawing.Font("OCR A Extended", 27.75!)
-        Me.RecordButton.ForeColor = System.Drawing.Color.Red
-        Me.RecordButton.Location = New System.Drawing.Point(306, 9)
-        Me.RecordButton.Name = "RecordButton"
-        Me.RecordButton.Size = New System.Drawing.Size(60, 60)
-        Me.RecordButton.TabIndex = 37
-        Me.RecordButton.Text = "●"
-        Me.RecordButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.RecordButton.UseVisualStyleBackColor = False
         '
         'ExperimentRecording
         '
@@ -552,7 +551,7 @@ Partial Class MainForm
         'DataSubscriber1
         '
         Me.DataSubscriber1.ComComponent = Me.ModbusTCPCom1
-        Me.DataSubscriber1.PLCAddressValue = CType(resources.GetObject("DataSubscriber1.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.DataSubscriber1.PLCAddressValue = Nothing
         Me.DataSubscriber1.Value = Nothing
         '
         'CheckIfPLCStarted

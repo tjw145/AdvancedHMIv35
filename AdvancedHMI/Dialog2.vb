@@ -16,19 +16,8 @@ Public Class ExperimentSetupWindow
 
     End Sub
 
-    Private Sub RecLinkToolTip_Popup(sender As Object, e As PopupEventArgs) Handles RecLinkToolTip.Popup
-        Me.Text = "Link the data recording start & stop controls to the motion start & stop controls, so recording is handled automatically."
-    End Sub
-
     Private Sub StartStopOnRecCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles StartStopOnRecCheckBox.CheckedChanged
 
-    End Sub
-
-    Private Sub StartStopOnRecCheckBox_MouseHover(sender As Object, e As EventArgs) Handles StartStopOnRecCheckBox.MouseHover
-        Me.Show()
-        Me.Activate()
-        Me.Select()
-        Me.CreateControl()
     End Sub
 
     Private Sub ManualMotionCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ManualMotionCheckBox.CheckedChanged
@@ -69,16 +58,17 @@ Public Class ExperimentSetupWindow
         'MotionProfile.CalculateSteps(Cruise.Value)
     End Sub
 
-    Private Sub NumericUpDown2_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown2.ValueChanged
-        GlobalInstances.MotionProfile1.GenerateProfile(NumericUpDown2.Value, NumericUpDown4.Value)
+    Private Sub NumericUpDown2_ValueChanged(sender As Object, e As EventArgs)
 
-        Debug.WriteLine("A: " & GlobalInstances.MotionProfile1.AccelerationMM)
-        Debug.WriteLine("D: " & GlobalInstances.MotionProfile1.DecelerationMM)
-        Debug.WriteLine("C: " & GlobalInstances.MotionProfile1.CoastTime)
-        Debug.WriteLine("TT: " & GlobalInstances.MotionProfile1.TotalMoveTime)
-
-        Label9.Text = (GlobalInstances.MotionProfile1.TotalExperimentTime(NumericUpDown5.Value))
 
     End Sub
 
+    'Private Sub ExperimentSetupWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    '    With DataGridView1.ColumnHeadersDefaultCellStyle
+
+    '        .ForeColor = Color.White
+    '        .BackColor = Color.FromArgb(76, 78, 83)
+
+    '    End With
+    'End Sub
 End Class
