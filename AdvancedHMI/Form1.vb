@@ -2,21 +2,11 @@
 
 Public Class Form1
 
-    Private Sub DataGridView1_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles MotionStepsInput.CellValueChanged
-
-        'If MotionStepsInput.RowCount <> 0 Then
-
-        '    GenerateSteps(MotionStepsInput, MovePoints)
-
-        'End If
-
-    End Sub
-
     Private Sub GenerateSteps(Grid As DataGridView, stepList As List(Of MotionProfile))
 
         stepList.Clear() 'invalidate current list
 
-        For currentRow As Integer = 1 To (Grid.RowCount - 1)
+        For currentRow As Integer = 0 To (Grid.RowCount - 2)
 
             'Generates motion profile for each row, then sends them to the master step list.
 
@@ -45,8 +35,8 @@ Public Class Form1
 
                     If Grid.Item(column, row) Is Nothing Then
 
-                        Return True
                         Debug.WriteLine("Input error: all cells must contain a value.")
+                        Return True
 
                     End If
 
@@ -55,12 +45,12 @@ Public Class Form1
 
             Next
 
-            For timeInputs As Integer = 1 To (Grid.RowCount - 1)
+            For timeInputs As Integer = 0 To (Grid.RowCount - 2)
 
-                If Grid.Item(2, timeInputs).Value <= CDec(0) Then
+                If CDec(Grid.Item(1, timeInputs).Value) <= CDec(0) Then
 
-                    Return True
                     Debug.WriteLine("Input error: all time values must be greater than 0.")
+                    Return True
 
                 End If
 
@@ -78,7 +68,7 @@ Public Class Form1
 
 
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub GenerateStepsButton_Click(sender As Object, e As EventArgs) Handles GenerateStepsButton.Click
 
         If CheckInputErrors(MotionStepsInput) = False Then
 
@@ -86,7 +76,6 @@ Public Class Form1
 
         End If
 
-        GenerateSteps(MotionStepsInput, MovePoints)
-
     End Sub
+
 End Class

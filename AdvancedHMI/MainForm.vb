@@ -41,7 +41,7 @@ Public Class MainForm
 
     Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
 
-    Private Sub BasicButton2_Click(sender As Object, e As EventArgs) Handles StartButton.Click
+    Private Sub BasicButton2_Click(sender As Object, e As EventArgs) Handles StartButtonOld.Click
 
         'If GlobalInstances.MotionProfile1.() Then
 
@@ -89,7 +89,7 @@ Public Class MainForm
 
             End With
 
-            experimentStopwatch.Start()
+            ExperimentStopwatch.Start()
 
 
         ElseIf RecordButton.Checked = False Then
@@ -98,7 +98,7 @@ Public Class MainForm
 
             ExperimentRecording.Stop()
 
-            With experimentStopwatch
+            With ExperimentStopwatch
 
                 .Stop()
                 .Reset()
@@ -132,7 +132,7 @@ Public Class MainForm
         Debug.WriteLine("Testing: " & test)
 
         ' Gets current stopwatch time in seconds, and rounds to nearest millisecond
-        currentTime = Math.Round(experimentStopwatch.Elapsed.TotalSeconds, 3).ToString()
+        currentTime = Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 3).ToString()
 
         ' Log all real-time data
         Log.AddData(currentTime, test, test)
@@ -164,16 +164,89 @@ Public Class MainForm
 
         If CheckIfPLCStarted.Value = True Then
 
-            StartButton.BackColor = Color.FromArgb(24, 25, 27)
+            StartButtonOld.BackColor = Color.FromArgb(24, 25, 27)
             taskbarProgress.ProgressState = taskbarProgress.ProgressState.Normal
 
         ElseIf CheckIfPLCStarted.Value = False Then
 
-            StartButton.BackColor = Color.Green
+            StartButtonOld.BackColor = Color.Green
             taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
         End If
 
     End Sub
 
+    Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButtonOld2.Click
+
+
+
+        StartButtonOld2.Text = "❚❚"
+
+    End Sub
+
+    Private Sub StartButton_CheckedChanged(sender As Object, e As EventArgs) Handles StartButton.CheckedChanged
+
+        If StartButton.Checked = True Then
+
+            With GlobalInstances.MotionController
+
+                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, 1)
+                .Pause = False
+
+            End With
+
+            StartButton.Text = "❚❚"
+
+        ElseIf StartButton.Checked = False Then
+
+            StartButton.Text = "▶"
+            GlobalInstances.MotionController.Pause = True
+
+        End If
+
+    End Sub
+
+    Private Sub CheckConnectionToPLC()
+
+        Dim val As String = ModbusTCPCom1.Read("017183")
+
+        'If PLCConnectionCheck.Value Is "0" Then
+
+
+        '    Debug.WriteLine("ACK")
+        '    ConnectionIndicator.Text = "Connection Status: ACK"
+
+        'Else
+
+        '    Debug.WriteLine("NAK")
+        '    ConnectionIndicator.Text = "Connection Status: NAK"
+
+        'End If
+
+
+        If ModbusTCPCom1.Read("017183", 1)(0) = False Then
+
+            ConnectionIndicator.Text = "Connection Status: ACK"
+            Debug.WriteLine("ACK")
+
+        Else
+
+            ConnectionIndicator.Text = "Connection Status: NAK"
+            Debug.WriteLine("NAK")
+
+        End If
+
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+
+        CheckConnectionToPLC()
+
+    End Sub
+
+    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Timer1.Start()
+        ModbusTCPCom1.Subscribe("017183", 1, 1, )
+
+    End Sub
 End Class

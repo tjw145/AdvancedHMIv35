@@ -18,6 +18,10 @@ Public Class MotionControlSolution
     Private plcRunAddress As String = "017183"                  '"Run" button
     Private plcStopAddress As String = "017186"                 '"Stop" button
 
+    '====================================================================
+
+    Public Pause As Boolean = False                             'A pause switch. Not sure if this will be used.
+
 
     '====================================================================
 
