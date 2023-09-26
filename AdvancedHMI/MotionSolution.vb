@@ -49,16 +49,14 @@ Public Class MotionControlSolution
 
                     moveCommandACK = CBool(modbusDriver.Read(plcACKaddress)) 'Check to see if the PLC has already acknowledged the command.
 
-                    Debug.WriteLine(CStr(Steps(currentMoveNumber).TargetPositionPLC))
-
                     With modbusDriver
 
                         'Send motion profile data for current command
 
                         '.BeginWrite(plcNextMoveTargetAddress, 2, CStr(Steps(currentMoveNumber).TargetPositionPLC))
-                        .Write(plcNextMoveTargetAddress, CStr(Steps(currentMoveNumber).TargetPositionPLC))
-                        .Write(plcNextMoveAccelAddress, CStr(Steps(currentMoveNumber).AccelerationPLC))
-                        .Write(plcNextMoveDwellTimeAddress, CStr(Steps(currentMoveNumber).DwellTime))
+                        '.Write(plcNextMoveTargetAddress, CStr(Steps(currentMoveNumber).TargetPositionPLC))
+                        '.Write(plcNextMoveAccelAddress, CStr(Steps(currentMoveNumber).AccelerationPLC))
+                        '.Write(plcNextMoveDwellTimeAddress, CStr(Steps(currentMoveNumber).DwellTime))
 
                     End With
 

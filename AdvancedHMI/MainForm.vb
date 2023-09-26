@@ -208,17 +208,19 @@ Public Class MainForm
 
     Private Sub CheckConnectionToPLC()
 
-        Dim testVal As Boolean = CBool(ModbusTCPCom1.Read("018384"))
+        'Dim testVal As Boolean = CBool(ModbusTCPCom1.Read("018384"))
 
-        If testVal = False Then
+        'If testVal = False Then
 
-            ConnectionIndicator.Text = "Connection Status: ACK"
+        '    ConnectionIndicator.Text = "Connection Status: ACK"
 
-        Else
+        'Else
 
-            ConnectionIndicator.Text = "Connection Status: NAK"
+        '    ConnectionIndicator.Text = "Connection Status: NAK"
 
-        End If
+        'End If
+
+
 
 
         'If ModbusTCPCom1.Read("017183", 1)(0) = False Then
