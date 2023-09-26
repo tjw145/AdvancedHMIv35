@@ -190,7 +190,7 @@ Public Class MainForm
 
             With GlobalInstances.MotionController
 
-                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, 1)
+                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, 10)
                 .Pause = False
 
             End With
@@ -208,33 +208,30 @@ Public Class MainForm
 
     Private Sub CheckConnectionToPLC()
 
-        Dim val As String = ModbusTCPCom1.Read("017183")
+        Dim testVal As Boolean = CBool(ModbusTCPCom1.Read("018384"))
 
-        'If PLCConnectionCheck.Value Is "0" Then
-
-
-        '    Debug.WriteLine("ACK")
-        '    ConnectionIndicator.Text = "Connection Status: ACK"
-
-        'Else
-
-        '    Debug.WriteLine("NAK")
-        '    ConnectionIndicator.Text = "Connection Status: NAK"
-
-        'End If
-
-
-        If ModbusTCPCom1.Read("017183", 1)(0) = False Then
+        If testVal = False Then
 
             ConnectionIndicator.Text = "Connection Status: ACK"
-            Debug.WriteLine("ACK")
 
         Else
 
             ConnectionIndicator.Text = "Connection Status: NAK"
-            Debug.WriteLine("NAK")
 
         End If
+
+
+        'If ModbusTCPCom1.Read("017183", 1)(0) = False Then
+
+        '    ConnectionIndicator.Text = "Connection Status: ACK"
+        '    Debug.WriteLine("ACK")
+
+        'Else
+
+        '    ConnectionIndicator.Text = "Connection Status: NAK"
+        '    Debug.WriteLine("NAK")
+
+        'End If
 
     End Sub
 
@@ -245,8 +242,8 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Timer1.Start()
-        ModbusTCPCom1.Subscribe("017183", 1, 1, )
 
     End Sub
 End Class

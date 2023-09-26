@@ -26,11 +26,11 @@ Public Class MotionProfile
 
     '================== Output Variables: ===================
 
-    Public AccelerationPLC As Integer ' PLC = Pulses/sec^2
+    Public AccelerationPLC() As Int16 ' PLC = Pulses/sec^2
     Public AccelerationMM As Decimal ' mm = mm/sec^2
-    Public DecelerationPLC As Integer
+    Public DecelerationPLC() As Int16
     Public DecelerationMM As Decimal
-    Public TargetPositionPLC As Integer
+    Public TargetPositionPLC() As Int16
     Public PeakVelocityMM As Decimal
     Public PeakPPS As Integer
     Public AccelDecelDistanceTime As Decimal
@@ -128,5 +128,11 @@ Public Class MotionProfile
     '    End Try
 
     'End Function
+
+    Function SplitInto16BitIntegerArray(value As Integer) As Int16
+
+
+
+    End Function
 
 End Class
