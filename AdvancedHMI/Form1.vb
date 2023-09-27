@@ -66,9 +66,7 @@ Public Class Form1
 
     End Function
 
-
-
-    Private Sub GenerateStepsButton_Click(sender As Object, e As EventArgs) Handles GenerateStepsButton.Click
+    Private Sub StepsInput_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles MotionStepsInput.CellValueChanged
 
         If CheckInputErrors(MotionStepsInput) = False Then
 

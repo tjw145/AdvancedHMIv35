@@ -41,7 +41,7 @@ Public Class MainForm
 
     Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
 
-    Private Sub BasicButton2_Click(sender As Object, e As EventArgs) Handles StartButtonOld.Click
+    Private Sub BasicButton2_Click(sender As Object, e As EventArgs)
 
         'If GlobalInstances.MotionProfile1.() Then
 
@@ -54,6 +54,8 @@ Public Class MainForm
 
     Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
+        StartButton.Checked = False
+
         taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
     End Sub
@@ -64,61 +66,8 @@ Public Class MainForm
 
     Private Sub DataSubscriber1_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles DataSubscriber1.DataChanged
 
-        ProgressBar.Value = DataSubscriber1.Value
-        taskbarProgress.ProgressValue = DataSubscriber1.Value
-
-
-    End Sub
-
-    Dim Log As New ExperimentLog
-
-
-    Public Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles RecordButton.CheckedChanged
-
-        If RecordButton.Checked = True Then
-
-            RecordButton.Text = "❚❚"
-
-            ' Set data logging interval to the user-defined rate, then start the system stopwatch and recording trigger.
-
-            With ExperimentRecording
-
-                '.Interval = loggerInterval
-                .Interval = 500  'REMOVE BEFORE FLIGHT******************************************* <----------------
-                .Start()
-
-            End With
-
-            ExperimentStopwatch.Start()
-
-
-        ElseIf RecordButton.Checked = False Then
-
-            ' Stop recording triggers and reset system stopwatch.
-
-            ExperimentRecording.Stop()
-
-            With ExperimentStopwatch
-
-                .Stop()
-                .Reset()
-
-            End With
-
-            Log.ExportAsCSV()
-
-            'SaveFileDialog.ShowDialog()
-
-            RecordButton.Text = "●"
-
-            'expLog.filepath = SaveFileDialog.FileName
-            'expLog.AddData(1, 2, 3)
-
-            'expLog.ExportAsCSV("")
-
-        End If
-
-
+        ProgressBar.Value = MotionController.ProgressValue
+        taskbarProgress.ProgressValue = MotionController.ProgressValue
 
     End Sub
 
@@ -157,30 +106,6 @@ Public Class MainForm
 
         'ExperimentSetupWindow.ShowDialog()
         Form1.ShowDialog()
-
-    End Sub
-
-    Private Sub CheckIfPLCStarted_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfPLCStarted.DataChanged
-
-        If CheckIfPLCStarted.Value = True Then
-
-            StartButtonOld.BackColor = Color.FromArgb(24, 25, 27)
-            taskbarProgress.ProgressState = taskbarProgress.ProgressState.Normal
-
-        ElseIf CheckIfPLCStarted.Value = False Then
-
-            StartButtonOld.BackColor = Color.Green
-            taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
-
-        End If
-
-    End Sub
-
-    Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButtonOld2.Click
-
-
-
-        StartButtonOld2.Text = "❚❚"
 
     End Sub
 

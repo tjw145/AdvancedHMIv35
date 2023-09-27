@@ -47,13 +47,10 @@ Partial Class MainForm
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ConnectionIndicator = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.RecordButton = New System.Windows.Forms.CheckBox()
         Me.ForceChart = New AdvancedHMIControls.BasicTrendChart()
-        Me.StartButtonOld = New AdvancedHMIControls.BasicButton()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.ExperimentRecording = New System.Windows.Forms.Timer(Me.components)
         Me.SetupButton = New System.Windows.Forms.Button()
-        Me.StartButtonOld2 = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.CheckBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.StopButton = New AdvancedHMIControls.BasicButton()
@@ -222,7 +219,7 @@ Partial Class MainForm
         Me.DRO_mm.NumberOfDigits = 3
         Me.DRO_mm.PLCAddressKeypad = ""
         Me.DRO_mm.PLCAddressText = ""
-        Me.DRO_mm.PLCAddressValue = Nothing
+        Me.DRO_mm.PLCAddressValue = CType(resources.GetObject("DRO_mm.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
         Me.DRO_mm.PLCAddressVisible = ""
         Me.DRO_mm.ResolutionOfLastDigit = New Decimal(New Integer() {1, 0, 0, 0})
         Me.DRO_mm.ShowOffSegments = True
@@ -428,16 +425,14 @@ Partial Class MainForm
         Me.DisplacementChart.TabIndex = 16
         Me.DisplacementChart.Text = "BasicTrendChart1"
         Me.DisplacementChart.Value = ""
-        Me.DisplacementChart.YMaximum = 50000
+        Me.DisplacementChart.YMaximum = 5000
         Me.DisplacementChart.YMinimum = 0
         '
         'Panel1
         '
         Me.Panel1.Controls.Add(Me.ConnectionIndicator)
         Me.Panel1.Controls.Add(Me.Label3)
-        Me.Panel1.Controls.Add(Me.RecordButton)
         Me.Panel1.Controls.Add(Me.ForceChart)
-        Me.Panel1.Controls.Add(Me.StartButtonOld)
         Me.Panel1.Location = New System.Drawing.Point(600, 3)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(399, 617)
@@ -446,10 +441,11 @@ Partial Class MainForm
         'ConnectionIndicator
         '
         Me.ConnectionIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ConnectionIndicator.Font = New System.Drawing.Font("Arial", 9.0!)
         Me.ConnectionIndicator.ForeColor = System.Drawing.Color.White
-        Me.ConnectionIndicator.Location = New System.Drawing.Point(56, 519)
+        Me.ConnectionIndicator.Location = New System.Drawing.Point(250, 6)
         Me.ConnectionIndicator.Name = "ConnectionIndicator"
-        Me.ConnectionIndicator.Size = New System.Drawing.Size(244, 18)
+        Me.ConnectionIndicator.Size = New System.Drawing.Size(141, 18)
         Me.ConnectionIndicator.TabIndex = 38
         Me.ConnectionIndicator.Text = "Connection Status: "
         '
@@ -462,23 +458,6 @@ Partial Class MainForm
         Me.Label3.Size = New System.Drawing.Size(68, 18)
         Me.Label3.TabIndex = 26
         Me.Label3.Text = "Force, N"
-        '
-        'RecordButton
-        '
-        Me.RecordButton.Appearance = System.Windows.Forms.Appearance.Button
-        Me.RecordButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.RecordButton.FlatAppearance.BorderColor = System.Drawing.Color.Red
-        Me.RecordButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.RecordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RecordButton.Font = New System.Drawing.Font("OCR A Extended", 27.75!)
-        Me.RecordButton.ForeColor = System.Drawing.Color.Red
-        Me.RecordButton.Location = New System.Drawing.Point(306, 9)
-        Me.RecordButton.Name = "RecordButton"
-        Me.RecordButton.Size = New System.Drawing.Size(60, 60)
-        Me.RecordButton.TabIndex = 37
-        Me.RecordButton.Text = "●"
-        Me.RecordButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.RecordButton.UseVisualStyleBackColor = False
         '
         'ForceChart
         '
@@ -499,32 +478,6 @@ Partial Class MainForm
         Me.ForceChart.YMaximum = 5000
         Me.ForceChart.YMinimum = 0
         '
-        'StartButtonOld
-        '
-        Me.StartButtonOld.BackColor = System.Drawing.Color.Green
-        Me.StartButtonOld.ComComponent = Me.ModbusTCPCom1
-        Me.StartButtonOld.FlatAppearance.BorderColor = System.Drawing.Color.Green
-        Me.StartButtonOld.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.StartButtonOld.Font = New System.Drawing.Font("OCR A Extended", 27.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StartButtonOld.ForeColor = System.Drawing.SystemColors.Window
-        Me.StartButtonOld.ForeColorAltername = System.Drawing.SystemColors.Window
-        Me.StartButtonOld.Highlight = False
-        Me.StartButtonOld.HighlightColor = System.Drawing.Color.Green
-        Me.StartButtonOld.Location = New System.Drawing.Point(240, 0)
-        Me.StartButtonOld.MaximumHoldTime = 3000
-        Me.StartButtonOld.MinimumHoldTime = 500
-        Me.StartButtonOld.Name = "StartButtonOld"
-        Me.StartButtonOld.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
-        Me.StartButtonOld.PLCAddressClick = "017183"
-        Me.StartButtonOld.PLCAddressSelectTextAlternate = "017185"
-        Me.StartButtonOld.SelectTextAlternate = False
-        Me.StartButtonOld.Size = New System.Drawing.Size(60, 60)
-        Me.StartButtonOld.TabIndex = 13
-        Me.StartButtonOld.Text = "▶"
-        Me.StartButtonOld.TextAlternate = "❚❚"
-        Me.StartButtonOld.UseVisualStyleBackColor = False
-        Me.StartButtonOld.ValueToWrite = 1
-        '
         'SaveFileDialog
         '
         '
@@ -543,20 +496,6 @@ Partial Class MainForm
         Me.SetupButton.TabIndex = 41
         Me.SetupButton.Text = "⬑ Experimental Setup"
         Me.SetupButton.UseVisualStyleBackColor = False
-        '
-        'StartButtonOld2
-        '
-        Me.StartButtonOld2.BackColor = System.Drawing.Color.Green
-        Me.StartButtonOld2.FlatAppearance.BorderColor = System.Drawing.Color.Green
-        Me.StartButtonOld2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.StartButtonOld2.Font = New System.Drawing.Font("OCR A Extended", 27.75!)
-        Me.StartButtonOld2.ForeColor = System.Drawing.Color.White
-        Me.StartButtonOld2.Location = New System.Drawing.Point(9, 183)
-        Me.StartButtonOld2.Name = "StartButtonOld2"
-        Me.StartButtonOld2.Size = New System.Drawing.Size(60, 60)
-        Me.StartButtonOld2.TabIndex = 42
-        Me.StartButtonOld2.Text = "▶"
-        Me.StartButtonOld2.UseVisualStyleBackColor = False
         '
         'StartButton
         '
@@ -634,7 +573,6 @@ Partial Class MainForm
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1003, 631)
         Me.Controls.Add(Me.StartButton)
-        Me.Controls.Add(Me.StartButtonOld2)
         Me.Controls.Add(Me.SetupButton)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel2)
@@ -675,7 +613,6 @@ Partial Class MainForm
     Friend WithEvents JogMinus As AdvancedHMIControls.BasicButton
     Friend WithEvents JogPlus As AdvancedHMIControls.BasicButton
     Friend WithEvents StopButton As AdvancedHMIControls.BasicButton
-    Friend WithEvents StartButtonOld As AdvancedHMIControls.BasicButton
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents ForceZero As AdvancedHMIControls.BasicButton
     Friend WithEvents DisplacementZero As AdvancedHMIControls.BasicButton
@@ -695,11 +632,9 @@ Partial Class MainForm
     Friend WithEvents SaveFileDialog As SaveFileDialog
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents DRO_N As AdvancedHMIControls.SevenSegment2
-    Friend WithEvents RecordButton As CheckBox
     Friend WithEvents ExperimentRecording As Timer
     Friend WithEvents SetupButton As Button
     Friend WithEvents CheckIfPLCStarted As AdvancedHMIControls.DataSubscriber
-    Friend WithEvents StartButtonOld2 As Button
     Friend WithEvents StartButton As CheckBox
     Friend WithEvents ConnectionIndicator As Label
     Friend WithEvents Timer1 As Timer

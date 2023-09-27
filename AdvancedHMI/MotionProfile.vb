@@ -27,11 +27,11 @@ Public Class MotionProfile
 
     '================== Output Variables: ===================
 
-    Public AccelerationPLC() As UInt16 ' PLC = Pulses/sec^2
+    Public AccelerationPLC As Int16 ' PLC = Pulses/sec^2
     Public AccelerationMM As Decimal ' mm = mm/sec^2
-    Public DecelerationPLC() As UInt16
+    Public DecelerationPLC As Int16
     Public DecelerationMM As Decimal
-    Public TargetPositionPLC() As UInt16
+    Public TargetPositionPLC As Int16
     Public PeakVelocityMM As Decimal
     Public PeakPPS As Integer
     Public AccelDecelDistanceTime As Decimal
@@ -77,9 +77,9 @@ Public Class MotionProfile
 
         End If
 
-        AccelerationPLC = SplitIntoWords(CInt(accel * pulsesPerMM))
+        AccelerationPLC = DecimalShift(CInt(accel * pulsesPerMM))
         DecelerationPLC = AccelerationPLC
-        TargetPositionPLC = SplitIntoWords(targetPosition)
+        TargetPositionPLC = DecimalShift(targetPosition)
         PeakPPS = CInt(PeakVelocityMM * pulsesPerMM)
         DwellTime = CUShort(dwell)   '<-------------------- going to have to do some financial decimal point shifting magic here later
 
@@ -126,7 +126,7 @@ Public Class MotionProfile
 
         Dim output(1) As UInt16
 
-        output(0) = CUShort(input >> 16)
+        output(0) = CUShort(input >> 14)
         output(1) = CUShort(input And &HFFFF)
 
         Dim testRebuild As Integer = (output(0) << 16) Or (output(1) And &HFFFF)
@@ -134,6 +134,12 @@ Public Class MotionProfile
         Debug.WriteLine(testRebuild)
 
         Return output
+
+    End Function
+
+    Function DecimalShift(input As Integer) As Int16
+
+        Return CShort(input / 10)
 
     End Function
 
