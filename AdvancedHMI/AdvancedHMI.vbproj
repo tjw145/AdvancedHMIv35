@@ -105,26 +105,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MotionSolution.vb" />
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="ExperimentSetupWindow.Designer.vb">
+      <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>
     </Compile>
-    <Compile Include="Form1.vb">
+    <Compile Include="ExperimentSetupWindow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalInstances.vb" />
     <Compile Include="MotionProfile.vb" />
-    <Compile Include="Dialog1.Designer.vb">
-      <DependentUpon>Dialog1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialog2.Designer.vb">
-      <DependentUpon>Dialog2.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog2.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="FormChangeControls\FormChangeButton.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -166,14 +154,8 @@
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Dialog1.resx">
-      <DependentUpon>Dialog1.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialog2.resx">
-      <DependentUpon>Dialog2.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <EmbeddedResource Include="ExperimentSetupWindow.resx">
+      <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormChangeControls\MainMenuDriven\MainMenu.resx">
       <DependentUpon>MainMenu.vb</DependentUpon>

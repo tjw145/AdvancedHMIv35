@@ -41,35 +41,16 @@ Public Class MainForm
 
     Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
 
-    Private Sub BasicButton2_Click(sender As Object, e As EventArgs)
-
-        'If GlobalInstances.MotionProfile1.() Then
-
-
-        'End If
-        'StartButton.BackColor = Color.FromArgb(24, 25, 27)
-        'taskbarProgress.ProgressState = taskbarProgress.ProgressState.Normal
-
-    End Sub
-
     Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
         StartButton.Checked = False
-
-        taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
-
-    End Sub
-
-    Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
+        'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
     End Sub
 
-    Private Sub DataSubscriber1_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles DataSubscriber1.DataChanged
+    'ProgressBar.Value = MotionController.ProgressValue
+    'taskbarProgress.ProgressValue = MotionController.ProgressValue
 
-        ProgressBar.Value = MotionController.ProgressValue
-        taskbarProgress.ProgressValue = MotionController.ProgressValue
-
-    End Sub
 
     Dim currentTime As String
 
@@ -77,14 +58,13 @@ Public Class MainForm
 
     Public Sub ExperimentTimer_Tick(sender As Object, e As EventArgs) Handles ExperimentRecording.Tick
 
-        test += 1
-        Debug.WriteLine("Testing: " & test)
+        Dim displacment As Integer = ModbusTCPCom1.Read("400008") '"accurate" position log address
 
         ' Gets current stopwatch time in seconds, and rounds to nearest millisecond
         currentTime = Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 3).ToString()
 
         ' Log all real-time data
-        Log.AddData(currentTime, test, test)
+        Log.AddData(currentTime, displacment, 0)
 
     End Sub
 
@@ -104,8 +84,7 @@ Public Class MainForm
 
     Private Sub Button1_Click_2(sender As Object, e As EventArgs) Handles SetupButton.Click
 
-        'ExperimentSetupWindow.ShowDialog()
-        Form1.ShowDialog()
+        ExperimentSetupWindow.ShowDialog()
 
     End Sub
 
@@ -113,54 +92,53 @@ Public Class MainForm
 
         If StartButton.Checked = True Then
 
-            With GlobalInstances.MotionController
-
-                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, 10)
-                .Pause = False
-
-            End With
+            MotionControlThread.RunWorkerAsync()
+            ExperimentRecording.Start()
 
             StartButton.Text = "❚❚"
 
         ElseIf StartButton.Checked = False Then
 
+            MotionControlThread.CancelAsync()
+            ExperimentRecording.Stop()
+
+            If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+
+                Log.ExportAsCSV(SaveFileDialog.FileName)
+
+            End If
+
+            ModbusTCPCom1.BeginWrite("017186", 1, New String() {"1"}) 'Trigger "off" button
             StartButton.Text = "▶"
-            GlobalInstances.MotionController.Pause = True
 
         End If
 
     End Sub
 
-    Private Sub CheckConnectionToPLC()
+    Private Function CheckConnectionToPLC() As Boolean
 
-        'Dim testVal As Boolean = CBool(ModbusTCPCom1.Read("018384"))
+        'Try
 
-        'If testVal = False Then
+        If CBool(ModbusTCPCom1.Read("018384")) = False Then
 
-        '    ConnectionIndicator.Text = "Connection Status: ACK"
+            ConnectionIndicator.Text = "Connection Status: ✔"
+            Return True
 
-        'Else
+        Else
 
-        '    ConnectionIndicator.Text = "Connection Status: NAK"
+            ConnectionIndicator.Text = "Connection Status: ❌"
+                Return False
 
-        'End If
+            End If
 
+        ' Catch ex As Exception
 
+        ConnectionIndicator.Text = "Connection Status: ❌"
+            Return False
 
+        'End Try
 
-        'If ModbusTCPCom1.Read("017183", 1)(0) = False Then
-
-        '    ConnectionIndicator.Text = "Connection Status: ACK"
-        '    Debug.WriteLine("ACK")
-
-        'Else
-
-        '    ConnectionIndicator.Text = "Connection Status: NAK"
-        '    Debug.WriteLine("NAK")
-
-        'End If
-
-    End Sub
+    End Function
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
 
@@ -171,6 +149,19 @@ Public Class MainForm
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Timer1.Start()
+        MotionControlThread.WorkerSupportsCancellation = True
 
     End Sub
+
+    Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
+
+        With GlobalInstances.MotionController
+
+            .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
+            .Pause = False
+
+        End With
+
+    End Sub
+
 End Class

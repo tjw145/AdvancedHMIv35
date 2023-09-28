@@ -40,7 +40,6 @@ Partial Class MainForm
         Me.ForceZero = New AdvancedHMIControls.BasicButton()
         Me.DisplacementZero = New AdvancedHMIControls.BasicButton()
         Me.ProgressBar = New System.Windows.Forms.ProgressBar()
-        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.DisplacementChart = New AdvancedHMIControls.BasicTrendChart()
@@ -53,11 +52,9 @@ Partial Class MainForm
         Me.SetupButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.CheckBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.MotionControlThread = New System.ComponentModel.BackgroundWorker()
         Me.StopButton = New AdvancedHMIControls.BasicButton()
-        Me.DataSubscriber1 = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.CheckIfPLCStarted = New AdvancedHMIControls.DataSubscriber(Me.components)
-        Me.PLCConnectionCheck = New AdvancedHMIControls.DataSubscriber(Me.components)
-        Me.ACKsubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -65,10 +62,7 @@ Partial Class MainForm
         Me.GroupBox1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.DataSubscriber1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CheckIfPLCStarted, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PLCConnectionCheck, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ACKsubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -385,11 +379,6 @@ Partial Class MainForm
         Me.ProgressBar.TabIndex = 29
         Me.ProgressBar.Value = 1
         '
-        'NotifyIcon1
-        '
-        Me.NotifyIcon1.Text = "NotifyIcon1"
-        Me.NotifyIcon1.Visible = True
-        '
         'Panel2
         '
         Me.Panel2.Controls.Add(Me.Label2)
@@ -425,7 +414,7 @@ Partial Class MainForm
         Me.DisplacementChart.TabIndex = 16
         Me.DisplacementChart.Text = "BasicTrendChart1"
         Me.DisplacementChart.Value = ""
-        Me.DisplacementChart.YMaximum = 5000
+        Me.DisplacementChart.YMaximum = 50000
         Me.DisplacementChart.YMinimum = 0
         '
         'Panel1
@@ -443,7 +432,7 @@ Partial Class MainForm
         Me.ConnectionIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ConnectionIndicator.Font = New System.Drawing.Font("Arial", 9.0!)
         Me.ConnectionIndicator.ForeColor = System.Drawing.Color.White
-        Me.ConnectionIndicator.Location = New System.Drawing.Point(250, 6)
+        Me.ConnectionIndicator.Location = New System.Drawing.Point(250, 9)
         Me.ConnectionIndicator.Name = "ConnectionIndicator"
         Me.ConnectionIndicator.Size = New System.Drawing.Size(141, 18)
         Me.ConnectionIndicator.TabIndex = 38
@@ -517,6 +506,9 @@ Partial Class MainForm
         '
         Me.Timer1.Interval = 2000
         '
+        'MotionControlThread
+        '
+        '
         'StopButton
         '
         Me.StopButton.BackColor = System.Drawing.Color.Red
@@ -542,29 +534,11 @@ Partial Class MainForm
         Me.StopButton.UseVisualStyleBackColor = False
         Me.StopButton.ValueToWrite = 1
         '
-        'DataSubscriber1
-        '
-        Me.DataSubscriber1.ComComponent = Me.ModbusTCPCom1
-        Me.DataSubscriber1.PLCAddressValue = Nothing
-        Me.DataSubscriber1.Value = Nothing
-        '
         'CheckIfPLCStarted
         '
         Me.CheckIfPLCStarted.ComComponent = Me.ModbusTCPCom1
         Me.CheckIfPLCStarted.PLCAddressValue = Nothing
         Me.CheckIfPLCStarted.Value = Nothing
-        '
-        'PLCConnectionCheck
-        '
-        Me.PLCConnectionCheck.ComComponent = Me.ModbusTCPCom1
-        Me.PLCConnectionCheck.PLCAddressValue = CType(resources.GetObject("PLCConnectionCheck.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
-        Me.PLCConnectionCheck.Value = Nothing
-        '
-        'ACKsubscriber
-        '
-        Me.ACKsubscriber.ComComponent = Me.ModbusTCPCom1
-        Me.ACKsubscriber.PLCAddressValue = CType(resources.GetObject("ACKsubscriber.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
-        Me.ACKsubscriber.Value = Nothing
         '
         'MainForm
         '
@@ -598,10 +572,7 @@ Partial Class MainForm
         Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.DataSubscriber1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CheckIfPLCStarted, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PLCConnectionCheck, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ACKsubscriber, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -619,8 +590,6 @@ Partial Class MainForm
     Friend WithEvents HW_Zero As AdvancedHMIControls.BasicButton
     Friend WithEvents ModbusTCPCom1 As AdvancedHMIDrivers.ModbusTCPCom
     Friend WithEvents ProgressBar As ProgressBar
-    Friend WithEvents NotifyIcon1 As NotifyIcon
-    Friend WithEvents DataSubscriber1 As AdvancedHMIControls.DataSubscriber
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Label2 As Label
     Friend WithEvents DisplacementChart As AdvancedHMIControls.BasicTrendChart
@@ -638,6 +607,5 @@ Partial Class MainForm
     Friend WithEvents StartButton As CheckBox
     Friend WithEvents ConnectionIndicator As Label
     Friend WithEvents Timer1 As Timer
-    Friend WithEvents PLCConnectionCheck As AdvancedHMIControls.DataSubscriber
-    Friend WithEvents ACKsubscriber As AdvancedHMIControls.DataSubscriber
+    Friend WithEvents MotionControlThread As System.ComponentModel.BackgroundWorker
 End Class

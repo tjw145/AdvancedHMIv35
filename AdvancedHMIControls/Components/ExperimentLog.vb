@@ -1,4 +1,4 @@
-﻿Option Strict Off
+﻿Option Strict On
 
 Imports System.IO
 
@@ -34,32 +34,32 @@ Public Class ExperimentLog
 
     Public Sub ExportAsCSV(Optional file As String = Nothing)
 
-        'If file.Equals("" Or Nothing) Then
+        If file Is "" Or Nothing Then
 
-        '    file = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "experiment_recording" & ".csv"
+            file = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "experiment_recording" & ".csv"
 
-        'End If
+        End If
 
         Try
 
-            'Using writer As New StreamWriter(IO.File.OpenWrite(file))
+            Using writer As New StreamWriter(IO.File.OpenWrite(file))
 
-            '    For Each currentLine In timeLog
+                For currentLine As Integer = 0 To timeLog.Length
 
-            '        With writer
+                    With writer
 
-            '            .Write(ToString(timeLog(currentLine) & ","))
-            '            .Write(ToString(dispLog(currentLine) & ","))
-            '            .Write(ToString(forceLog(currentLine) & ","))
-            '            .WriteLine()
+                        .Write(timeLog(currentLine) & ",")
+                        .Write(dispLog(currentLine) & ",")
+                        .Write(forceLog(currentLine) & ",")
+                        .WriteLine()
 
-            '        End With
+                    End With
 
-            '    Next
+                Next
 
-            '    writer.Close()
+                writer.Close()
 
-            'End Using
+            End Using
 
             For i = 0 To length
 

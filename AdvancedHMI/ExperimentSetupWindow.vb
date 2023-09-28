@@ -1,6 +1,6 @@
 ﻿Imports System.Diagnostics.Eventing.Reader
 
-Public Class Form1
+Public Class ExperimentSetupWindow
 
     Private Sub GenerateSteps(Grid As DataGridView, stepList As List(Of MotionProfile))
 
@@ -66,14 +66,45 @@ Public Class Form1
 
     End Function
 
-    Private Sub StepsInput_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles MotionStepsInput.CellValueChanged
+    Private Sub StepsInput_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DisplacementStepsInput.CellValueChanged
 
-        If CheckInputErrors(MotionStepsInput) = False Then
+        If CheckInputErrors(DisplacementStepsInput) = False Then
 
-            GenerateSteps(MotionStepsInput, MovePoints)
+            GenerateSteps(DisplacementStepsInput, MovePoints)
 
         End If
 
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ExperimentSetupWindow.ActiveForm.Close()
+    End Sub
+
+    Private Sub MotionStepsInput_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DisplacementStepsInput.CellContentClick
+
+        If DisplacementStepsInput.CurrentCell.ColumnIndex = 4 Then
+
+            DisplacementStepsInput.CurrentCell.Dispose()
+
+        End If
+
+    End Sub
+
+    Private Sub CyclesControl_ValueChanged(sender As Object, e As EventArgs) Handles CyclesControl.ValueChanged
+        cycles = CInt(CyclesControl.Value)
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles ControlForDisp.CheckedChanged
+
+        If ControlForDisp.Checked = True Then
+
+            DisplacementStepsInput.Enabled = True
+
+        Else
+
+            DisplacementStepsInput.Enabled = False
+
+        End If
+
+    End Sub
 End Class
