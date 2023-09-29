@@ -57,9 +57,9 @@ Partial Class ExperimentSetupWindow
         Me.ForceCheckBox = New System.Windows.Forms.CheckBox()
         Me.DispCheckBox = New System.Windows.Forms.CheckBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.NumericUpDown3 = New System.Windows.Forms.NumericUpDown()
+        Me.RecordingRateHz = New System.Windows.Forms.NumericUpDown()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.OKbutton = New System.Windows.Forms.Button()
         Me.DispControlPanel.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,7 +79,7 @@ Partial Class ExperimentSetupWindow
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        CType(Me.NumericUpDown3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RecordingRateHz, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DispControlPanel
@@ -435,7 +435,7 @@ Partial Class ExperimentSetupWindow
         Me.TableLayoutPanel2.Controls.Add(Me.ForceCheckBox, 1, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.DispCheckBox, 1, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.Label2, 0, 2)
-        Me.TableLayoutPanel2.Controls.Add(Me.NumericUpDown3, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.RecordingRateHz, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Label1, 0, 1)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 3)
@@ -496,24 +496,24 @@ Partial Class ExperimentSetupWindow
         Me.Label2.Text = "Record force (N):"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'NumericUpDown3
+        'RecordingRateHz
         '
-        Me.NumericUpDown3.AllowDrop = True
-        Me.NumericUpDown3.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.NumericUpDown3.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.NumericUpDown3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.NumericUpDown3.DecimalPlaces = 2
-        Me.NumericUpDown3.Font = New System.Drawing.Font("Arial", 9.25!)
-        Me.NumericUpDown3.ForeColor = System.Drawing.Color.White
-        Me.NumericUpDown3.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.NumericUpDown3.Location = New System.Drawing.Point(259, 5)
-        Me.NumericUpDown3.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
-        Me.NumericUpDown3.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.NumericUpDown3.Name = "NumericUpDown3"
-        Me.NumericUpDown3.Size = New System.Drawing.Size(51, 22)
-        Me.NumericUpDown3.TabIndex = 38
-        Me.NumericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.NumericUpDown3.Value = New Decimal(New Integer() {5, 0, 0, 0})
+        Me.RecordingRateHz.AllowDrop = True
+        Me.RecordingRateHz.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.RecordingRateHz.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.RecordingRateHz.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.RecordingRateHz.DecimalPlaces = 2
+        Me.RecordingRateHz.Font = New System.Drawing.Font("Arial", 9.25!)
+        Me.RecordingRateHz.ForeColor = System.Drawing.Color.White
+        Me.RecordingRateHz.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+        Me.RecordingRateHz.Location = New System.Drawing.Point(259, 5)
+        Me.RecordingRateHz.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
+        Me.RecordingRateHz.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
+        Me.RecordingRateHz.Name = "RecordingRateHz"
+        Me.RecordingRateHz.Size = New System.Drawing.Size(51, 22)
+        Me.RecordingRateHz.TabIndex = 38
+        Me.RecordingRateHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.RecordingRateHz.Value = New Decimal(New Integer() {5, 0, 0, 0})
         '
         'Label1
         '
@@ -527,26 +527,26 @@ Partial Class ExperimentSetupWindow
         Me.Label1.Text = "Record displacment (mm):"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Button1
+        'OKbutton
         '
-        Me.Button1.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
-        Me.Button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Font = New System.Drawing.Font("Arial", 9.0!)
-        Me.Button1.ForeColor = System.Drawing.Color.White
-        Me.Button1.Location = New System.Drawing.Point(340, 263)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 89
-        Me.Button1.Text = "OK"
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.OKbutton.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
+        Me.OKbutton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
+        Me.OKbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.OKbutton.Font = New System.Drawing.Font("Arial", 9.0!)
+        Me.OKbutton.ForeColor = System.Drawing.Color.White
+        Me.OKbutton.Location = New System.Drawing.Point(340, 263)
+        Me.OKbutton.Name = "OKbutton"
+        Me.OKbutton.Size = New System.Drawing.Size(75, 23)
+        Me.OKbutton.TabIndex = 89
+        Me.OKbutton.Text = "OK"
+        Me.OKbutton.UseVisualStyleBackColor = False
         '
         'ExperimentSetupWindow
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(426, 292)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.OKbutton)
         Me.Controls.Add(Me.DispControlPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "ExperimentSetupWindow"
@@ -574,7 +574,7 @@ Partial Class ExperimentSetupWindow
         Me.TabPage1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
-        CType(Me.NumericUpDown3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RecordingRateHz, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -589,11 +589,11 @@ Partial Class ExperimentSetupWindow
     Friend WithEvents delete As DataGridViewButtonColumn
     Friend WithEvents ForceCheckBox As CheckBox
     Friend WithEvents DispCheckBox As CheckBox
-    Friend WithEvents NumericUpDown3 As NumericUpDown
+    Friend WithEvents RecordingRateHz As NumericUpDown
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents hzLabel As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents OKbutton As Button
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents ControlForDisp As CheckBox

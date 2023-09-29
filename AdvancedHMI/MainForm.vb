@@ -48,41 +48,26 @@ Public Class MainForm
 
     End Sub
 
-    'ProgressBar.Value = MotionController.ProgressValue
-    'taskbarProgress.ProgressValue = MotionController.ProgressValue
+    Public Sub ExperimentRecordingTimer_Tick(sender As Object, e As EventArgs) Handles ExperimentRecordingTimer.Tick
 
-
-    Dim currentTime As String
-
-    Dim test As Integer
-
-    Public Sub ExperimentTimer_Tick(sender As Object, e As EventArgs) Handles ExperimentRecording.Tick
-
+        Dim currentTime As String
         Dim displacment As Integer = ModbusTCPCom1.Read("400008") '"accurate" position log address
 
         ' Gets current stopwatch time in seconds, and rounds to nearest millisecond
-        currentTime = Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 3).ToString()
+        currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 3))
 
         ' Log all real-time data
         Log.AddData(currentTime, displacment, 0)
 
-    End Sub
+        If GlobalInstances.FinishedMoving = True Then
 
-    Private Sub SaveFileDialog_FileOk(sender As Object, e As CancelEventArgs) Handles SaveFileDialog.FileOk
+            StartButton.CheckState = CheckState.Unchecked
 
-        'Log.filename = SaveFileDialog.FileName
-        Log.ExportAsCSV()
-
-    End Sub
-
-    Private Sub NumericUpDown3_ValueChanged(sender As Object, e As EventArgs)
-
-        ' Sets data recording interval to user input, coverted from hertz to milliseconds.
-        'loggerInterval = 1000 / (NumericUpDown3.Value)
+        End If
 
     End Sub
 
-    Private Sub Button1_Click_2(sender As Object, e As EventArgs) Handles SetupButton.Click
+    Private Sub SetupButton_Click(sender As Object, e As EventArgs) Handles SetupButton.Click
 
         ExperimentSetupWindow.ShowDialog()
 
@@ -93,14 +78,16 @@ Public Class MainForm
         If StartButton.Checked = True Then
 
             MotionControlThread.RunWorkerAsync()
-            ExperimentRecording.Start()
+            ExperimentRecordingTimer.Start()
+            ExperimentStopwatch.Start()
 
             StartButton.Text = "❚❚"
 
         ElseIf StartButton.Checked = False Then
 
             MotionControlThread.CancelAsync()
-            ExperimentRecording.Stop()
+            ExperimentRecordingTimer.Stop()
+            ExperimentStopwatch.Stop()
 
             If SaveFileDialog.ShowDialog() = DialogResult.OK Then
 
@@ -121,17 +108,17 @@ Public Class MainForm
 
         If CBool(ModbusTCPCom1.Read("018384")) = False Then
 
-            ConnectionIndicator.Text = "Connection Status: ✔"
-            Return True
+                ConnectionIndicator.Text = "Connection Status: ✔"
+                Return True
 
-        Else
+            Else
 
-            ConnectionIndicator.Text = "Connection Status: ❌"
+                ConnectionIndicator.Text = "Connection Status: ❌"
                 Return False
 
             End If
 
-        ' Catch ex As Exception
+        'Catch ex As Exception
 
         ConnectionIndicator.Text = "Connection Status: ❌"
             Return False
@@ -140,7 +127,7 @@ Public Class MainForm
 
     End Function
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles ConnectionCheckTimer.Tick
 
         CheckConnectionToPLC()
 
@@ -148,7 +135,7 @@ Public Class MainForm
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Timer1.Start()
+        ConnectionCheckTimer.Start()
         MotionControlThread.WorkerSupportsCancellation = True
 
     End Sub
@@ -158,10 +145,25 @@ Public Class MainForm
         With GlobalInstances.MotionController
 
             .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
-            .Pause = False
 
         End With
 
     End Sub
 
+    Private Sub StartButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles StartButtonSubscriber.DataChanged
+
+        Dim runBitOn = StartButtonSubscriber.Value
+
+        If runBitOn Is "False" Then
+
+            StartButton.CheckState = CheckState.Unchecked
+
+        ElseIf runBitOn Is "True" Then
+
+            StartButton.CheckState = CheckState.Checked
+
+
+        End If
+
+    End Sub
 End Class

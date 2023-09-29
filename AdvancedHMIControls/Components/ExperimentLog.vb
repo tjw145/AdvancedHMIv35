@@ -4,9 +4,9 @@ Imports System.IO
 
 Public Class ExperimentLog
 
-    Private length As Integer = 1
+    Private length As Integer = 0
     Private timeLog() As String
-    Private dispLog() As Integer
+    Private dispLog() As Decimal
     Private forceLog() As Integer
 
     Public Sub AddData(time As String, displacement As Integer, force As Integer)
@@ -16,13 +16,17 @@ Public Class ExperimentLog
             ReDim Preserve dispLog(length)
             ReDim Preserve forceLog(length)
 
+            'If length = 1 Then
+
+            '    time = "0"
+
+            'End If
+
             timeLog(length) = time
-            dispLog(length) = displacement
+            dispLog(length) = CDec(displacement) / 1000 'Values sent from the PLC are *1000, so this rescales the incoming data.
             forceLog(length) = force
 
             length += 1
-
-            Debug.WriteLine(time)
 
         Catch ex As Exception
 
@@ -40,44 +44,36 @@ Public Class ExperimentLog
 
         End If
 
-        Try
+        'Using writer As New StreamWriter(IO.File.OpenWrite(file))
+        Dim writer As StreamWriter
+        writer = My.Computer.FileSystem.OpenTextFileWriter(file, False)
 
-            Using writer As New StreamWriter(IO.File.OpenWrite(file))
+        With writer
 
-                For currentLine As Integer = 0 To timeLog.Length
+            'Writes column headers
+            .Write("Time (s): " & ",")
+            .Write("Displacement (mm): " & ",")
+            .Write("Force (N): " & ",")
+            .WriteLine()
 
-                    With writer
+        End With
 
-                        .Write(timeLog(currentLine) & ",")
-                        .Write(dispLog(currentLine) & ",")
-                        .Write(forceLog(currentLine) & ",")
-                        .WriteLine()
+        For currentLine As Integer = 0 To timeLog.Length - 1
 
-                    End With
+            With writer
 
-                Next
+                .Write(timeLog(currentLine) & ",")
+                .Write(dispLog(currentLine) & ",")
+                .Write(forceLog(currentLine) & ",")
+                .WriteLine()
 
-                writer.Close()
+            End With
 
-            End Using
+        Next
 
-            For i = 0 To length
+        writer.Close()
 
-                Debug.Write(timeLog(i) & ",")
-                Debug.Write(dispLog(i) & ",")
-                Debug.Write(forceLog(i) & ",")
-                Debug.WriteLine("")
-
-            Next
-
-
-            Debug.WriteLine("Export successful. File saved at: " & file)
-
-        Catch ex As Exception
-
-            Debug.WriteLine("Error while attempting to write CSV file.")
-
-        End Try
+        Debug.WriteLine("Export successful. File saved at: " & file)
 
     End Sub
 

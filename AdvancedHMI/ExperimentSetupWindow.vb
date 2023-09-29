@@ -76,7 +76,7 @@ Public Class ExperimentSetupWindow
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OKbutton.Click
         ExperimentSetupWindow.ActiveForm.Close()
     End Sub
 
@@ -107,4 +107,11 @@ Public Class ExperimentSetupWindow
         End If
 
     End Sub
+
+    Private Sub RecordingRateHz_ValueChanged(sender As Object, e As EventArgs) Handles RecordingRateHz.ValueChanged
+
+        MainForm.ExperimentRecordingTimer.Interval = (1 / RecordingRateHz.Value) * 1000 'Ticks are in ms, input is in Hz.
+
+    End Sub
+
 End Class

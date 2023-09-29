@@ -48,13 +48,13 @@ Partial Class MainForm
         Me.Label3 = New System.Windows.Forms.Label()
         Me.ForceChart = New AdvancedHMIControls.BasicTrendChart()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.ExperimentRecording = New System.Windows.Forms.Timer(Me.components)
+        Me.ExperimentRecordingTimer = New System.Windows.Forms.Timer(Me.components)
         Me.SetupButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.CheckBox()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.ConnectionCheckTimer = New System.Windows.Forms.Timer(Me.components)
         Me.MotionControlThread = New System.ComponentModel.BackgroundWorker()
         Me.StopButton = New AdvancedHMIControls.BasicButton()
-        Me.CheckIfPLCStarted = New AdvancedHMIControls.DataSubscriber(Me.components)
+        Me.StartButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -62,7 +62,7 @@ Partial Class MainForm
         Me.GroupBox1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.CheckIfPLCStarted, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -469,8 +469,12 @@ Partial Class MainForm
         '
         'SaveFileDialog
         '
+        Me.SaveFileDialog.DefaultExt = "csv"
+        Me.SaveFileDialog.FileName = "flexure_recording.csv"
+        Me.SaveFileDialog.Filter = """.csv files|*.csv"""
+        Me.SaveFileDialog.Title = "Save Recording Data"
         '
-        'ExperimentRecording
+        'ExperimentRecordingTimer
         '
         '
         'SetupButton
@@ -502,9 +506,9 @@ Partial Class MainForm
         Me.StartButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.StartButton.UseVisualStyleBackColor = False
         '
-        'Timer1
+        'ConnectionCheckTimer
         '
-        Me.Timer1.Interval = 2000
+        Me.ConnectionCheckTimer.Interval = 2000
         '
         'MotionControlThread
         '
@@ -534,11 +538,11 @@ Partial Class MainForm
         Me.StopButton.UseVisualStyleBackColor = False
         Me.StopButton.ValueToWrite = 1
         '
-        'CheckIfPLCStarted
+        'StartButtonSubscriber
         '
-        Me.CheckIfPLCStarted.ComComponent = Me.ModbusTCPCom1
-        Me.CheckIfPLCStarted.PLCAddressValue = Nothing
-        Me.CheckIfPLCStarted.Value = Nothing
+        Me.StartButtonSubscriber.ComComponent = Me.ModbusTCPCom1
+        Me.StartButtonSubscriber.PLCAddressValue = CType(resources.GetObject("StartButtonSubscriber.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.StartButtonSubscriber.Value = Nothing
         '
         'MainForm
         '
@@ -572,7 +576,7 @@ Partial Class MainForm
         Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.CheckIfPLCStarted, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -601,11 +605,11 @@ Partial Class MainForm
     Friend WithEvents SaveFileDialog As SaveFileDialog
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents DRO_N As AdvancedHMIControls.SevenSegment2
-    Friend WithEvents ExperimentRecording As Timer
+    Friend WithEvents ExperimentRecordingTimer As Timer
     Friend WithEvents SetupButton As Button
-    Friend WithEvents CheckIfPLCStarted As AdvancedHMIControls.DataSubscriber
     Friend WithEvents StartButton As CheckBox
     Friend WithEvents ConnectionIndicator As Label
-    Friend WithEvents Timer1 As Timer
+    Friend WithEvents ConnectionCheckTimer As Timer
     Friend WithEvents MotionControlThread As System.ComponentModel.BackgroundWorker
+    Friend WithEvents StartButtonSubscriber As AdvancedHMIControls.DataSubscriber
 End Class
