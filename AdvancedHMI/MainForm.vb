@@ -142,6 +142,12 @@ Public Class MainForm
 
     Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
+        If MotionControlThread.CancellationPending = True Then
+
+            Return
+
+        End If
+
         With GlobalInstances.MotionController
 
             .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)

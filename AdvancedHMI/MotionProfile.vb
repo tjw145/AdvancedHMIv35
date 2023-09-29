@@ -36,7 +36,7 @@ Public Class MotionProfile
     Public PeakPPS As Integer
     Public AccelDecelDistanceTime As Decimal
     Public CoastTime As Decimal
-    Public TotalMoveTime As Decimal
+    Public TotalMoveTimeMS As Integer
     Public TotalExperimentTime As Decimal
     Public DwellTime As UInt16
 
@@ -63,7 +63,7 @@ Public Class MotionProfile
             AccelerationMM = CDec(accel)
             DecelerationMM = CDec(accel)
             PeakVelocityMM = CDec((2 * distance) / moveTime)
-            TotalMoveTime = moveTime
+            TotalMoveTimeMS = CInt(moveTime * 1000)
 
         ElseIf accel > maxAccel Then
 
@@ -73,7 +73,7 @@ Public Class MotionProfile
             PeakVelocityMM = maxAccel
             AccelDecelDistanceTime = CDec((1 / 2) * 1 * (accel) + (1 / 2) * 1 * (accel))
             CoastTime = ((distance - AccelDecelDistanceTime) / PeakVelocityMM)
-            TotalMoveTime = CoastTime + 2
+            TotalMoveTimeMS = CInt((CoastTime + 2) * 1000)
 
         End If
 

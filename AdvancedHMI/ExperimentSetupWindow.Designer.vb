@@ -186,6 +186,8 @@ Partial Class ExperimentSetupWindow
         '
         'DisplacementStepsInput
         '
+        Me.DisplacementStepsInput.AllowUserToResizeColumns = False
+        Me.DisplacementStepsInput.AllowUserToResizeRows = False
         Me.DisplacementStepsInput.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.DisplacementStepsInput.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
         Me.DisplacementStepsInput.BorderStyle = System.Windows.Forms.BorderStyle.None

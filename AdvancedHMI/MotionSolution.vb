@@ -43,6 +43,7 @@ Public Class MotionControlSolution
 
         Dim totalNumberOfSteps As Integer = StepList.Count
         Dim currentStepNumber As Integer = 0
+        Dim finalMoveTime As Integer = StepList(totalNumberOfSteps - 1).TotalMoveTimeMS
 
         For cycleNumber As Integer = 0 To cycles - 1
 
@@ -75,8 +76,15 @@ Public Class MotionControlSolution
 
         Next
 
+        'Wait for the final move to finish, plus a little extra, before triggering "stop" bit.
+        Thread.Sleep(finalMoveTime + 200)
+        modbusDriver.BeginWrite(plcStopAddress, 1, New String() {"1"})
+
         MovesComplete = True
         RaiseEvent OnFinished()
+        modbusDriver.BeginWrite(plcRunAddress, 1, New String() {"0"}) 'Turn "run" bit off 
+
+
 
     End Sub
 
