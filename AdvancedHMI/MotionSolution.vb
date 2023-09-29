@@ -41,10 +41,11 @@ Public Class MotionControlSolution
         StepList = motionProfiles
 
         Dim totalNumberOfSteps As Integer = StepList.Count
+        Dim currentStepNumber As Integer = 0
 
-        For cycleNumber As Integer = 0 To cycles
+        For cycleNumber As Integer = 0 To cycles - 1
 
-            For currentStepNumber As Integer = 0 To totalNumberOfSteps
+            While currentStepNumber < totalNumberOfSteps
 
                 If cycleNumber = 0 Then
 
@@ -56,21 +57,20 @@ Public Class MotionControlSolution
 
                     If SendCommand(modbusDriver, StepList(currentStepNumber)) = True Then
 
-                        Return
+                        currentStepNumber += 1
+                        ProgressValue = CalculateProgress(cycleNumber + 1, cycles, currentStepNumber + 1, StepList.Count)
 
                     Else
 
                         Debug.WriteLine("Motion command procedure timeout")
-                        Return
 
                     End If
 
                 End If
 
-                ProgressValue = CalculateProgress(cycleNumber + 1, cycles, currentStepNumber + 1, StepList.Count)
+            End While
 
-            Next
-
+            currentStepNumber = 0 'Reset step counter for new cycle
 
         Next
 
