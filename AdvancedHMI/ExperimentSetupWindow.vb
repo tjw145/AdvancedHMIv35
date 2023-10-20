@@ -2,7 +2,7 @@
 
 Public Class ExperimentSetupWindow
 
-    Private Sub GenerateSteps(Grid As DataGridView, stepList As List(Of MotionProfile))
+    Private Function GenerateSteps(Grid As DataGridView, stepList As List(Of MotionProfile))
 
         stepList.Clear() 'invalidate current list
 
@@ -15,19 +15,26 @@ Public Class ExperimentSetupWindow
             Dim time As Decimal = CDec(Grid.Item(1, currentRow).Value)
             Dim dwell As Decimal = CDec(Grid.Item(2, currentRow).Value)
 
-            CurrentStep.GenerateProfile(time, distance, dwell)
+            If CurrentStep.GenerateProfile(time, distance, dwell) = False Then
+
+                Return False
+
+            End If
+
             stepList.Add(CurrentStep)
 
         Next
 
-    End Sub
+        Return True
+
+    End Function
 
     Private Function CheckInputErrors(Grid As DataGridView) As Boolean
 
         'Checks to see that at least two positions have been added to the list, all time vales are greater than zero, and that all cells contain a value.
         'Returns true if an error is present, false is no error is present.
 
-        If Grid.RowCount <> 0 Or 1 Then
+        If Grid.RowCount > 1 Then
 
             For row As Integer = 1 To (Grid.RowCount - 1)
 
@@ -35,7 +42,7 @@ Public Class ExperimentSetupWindow
 
                     If Grid.Item(column, row) Is Nothing Then
 
-                        Debug.WriteLine("Input error: all cells must contain a value.")
+                        InputFeedback.Text = "❌ Error: all cells must contain a value."
                         Return True
 
                     End If
@@ -49,7 +56,7 @@ Public Class ExperimentSetupWindow
 
                 If CDec(Grid.Item(1, timeInputs).Value) <= CDec(0) Then
 
-                    Debug.WriteLine("Input error: all time values must be greater than 0.")
+                    InputFeedback.Text = "❌ Error: all time values must be greater than 0."
                     Return True
 
                 End If
@@ -60,7 +67,7 @@ Public Class ExperimentSetupWindow
 
         Else Return True
 
-            Debug.WriteLine("Input error: user must input more than one motion step.")
+            InputFeedback.Text = "❌ Error: user must input more than one motion step."
 
         End If
 
@@ -70,7 +77,24 @@ Public Class ExperimentSetupWindow
 
         If CheckInputErrors(DisplacementStepsInput) = False Then
 
-            GenerateSteps(DisplacementStepsInput, MovePoints)
+            If GenerateSteps(DisplacementStepsInput, MovePoints) = False Then
+
+                StartReady = False
+                InputFeedback.Text = "❌ Error: Maximum acceleration rate exceeded."
+                MainForm.StartButton.BackColor = BackgroundDarkColor
+
+            Else
+
+                StartReady = True
+                InputFeedback.Text = "✔ Ready"
+                MainForm.StartButton.BackColor = Color.Green
+
+            End If
+
+        Else
+
+            StartReady = False
+            MainForm.StartButton.BackColor = BackgroundDarkColor
 
         End If
 

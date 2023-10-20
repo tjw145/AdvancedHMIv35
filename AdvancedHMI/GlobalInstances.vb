@@ -15,8 +15,11 @@ Module GlobalInstances
     Public ElapsedTime As String
     Public ExperimentStopwatch As New Stopwatch
     Public loggerInterval As Integer
-
+    Public PLCconnection As String
+    Public StartReady As Boolean = False
     Public FinishedMoving As Boolean = False
+
+    Public BackgroundDarkColor As Color = Color.FromArgb(24, 25, 27)
 
     Public Sub MotionController_OnFinished() Handles MotionController.OnFinished
 

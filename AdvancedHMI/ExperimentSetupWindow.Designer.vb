@@ -22,6 +22,7 @@ Partial Class ExperimentSetupWindow
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -60,6 +61,10 @@ Partial Class ExperimentSetupWindow
         Me.RecordingRateHz = New System.Windows.Forms.NumericUpDown()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.OKbutton = New System.Windows.Forms.Button()
+        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.EthernetIPforCLXCom1 = New AdvancedHMIDrivers.EthernetIPforCLXCom(Me.components)
+        Me.InputFeedback = New System.Windows.Forms.Label()
         Me.DispControlPanel.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -80,6 +85,8 @@ Partial Class ExperimentSetupWindow
         Me.TabPage1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         CType(Me.RecordingRateHz, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.EthernetIPforCLXCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DispControlPanel
@@ -543,11 +550,40 @@ Partial Class ExperimentSetupWindow
         Me.OKbutton.Text = "OK"
         Me.OKbutton.UseVisualStyleBackColor = False
         '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.ContainerControl = Me
+        '
+        'EthernetIPforCLXCom1
+        '
+        Me.EthernetIPforCLXCom1.CIPConnectionSize = 508
+        Me.EthernetIPforCLXCom1.DisableMultiServiceRequest = False
+        Me.EthernetIPforCLXCom1.DisableSubscriptions = False
+        Me.EthernetIPforCLXCom1.IniFileName = ""
+        Me.EthernetIPforCLXCom1.IniFileSection = Nothing
+        Me.EthernetIPforCLXCom1.IPAddress = "192.168.0.10"
+        Me.EthernetIPforCLXCom1.PollRateOverride = 500
+        Me.EthernetIPforCLXCom1.Port = 44818
+        Me.EthernetIPforCLXCom1.ProcessorSlot = 0
+        Me.EthernetIPforCLXCom1.RoutePath = Nothing
+        Me.EthernetIPforCLXCom1.Timeout = 4000
+        '
+        'InputFeedback
+        '
+        Me.InputFeedback.AutoSize = True
+        Me.InputFeedback.ForeColor = System.Drawing.Color.White
+        Me.InputFeedback.Location = New System.Drawing.Point(13, 268)
+        Me.InputFeedback.Name = "InputFeedback"
+        Me.InputFeedback.Size = New System.Drawing.Size(19, 13)
+        Me.InputFeedback.TabIndex = 90
+        Me.InputFeedback.Text = "❌"
+        '
         'ExperimentSetupWindow
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(426, 292)
+        Me.Controls.Add(Me.InputFeedback)
         Me.Controls.Add(Me.OKbutton)
         Me.Controls.Add(Me.DispControlPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
@@ -577,7 +613,10 @@ Partial Class ExperimentSetupWindow
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
         CType(Me.RecordingRateHz, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.EthernetIPforCLXCom1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -613,4 +652,8 @@ Partial Class ExperimentSetupWindow
     Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn3 As DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewButtonColumn1 As DataGridViewButtonColumn
+    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Friend WithEvents ErrorProvider1 As ErrorProvider
+    Friend WithEvents EthernetIPforCLXCom1 As AdvancedHMIDrivers.EthernetIPforCLXCom
+    Friend WithEvents InputFeedback As Label
 End Class

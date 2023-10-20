@@ -48,7 +48,7 @@ Public Class MotionProfile
 
         Dim accel As Double
         Dim targetPosition As Integer
-        Dim maxAccelExceeded As Boolean
+        Dim withinLimits As Boolean
 
         accel = (4.0 * distance) / (moveTime ^ 2)
         targetPosition = CInt(distance * pulsesPerMM)
@@ -59,7 +59,7 @@ Public Class MotionProfile
 
         If accel <= maxAccel Then
 
-            maxAccelExceeded = False
+            withinLimits = True
             AccelerationMM = CDec(accel)
             DecelerationMM = CDec(accel)
             PeakVelocityMM = CDec((2 * distance) / moveTime)
@@ -67,7 +67,7 @@ Public Class MotionProfile
 
         ElseIf accel > maxAccel Then
 
-            maxAccelExceeded = True
+            withinLimits = False
             AccelerationMM = maxAccel
             DecelerationMM = maxAccel
             PeakVelocityMM = maxAccel
@@ -82,9 +82,7 @@ Public Class MotionProfile
         TargetPositionPLC = DecimalShift(targetPosition)
         PeakPPS = CInt(PeakVelocityMM * pulsesPerMM)
         DwellTime = CUShort(dwell)   '<-------------------- going to have to do some financial decimal point shifting magic here later
-
-        Return maxAccelExceeded
-
+        Return withinLimits
 
     End Function
 

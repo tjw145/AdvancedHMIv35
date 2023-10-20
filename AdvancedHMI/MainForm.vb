@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Imports System.Drawing.Text
 Imports System.Runtime.CompilerServices
 Imports System.Security.Permissions
@@ -77,15 +78,33 @@ Public Class MainForm
 
         If StartButton.Checked = True Then
 
-            MotionControlThread.RunWorkerAsync()
-            ExperimentRecordingTimer.Start()
-            ExperimentStopwatch.Start()
+            If StartReady = True Then
 
-            StartButton.Text = "❚❚"
+                If PLCconnection = "Connection Status: ✔" Then
 
-        ElseIf StartButton.Checked = False Then
+                    MotionControlThread.RunWorkerAsync()
+                    ExperimentRecordingTimer.Start()
+                    ExperimentStopwatch.Start()
 
-            MotionControlThread.CancelAsync()
+                    StartButton.Text = "❚❚"
+
+                Else
+
+                    ControlBlinker.Start()
+
+                End If
+
+
+            ElseIf StartReady = False Then
+
+                StartButton.CheckState = CheckState.Unchecked
+
+            End If
+
+
+        ElseIf StartButton.Checked = False And ExperimentStopwatch.IsRunning Then
+
+            MotionControlThread.CancelAsync() ' throws an error
             ExperimentRecordingTimer.Stop()
             ExperimentStopwatch.Stop()
 
@@ -104,38 +123,39 @@ Public Class MainForm
 
     Private Function CheckConnectionToPLC() As Boolean
 
-        'Try
+        Try
 
-        If CBool(ModbusTCPCom1.Read("018384")) = False Then
+            If CBool(ModbusTCPCom1.Read("018384")) = False Then
 
-                ConnectionIndicator.Text = "Connection Status: ✔"
+                GlobalInstances.PLCconnection = "Connection Status: ✔"
                 Return True
 
             Else
 
-                ConnectionIndicator.Text = "Connection Status: ❌"
+                GlobalInstances.PLCconnection = "Connection Status: ❌"
                 Return False
 
             End If
 
-        'Catch ex As Exception
+        Catch ex As Exception
 
-        ConnectionIndicator.Text = "Connection Status: ❌"
+            GlobalInstances.PLCconnection = "Connection Status: ❌"
             Return False
 
-        'End Try
+        End Try
 
     End Function
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles ConnectionCheckTimer.Tick
 
-        CheckConnectionToPLC()
+        ConnectionIndicator.Text = PLCconnection
 
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         ConnectionCheckTimer.Start()
+        ConnectionCheckThread.RunWorkerAsync()
         MotionControlThread.WorkerSupportsCancellation = True
 
     End Sub
@@ -143,7 +163,7 @@ Public Class MainForm
     Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
         If MotionControlThread.CancellationPending = True Then
-
+            'this probably doesn't work
             Return
 
         End If
@@ -158,6 +178,8 @@ Public Class MainForm
 
     Private Sub StartButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles StartButtonSubscriber.DataChanged
 
+        'I don't think this does anything but I'm too scared to remove it.
+
         Dim runBitOn = StartButtonSubscriber.Value
 
         If runBitOn Is "False" Then
@@ -168,8 +190,44 @@ Public Class MainForm
 
             StartButton.CheckState = CheckState.Checked
 
-
         End If
 
     End Sub
+
+    Private Sub ConnectionCheckThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ConnectionCheckThread.DoWork
+
+        CheckConnectionToPLC()
+        Return
+
+    End Sub
+
+    Private Sub ControlBlinker_Tick(sender As Object, e As EventArgs) Handles ControlBlinker.Tick
+
+        If blinkCount < 5 Then
+
+            If ConnectionIndicator.ForeColor = Color.White Then
+
+                ConnectionIndicator.ForeColor = Color.Red
+
+            ElseIf ConnectionIndicator.ForeColor = Color.Red Then
+
+                ConnectionIndicator.ForeColor = Color.White
+
+            End If
+
+            blinkCount += 1
+
+        Else
+
+            ConnectionIndicator.ForeColor = Color.White
+            blinkCount = 0
+            ControlBlinker.Stop()
+
+        End If
+
+
+    End Sub
+
+    Friend blinkCount As Integer = 0
+
 End Class

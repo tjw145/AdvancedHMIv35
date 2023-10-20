@@ -55,6 +55,8 @@ Partial Class MainForm
         Me.MotionControlThread = New System.ComponentModel.BackgroundWorker()
         Me.StopButton = New AdvancedHMIControls.BasicButton()
         Me.StartButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
+        Me.ConnectionCheckThread = New System.ComponentModel.BackgroundWorker()
+        Me.ControlBlinker = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -108,7 +110,7 @@ Partial Class MainForm
         Me.SetOrigin.ForeColorAltername = System.Drawing.Color.Black
         Me.SetOrigin.Highlight = False
         Me.SetOrigin.HighlightColor = System.Drawing.Color.Green
-        Me.SetOrigin.Location = New System.Drawing.Point(6, 158)
+        Me.SetOrigin.Location = New System.Drawing.Point(7, 158)
         Me.SetOrigin.MaximumHoldTime = 3000
         Me.SetOrigin.MinimumHoldTime = 500
         Me.SetOrigin.Name = "SetOrigin"
@@ -141,7 +143,7 @@ Partial Class MainForm
         Me.GroupBox4.Controls.Add(Me.DRO_N)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox4.ForeColor = System.Drawing.Color.White
-        Me.GroupBox4.Location = New System.Drawing.Point(72, 90)
+        Me.GroupBox4.Location = New System.Drawing.Point(73, 90)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.GroupBox4.Size = New System.Drawing.Size(102, 62)
@@ -165,7 +167,7 @@ Partial Class MainForm
         Me.DRO_N.KeypadScaleFactor = 1.0R
         Me.DRO_N.KeypadText = Nothing
         Me.DRO_N.KeypadWidth = 300
-        Me.DRO_N.Location = New System.Drawing.Point(12, 18)
+        Me.DRO_N.Location = New System.Drawing.Point(13, 18)
         Me.DRO_N.Name = "DRO_N"
         Me.DRO_N.NumberOfDigits = 3
         Me.DRO_N.PLCAddressKeypad = ""
@@ -184,7 +186,7 @@ Partial Class MainForm
         Me.GroupBox3.Controls.Add(Me.DRO_mm)
         Me.GroupBox3.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.ForeColor = System.Drawing.Color.White
-        Me.GroupBox3.Location = New System.Drawing.Point(72, 24)
+        Me.GroupBox3.Location = New System.Drawing.Point(73, 24)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.GroupBox3.Size = New System.Drawing.Size(102, 62)
@@ -208,7 +210,7 @@ Partial Class MainForm
         Me.DRO_mm.KeypadScaleFactor = 1.0R
         Me.DRO_mm.KeypadText = Nothing
         Me.DRO_mm.KeypadWidth = 300
-        Me.DRO_mm.Location = New System.Drawing.Point(12, 18)
+        Me.DRO_mm.Location = New System.Drawing.Point(13, 18)
         Me.DRO_mm.Name = "DRO_mm"
         Me.DRO_mm.NumberOfDigits = 3
         Me.DRO_mm.PLCAddressKeypad = ""
@@ -234,7 +236,7 @@ Partial Class MainForm
         Me.JogMinus.ForeColorAltername = System.Drawing.Color.Black
         Me.JogMinus.Highlight = False
         Me.JogMinus.HighlightColor = System.Drawing.Color.Green
-        Me.JogMinus.Location = New System.Drawing.Point(6, 26)
+        Me.JogMinus.Location = New System.Drawing.Point(7, 26)
         Me.JogMinus.MaximumHoldTime = 90000
         Me.JogMinus.MinimumHoldTime = 2
         Me.JogMinus.Name = "JogMinus"
@@ -261,7 +263,7 @@ Partial Class MainForm
         Me.JogPlus.ForeColorAltername = System.Drawing.Color.Black
         Me.JogPlus.Highlight = False
         Me.JogPlus.HighlightColor = System.Drawing.Color.Green
-        Me.JogPlus.Location = New System.Drawing.Point(6, 92)
+        Me.JogPlus.Location = New System.Drawing.Point(7, 92)
         Me.JogPlus.MaximumHoldTime = 90000
         Me.JogPlus.MinimumHoldTime = 2
         Me.JogPlus.Name = "JogPlus"
@@ -303,7 +305,7 @@ Partial Class MainForm
         Me.HW_Zero.ForeColorAltername = System.Drawing.Color.Black
         Me.HW_Zero.Highlight = False
         Me.HW_Zero.HighlightColor = System.Drawing.Color.Green
-        Me.HW_Zero.Location = New System.Drawing.Point(6, 158)
+        Me.HW_Zero.Location = New System.Drawing.Point(7, 158)
         Me.HW_Zero.MaximumHoldTime = 3000
         Me.HW_Zero.MinimumHoldTime = 500
         Me.HW_Zero.Name = "HW_Zero"
@@ -329,7 +331,7 @@ Partial Class MainForm
         Me.ForceZero.ForeColorAltername = System.Drawing.Color.Black
         Me.ForceZero.Highlight = False
         Me.ForceZero.HighlightColor = System.Drawing.Color.Green
-        Me.ForceZero.Location = New System.Drawing.Point(6, 92)
+        Me.ForceZero.Location = New System.Drawing.Point(7, 92)
         Me.ForceZero.MaximumHoldTime = 3000
         Me.ForceZero.MinimumHoldTime = 500
         Me.ForceZero.Name = "ForceZero"
@@ -355,7 +357,7 @@ Partial Class MainForm
         Me.DisplacementZero.ForeColorAltername = System.Drawing.Color.Black
         Me.DisplacementZero.Highlight = False
         Me.DisplacementZero.HighlightColor = System.Drawing.Color.Green
-        Me.DisplacementZero.Location = New System.Drawing.Point(6, 26)
+        Me.DisplacementZero.Location = New System.Drawing.Point(7, 26)
         Me.DisplacementZero.MaximumHoldTime = 3000
         Me.DisplacementZero.MinimumHoldTime = 500
         Me.DisplacementZero.Name = "DisplacementZero"
@@ -493,7 +495,7 @@ Partial Class MainForm
         'StartButton
         '
         Me.StartButton.Appearance = System.Windows.Forms.Appearance.Button
-        Me.StartButton.BackColor = System.Drawing.Color.Green
+        Me.StartButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
         Me.StartButton.FlatAppearance.BorderColor = System.Drawing.Color.Green
         Me.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.StartButton.Font = New System.Drawing.Font("OCR A Extended", 27.75!)
@@ -543,6 +545,12 @@ Partial Class MainForm
         Me.StartButtonSubscriber.ComComponent = Me.ModbusTCPCom1
         Me.StartButtonSubscriber.PLCAddressValue = CType(resources.GetObject("StartButtonSubscriber.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
         Me.StartButtonSubscriber.Value = Nothing
+        '
+        'ConnectionCheckThread
+        '
+        '
+        'ControlBlinker
+        '
         '
         'MainForm
         '
@@ -612,4 +620,6 @@ Partial Class MainForm
     Friend WithEvents ConnectionCheckTimer As Timer
     Friend WithEvents MotionControlThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents StartButtonSubscriber As AdvancedHMIControls.DataSubscriber
+    Friend WithEvents ConnectionCheckThread As System.ComponentModel.BackgroundWorker
+    Friend WithEvents ControlBlinker As Timer
 End Class
