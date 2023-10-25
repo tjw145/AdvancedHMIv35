@@ -118,6 +118,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graph.vb" />
     <Compile Include="MotionSolution.vb" />
     <Compile Include="ExperimentSetupWindow.Designer.vb">
       <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>

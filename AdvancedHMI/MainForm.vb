@@ -52,13 +52,26 @@ Public Class MainForm
     Public Sub ExperimentRecordingTimer_Tick(sender As Object, e As EventArgs) Handles ExperimentRecordingTimer.Tick
 
         Dim currentTime As String
-        Dim displacment As Integer = ModbusTCPCom1.Read("400008") '"accurate" position log address
+        Dim displacment As Integer = 0
+        Dim force As Integer = 0
+
+        If ExperimentSetupWindow.RecDispCheckBox.CheckState = CheckState.Checked Then
+
+            displacment = ModbusTCPCom1.Read("400008") '"accurate" position log address
+
+        End If
+
+        If ExperimentSetupWindow.RecForceCheckBox.CheckState = CheckState.Checked Then
+
+            'force = whatever the force PLC address will end up being
+
+        End If
 
         ' Gets current stopwatch time in seconds, and rounds to nearest millisecond
         currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 3))
 
         ' Log all real-time data
-        Log.AddData(currentTime, displacment, 0)
+        Log.AddData(currentTime, displacment, 0) '<----- arg format will need changed when force param is added
 
         If GlobalInstances.FinishedMoving = True Then
 
@@ -230,4 +243,9 @@ Public Class MainForm
 
     Friend blinkCount As Integer = 0
 
+    Private Sub GraphUpdater_Tick(sender As Object, e As EventArgs) Handles GraphUpdater.Tick
+
+        DispGraph.
+
+    End Sub
 End Class

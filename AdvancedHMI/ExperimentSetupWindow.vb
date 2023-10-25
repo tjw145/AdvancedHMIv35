@@ -1,4 +1,5 @@
 ﻿Imports System.Diagnostics.Eventing.Reader
+Imports System.Runtime.CompilerServices
 
 Public Class ExperimentSetupWindow
 
@@ -106,11 +107,11 @@ Public Class ExperimentSetupWindow
 
     Private Sub MotionStepsInput_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DisplacementStepsInput.CellContentClick
 
-        If DisplacementStepsInput.CurrentCell.ColumnIndex = 4 Then
+        'If DisplacementStepsInput.CurrentCell.ColumnIndex = 4 Then
 
-            DisplacementStepsInput.CurrentCell.Dispose()
+        '    DisplacementStepsInput.Rows.Remove(DisplacementStepsInput.CurrentRow)
 
-        End If
+        'End If
 
     End Sub
 
@@ -123,10 +124,13 @@ Public Class ExperimentSetupWindow
         If ControlForDisp.Checked = True Then
 
             DisplacementStepsInput.Enabled = True
+            DisplacementStepsInput.Visible = True
+            ControlForForce.CheckState = CheckState.Unchecked
 
         Else
 
             DisplacementStepsInput.Enabled = False
+            DisplacementStepsInput.Visible = False
 
         End If
 
@@ -135,6 +139,23 @@ Public Class ExperimentSetupWindow
     Private Sub RecordingRateHz_ValueChanged(sender As Object, e As EventArgs) Handles RecordingRateHz.ValueChanged
 
         MainForm.ExperimentRecordingTimer.Interval = (1 / RecordingRateHz.Value) * 1000 'Ticks are in ms, input is in Hz.
+
+    End Sub
+
+    Private Sub ControlForForce_CheckedChanged(sender As Object, e As EventArgs) Handles ControlForForce.CheckedChanged
+
+        If ControlForForce.Checked = True Then
+
+            ForceStepsInput.Enabled = True
+            ForceStepsInput.Visible = True
+            ControlForDisp.CheckState = CheckState.Unchecked
+
+        Else
+
+            ForceStepsInput.Enabled = False
+            ForceStepsInput.Visible = False
+
+        End If
 
     End Sub
 

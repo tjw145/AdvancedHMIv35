@@ -25,10 +25,10 @@ Partial Class ExperimentSetupWindow
         Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.DispControlPanel = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -37,17 +37,13 @@ Partial Class ExperimentSetupWindow
         Me.CyclesControl = New System.Windows.Forms.NumericUpDown()
         Me.ControlForDisp = New System.Windows.Forms.CheckBox()
         Me.DisplacementStepsInput = New System.Windows.Forms.DataGridView()
-        Me.target = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.time = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dwell = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.delete = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.ControlForForce = New System.Windows.Forms.CheckBox()
+        Me.ForceStepsInput = New System.Windows.Forms.DataGridView()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -55,8 +51,8 @@ Partial Class ExperimentSetupWindow
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.hzLabel = New System.Windows.Forms.Label()
-        Me.ForceCheckBox = New System.Windows.Forms.CheckBox()
-        Me.DispCheckBox = New System.Windows.Forms.CheckBox()
+        Me.RecForceCheckBox = New System.Windows.Forms.CheckBox()
+        Me.RecDispCheckBox = New System.Windows.Forms.CheckBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.RecordingRateHz = New System.Windows.Forms.NumericUpDown()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -65,6 +61,10 @@ Partial Class ExperimentSetupWindow
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.EthernetIPforCLXCom1 = New AdvancedHMIDrivers.EthernetIPforCLXCom(Me.components)
         Me.InputFeedback = New System.Windows.Forms.Label()
+        Me.target = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.time = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.dwell = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.delete = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.DispControlPanel.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -81,7 +81,7 @@ Partial Class ExperimentSetupWindow
         Me.SplitContainer2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ForceStepsInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         CType(Me.RecordingRateHz, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -227,43 +227,6 @@ Partial Class ExperimentSetupWindow
         Me.DisplacementStepsInput.Size = New System.Drawing.Size(389, 184)
         Me.DisplacementStepsInput.TabIndex = 0
         '
-        'target
-        '
-        Me.target.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.target.FillWeight = 112.3096!
-        Me.target.HeaderText = "Target Position (mm):"
-        Me.target.Name = "target"
-        '
-        'time
-        '
-        Me.time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.time.FillWeight = 112.3096!
-        Me.time.HeaderText = "Transition Time (Seconds):"
-        Me.time.Name = "time"
-        '
-        'dwell
-        '
-        Me.dwell.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.dwell.FillWeight = 112.3096!
-        Me.dwell.HeaderText = "Dwell Time (Seconds):"
-        Me.dwell.Name = "dwell"
-        Me.dwell.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dwell.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'delete
-        '
-        Me.delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.delete.DefaultCellStyle = DataGridViewCellStyle2
-        Me.delete.FillWeight = 50.76142!
-        Me.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.delete.HeaderText = ""
-        Me.delete.MinimumWidth = 20
-        Me.delete.Name = "delete"
-        Me.delete.Text = "X"
-        Me.delete.Width = 21
-        '
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
@@ -289,7 +252,7 @@ Partial Class ExperimentSetupWindow
         '
         'SplitContainer2.Panel2
         '
-        Me.SplitContainer2.Panel2.Controls.Add(Me.DataGridView1)
+        Me.SplitContainer2.Panel2.Controls.Add(Me.ForceStepsInput)
         Me.SplitContainer2.Size = New System.Drawing.Size(389, 213)
         Me.SplitContainer2.SplitterDistance = 25
         Me.SplitContainer2.TabIndex = 92
@@ -302,7 +265,7 @@ Partial Class ExperimentSetupWindow
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60.0!))
         Me.TableLayoutPanel3.Controls.Add(Me.Label4, 1, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.NumericUpDown1, 2, 0)
-        Me.TableLayoutPanel3.Controls.Add(Me.CheckBox2, 0, 0)
+        Me.TableLayoutPanel3.Controls.Add(Me.ControlForForce, 0, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
@@ -339,26 +302,24 @@ Partial Class ExperimentSetupWindow
         Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.NumericUpDown1.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'CheckBox2
+        'ControlForForce
         '
-        Me.CheckBox2.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Checked = True
-        Me.CheckBox2.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox2.ForeColor = System.Drawing.Color.White
-        Me.CheckBox2.Location = New System.Drawing.Point(3, 3)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(108, 18)
-        Me.CheckBox2.TabIndex = 90
-        Me.CheckBox2.Text = "Control for Force"
-        Me.CheckBox2.UseVisualStyleBackColor = True
+        Me.ControlForForce.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.ControlForForce.AutoSize = True
+        Me.ControlForForce.ForeColor = System.Drawing.Color.White
+        Me.ControlForForce.Location = New System.Drawing.Point(3, 3)
+        Me.ControlForForce.Name = "ControlForForce"
+        Me.ControlForForce.Size = New System.Drawing.Size(108, 18)
+        Me.ControlForForce.TabIndex = 90
+        Me.ControlForForce.Text = "Control for Force"
+        Me.ControlForForce.UseVisualStyleBackColor = True
         '
-        'DataGridView1
+        'ForceStepsInput
         '
-        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.DataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.DataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.ForceStepsInput.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.ForceStepsInput.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
+        Me.ForceStepsInput.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.ForceStepsInput.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial", 8.25!)
@@ -367,9 +328,9 @@ Partial Class ExperimentSetupWindow
         DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewButtonColumn1})
+        Me.ForceStepsInput.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.ForceStepsInput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.ForceStepsInput.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewButtonColumn1})
         DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
         DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial", 8.25!)
@@ -377,15 +338,17 @@ Partial Class ExperimentSetupWindow
         DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle6
-        Me.DataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DataGridView1.EnableHeadersVisualStyles = False
-        Me.DataGridView1.GridColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 0)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.RowHeadersVisible = False
-        Me.DataGridView1.Size = New System.Drawing.Size(389, 184)
-        Me.DataGridView1.TabIndex = 0
+        Me.ForceStepsInput.DefaultCellStyle = DataGridViewCellStyle6
+        Me.ForceStepsInput.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ForceStepsInput.Enabled = False
+        Me.ForceStepsInput.EnableHeadersVisualStyles = False
+        Me.ForceStepsInput.GridColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
+        Me.ForceStepsInput.Location = New System.Drawing.Point(0, 0)
+        Me.ForceStepsInput.Name = "ForceStepsInput"
+        Me.ForceStepsInput.RowHeadersVisible = False
+        Me.ForceStepsInput.Size = New System.Drawing.Size(389, 184)
+        Me.ForceStepsInput.TabIndex = 0
+        Me.ForceStepsInput.Visible = False
         '
         'DataGridViewTextBoxColumn1
         '
@@ -438,11 +401,11 @@ Partial Class ExperimentSetupWindow
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65.88921!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.11079!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.08997!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.91003!))
         Me.TableLayoutPanel2.Controls.Add(Me.hzLabel, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.ForceCheckBox, 1, 2)
-        Me.TableLayoutPanel2.Controls.Add(Me.DispCheckBox, 1, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.RecForceCheckBox, 1, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.RecDispCheckBox, 1, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.Label2, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.RecordingRateHz, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Label1, 0, 1)
@@ -462,43 +425,41 @@ Partial Class ExperimentSetupWindow
         Me.hzLabel.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.hzLabel.AutoSize = True
         Me.hzLabel.ForeColor = System.Drawing.Color.White
-        Me.hzLabel.Location = New System.Drawing.Point(138, 10)
+        Me.hzLabel.Location = New System.Drawing.Point(213, 10)
         Me.hzLabel.Name = "hzLabel"
         Me.hzLabel.Size = New System.Drawing.Size(115, 13)
         Me.hzLabel.TabIndex = 39
         Me.hzLabel.Text = "Data capture rate (Hz):"
         Me.hzLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'ForceCheckBox
+        'RecForceCheckBox
         '
-        Me.ForceCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.ForceCheckBox.AutoSize = True
-        Me.ForceCheckBox.Checked = True
-        Me.ForceCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ForceCheckBox.Location = New System.Drawing.Point(259, 75)
-        Me.ForceCheckBox.Name = "ForceCheckBox"
-        Me.ForceCheckBox.Size = New System.Drawing.Size(15, 14)
-        Me.ForceCheckBox.TabIndex = 47
-        Me.ForceCheckBox.UseVisualStyleBackColor = True
+        Me.RecForceCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.RecForceCheckBox.AutoSize = True
+        Me.RecForceCheckBox.Location = New System.Drawing.Point(334, 75)
+        Me.RecForceCheckBox.Name = "RecForceCheckBox"
+        Me.RecForceCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.RecForceCheckBox.TabIndex = 47
+        Me.RecForceCheckBox.UseVisualStyleBackColor = True
         '
-        'DispCheckBox
+        'RecDispCheckBox
         '
-        Me.DispCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.DispCheckBox.AutoSize = True
-        Me.DispCheckBox.Checked = True
-        Me.DispCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.DispCheckBox.Location = New System.Drawing.Point(259, 42)
-        Me.DispCheckBox.Name = "DispCheckBox"
-        Me.DispCheckBox.Size = New System.Drawing.Size(15, 14)
-        Me.DispCheckBox.TabIndex = 46
-        Me.DispCheckBox.UseVisualStyleBackColor = True
+        Me.RecDispCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.RecDispCheckBox.AutoSize = True
+        Me.RecDispCheckBox.Checked = True
+        Me.RecDispCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.RecDispCheckBox.Location = New System.Drawing.Point(334, 42)
+        Me.RecDispCheckBox.Name = "RecDispCheckBox"
+        Me.RecDispCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.RecDispCheckBox.TabIndex = 46
+        Me.RecDispCheckBox.UseVisualStyleBackColor = True
         '
         'Label2
         '
         Me.Label2.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(164, 76)
+        Me.Label2.Location = New System.Drawing.Point(239, 76)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(89, 13)
         Me.Label2.TabIndex = 41
@@ -515,7 +476,7 @@ Partial Class ExperimentSetupWindow
         Me.RecordingRateHz.Font = New System.Drawing.Font("Arial", 9.25!)
         Me.RecordingRateHz.ForeColor = System.Drawing.Color.White
         Me.RecordingRateHz.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.RecordingRateHz.Location = New System.Drawing.Point(259, 5)
+        Me.RecordingRateHz.Location = New System.Drawing.Point(334, 5)
         Me.RecordingRateHz.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.RecordingRateHz.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.RecordingRateHz.Name = "RecordingRateHz"
@@ -529,7 +490,7 @@ Partial Class ExperimentSetupWindow
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label1.AutoSize = True
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(124, 43)
+        Me.Label1.Location = New System.Drawing.Point(199, 43)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(129, 13)
         Me.Label1.TabIndex = 40
@@ -578,6 +539,44 @@ Partial Class ExperimentSetupWindow
         Me.InputFeedback.TabIndex = 90
         Me.InputFeedback.Text = "❌"
         '
+        'target
+        '
+        Me.target.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.target.FillWeight = 112.3096!
+        Me.target.HeaderText = "Target Position (mm):"
+        Me.target.Name = "target"
+        '
+        'time
+        '
+        Me.time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.time.FillWeight = 112.3096!
+        Me.time.HeaderText = "Transition Time (Seconds):"
+        Me.time.Name = "time"
+        '
+        'dwell
+        '
+        Me.dwell.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.dwell.FillWeight = 112.3096!
+        Me.dwell.HeaderText = "Dwell Time (Seconds):"
+        Me.dwell.Name = "dwell"
+        Me.dwell.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dwell.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'delete
+        '
+        Me.delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.delete.DefaultCellStyle = DataGridViewCellStyle2
+        Me.delete.FillWeight = 50.76142!
+        Me.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.delete.HeaderText = ""
+        Me.delete.MinimumWidth = 20
+        Me.delete.Name = "delete"
+        Me.delete.Text = "X"
+        Me.delete.UseColumnTextForButtonValue = True
+        Me.delete.Width = 21
+        '
         'ExperimentSetupWindow
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -608,7 +607,7 @@ Partial Class ExperimentSetupWindow
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.TableLayoutPanel3.PerformLayout()
         CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ForceStepsInput, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
@@ -624,12 +623,8 @@ Partial Class ExperimentSetupWindow
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents DisplacementStepsInput As DataGridView
     Friend WithEvents TabPage3 As TabPage
-    Friend WithEvents target As DataGridViewTextBoxColumn
-    Friend WithEvents time As DataGridViewTextBoxColumn
-    Friend WithEvents dwell As DataGridViewTextBoxColumn
-    Friend WithEvents delete As DataGridViewButtonColumn
-    Friend WithEvents ForceCheckBox As CheckBox
-    Friend WithEvents DispCheckBox As CheckBox
+    Friend WithEvents RecForceCheckBox As CheckBox
+    Friend WithEvents RecDispCheckBox As CheckBox
     Friend WithEvents RecordingRateHz As NumericUpDown
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
@@ -646,8 +641,8 @@ Partial Class ExperimentSetupWindow
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
     Friend WithEvents Label4 As Label
     Friend WithEvents NumericUpDown1 As NumericUpDown
-    Friend WithEvents CheckBox2 As CheckBox
-    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents ControlForForce As CheckBox
+    Friend WithEvents ForceStepsInput As DataGridView
     Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn3 As DataGridViewTextBoxColumn
@@ -656,4 +651,8 @@ Partial Class ExperimentSetupWindow
     Friend WithEvents ErrorProvider1 As ErrorProvider
     Friend WithEvents EthernetIPforCLXCom1 As AdvancedHMIDrivers.EthernetIPforCLXCom
     Friend WithEvents InputFeedback As Label
+    Friend WithEvents target As DataGridViewTextBoxColumn
+    Friend WithEvents time As DataGridViewTextBoxColumn
+    Friend WithEvents dwell As DataGridViewTextBoxColumn
+    Friend WithEvents delete As DataGridViewButtonColumn
 End Class
