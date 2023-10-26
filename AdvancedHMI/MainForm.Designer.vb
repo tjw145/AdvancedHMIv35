@@ -44,6 +44,7 @@ Partial Class MainForm
         Me.DisplacementZero = New AdvancedHMIControls.BasicButton()
         Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.DispGraph = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.DisplacementChart = New AdvancedHMIControls.BasicTrendChart()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -60,7 +61,6 @@ Partial Class MainForm
         Me.StartButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.ConnectionCheckThread = New System.ComponentModel.BackgroundWorker()
         Me.ControlBlinker = New System.Windows.Forms.Timer(Me.components)
-        Me.DispGraph = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.GraphUpdater = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -68,9 +68,9 @@ Partial Class MainForm
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        CType(Me.DispGraph, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.DispGraph, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -397,6 +397,24 @@ Partial Class MainForm
         Me.Panel2.Size = New System.Drawing.Size(402, 617)
         Me.Panel2.TabIndex = 27
         '
+        'DispGraph
+        '
+        Me.DispGraph.BackColor = System.Drawing.Color.WhiteSmoke
+        ChartArea1.Name = "ChartArea1"
+        Me.DispGraph.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.DispGraph.Legends.Add(Legend1)
+        Me.DispGraph.Location = New System.Drawing.Point(32, 158)
+        Me.DispGraph.Name = "DispGraph"
+        Me.DispGraph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.DispGraph.Series.Add(Series1)
+        Me.DispGraph.Size = New System.Drawing.Size(300, 300)
+        Me.DispGraph.TabIndex = 27
+        Me.DispGraph.Text = "Chart1"
+        '
         'Label2
         '
         Me.Label2.AutoSize = True
@@ -559,24 +577,6 @@ Partial Class MainForm
         'ControlBlinker
         '
         '
-        'DispGraph
-        '
-        Me.DispGraph.BackColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.Name = "ChartArea1"
-        Me.DispGraph.ChartAreas.Add(ChartArea1)
-        Legend1.Name = "Legend1"
-        Me.DispGraph.Legends.Add(Legend1)
-        Me.DispGraph.Location = New System.Drawing.Point(32, 158)
-        Me.DispGraph.Name = "DispGraph"
-        Me.DispGraph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
-        Series1.ChartArea = "ChartArea1"
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.DispGraph.Series.Add(Series1)
-        Me.DispGraph.Size = New System.Drawing.Size(300, 300)
-        Me.DispGraph.TabIndex = 27
-        Me.DispGraph.Text = "Chart1"
-        '
         'GraphUpdater
         '
         '
@@ -610,10 +610,10 @@ Partial Class MainForm
         Me.GroupBox1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        CType(Me.DispGraph, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.DispGraph, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

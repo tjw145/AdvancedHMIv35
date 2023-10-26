@@ -171,6 +171,8 @@ Public Class MainForm
         ConnectionCheckThread.RunWorkerAsync()
         MotionControlThread.WorkerSupportsCancellation = True
 
+        GraphUpdater.Start()
+
     End Sub
 
     Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
@@ -241,11 +243,13 @@ Public Class MainForm
 
     End Sub
 
-    Friend blinkCount As Integer = 0
+    Private blinkCount As Integer = 0
 
     Private Sub GraphUpdater_Tick(sender As Object, e As EventArgs) Handles GraphUpdater.Tick
 
-        DispGraph.
+        DispGraph.Series.Clear()
+        DispGraph.Series.Add(DisplacementGraphData.CurrentData(TestDataGen()))
 
     End Sub
+
 End Class

@@ -25,10 +25,10 @@ Partial Class ExperimentSetupWindow
         Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.DispControlPanel = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -37,6 +37,10 @@ Partial Class ExperimentSetupWindow
         Me.CyclesControl = New System.Windows.Forms.NumericUpDown()
         Me.ControlForDisp = New System.Windows.Forms.CheckBox()
         Me.DisplacementStepsInput = New System.Windows.Forms.DataGridView()
+        Me.target = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.time = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.dwell = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.delete = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
@@ -61,10 +65,6 @@ Partial Class ExperimentSetupWindow
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.EthernetIPforCLXCom1 = New AdvancedHMIDrivers.EthernetIPforCLXCom(Me.components)
         Me.InputFeedback = New System.Windows.Forms.Label()
-        Me.target = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.time = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dwell = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.delete = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.DispControlPanel.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -226,6 +226,44 @@ Partial Class ExperimentSetupWindow
         Me.DisplacementStepsInput.RowHeadersVisible = False
         Me.DisplacementStepsInput.Size = New System.Drawing.Size(389, 184)
         Me.DisplacementStepsInput.TabIndex = 0
+        '
+        'target
+        '
+        Me.target.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.target.FillWeight = 112.3096!
+        Me.target.HeaderText = "Target Position (mm):"
+        Me.target.Name = "target"
+        '
+        'time
+        '
+        Me.time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.time.FillWeight = 112.3096!
+        Me.time.HeaderText = "Transition Time (Seconds):"
+        Me.time.Name = "time"
+        '
+        'dwell
+        '
+        Me.dwell.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.dwell.FillWeight = 112.3096!
+        Me.dwell.HeaderText = "Dwell Time (Seconds):"
+        Me.dwell.Name = "dwell"
+        Me.dwell.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dwell.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'delete
+        '
+        Me.delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.delete.DefaultCellStyle = DataGridViewCellStyle2
+        Me.delete.FillWeight = 50.76142!
+        Me.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.delete.HeaderText = ""
+        Me.delete.MinimumWidth = 20
+        Me.delete.Name = "delete"
+        Me.delete.Text = "X"
+        Me.delete.UseColumnTextForButtonValue = True
+        Me.delete.Width = 21
         '
         'TabPage3
         '
@@ -538,44 +576,6 @@ Partial Class ExperimentSetupWindow
         Me.InputFeedback.Size = New System.Drawing.Size(19, 13)
         Me.InputFeedback.TabIndex = 90
         Me.InputFeedback.Text = "❌"
-        '
-        'target
-        '
-        Me.target.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.target.FillWeight = 112.3096!
-        Me.target.HeaderText = "Target Position (mm):"
-        Me.target.Name = "target"
-        '
-        'time
-        '
-        Me.time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.time.FillWeight = 112.3096!
-        Me.time.HeaderText = "Transition Time (Seconds):"
-        Me.time.Name = "time"
-        '
-        'dwell
-        '
-        Me.dwell.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.dwell.FillWeight = 112.3096!
-        Me.dwell.HeaderText = "Dwell Time (Seconds):"
-        Me.dwell.Name = "dwell"
-        Me.dwell.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dwell.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'delete
-        '
-        Me.delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.delete.DefaultCellStyle = DataGridViewCellStyle2
-        Me.delete.FillWeight = 50.76142!
-        Me.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.delete.HeaderText = ""
-        Me.delete.MinimumWidth = 20
-        Me.delete.Name = "delete"
-        Me.delete.Text = "X"
-        Me.delete.UseColumnTextForButtonValue = True
-        Me.delete.Width = 21
         '
         'ExperimentSetupWindow
         '

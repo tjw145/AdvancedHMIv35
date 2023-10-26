@@ -11,6 +11,8 @@ Module GlobalInstances
     Public MotionProfile1 As New MotionProfile
     Public cycles As Integer = 1
 
+    Public DisplacementGraphData As Graph
+
     Public Log As New ExperimentLog
     Public ElapsedTime As String
     Public ExperimentStopwatch As New Stopwatch
@@ -28,5 +30,21 @@ Module GlobalInstances
         MainForm.StartButton.CheckState = CheckState.Unchecked
 
     End Sub
+
+    Public testTimer As Stopwatch
+
+    Public Function TestDataGen() As Double
+
+        If testTimer.IsRunning = False Then
+
+            testTimer.Start()
+
+        End If
+
+        Dim out As Double
+        out = Math.Sin(CDbl(testTimer.ElapsedMilliseconds / 100))
+        Return out
+
+    End Function
 
 End Module
