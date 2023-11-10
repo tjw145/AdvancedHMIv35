@@ -6,6 +6,8 @@ Module GlobalInstances
     ' This file contains globally declared instances of various classes and data objects
     ' These can be used by all forms in the program.
 
+    Public CurrentVersion As Double = 1.1
+
     Public WithEvents MotionController As New MotionControlSolution
     Public MovePoints As New List(Of MotionProfile)
     Public MotionProfile1 As New MotionProfile

@@ -23,6 +23,7 @@ Public Class MotionControlSolution
     Private plcNextMoveDwellTimeAddress As String = "416589"   ' /
     Private plcRunAddress As String = "017183"                  '"Run" button
     Private plcStopAddress As String = "017186"                 '"Stop" button
+    Private plcResetAddress As String = ""                      ' Resets motion data
 
     '====================================================================
 
@@ -154,5 +155,20 @@ Public Class MotionControlSolution
         Return (CDec(cycleCurrent - 1) * totalSteps) / (totalCycles * totalSteps)
 
     End Function
+
+    Public Sub Reset(driver As ModbusTCPCom)
+
+        Try
+
+            MovesComplete = False
+            driver.Write(plcResetAddress, CStr(1))
+
+        Catch ex As Exception
+
+            End 'Kills entire program instantly
+
+        End Try
+
+    End Sub
 
 End Class

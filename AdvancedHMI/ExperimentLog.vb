@@ -50,6 +50,13 @@ Public Class ExperimentLog
 
         With writer
 
+            'Writes experimental parameters as metadata
+            .WriteLine("#SoftwareVersion:" & CStr(GlobalInstances.CurrentVersion))
+            .WriteLine("#" & CStr(System.DateTime.Now))
+            .WriteLine("#DataCaptureRate:" & CStr(ExperimentSetupWindow.RecordingRateHz.Value) & "Hz")
+            .WriteLine("#Cycles:" & CStr(ExperimentSetupWindow.CyclesControl.Value))
+            .WriteLine()
+
             'Writes column headers
             .Write("Time (s): " & ",")
             .Write("Displacement (mm): " & ",")
@@ -58,6 +65,7 @@ Public Class ExperimentLog
 
         End With
 
+        'Writes all datapoints
         For currentLine As Integer = 0 To timeLog.Length - 1
 
             With writer
