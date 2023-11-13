@@ -23,7 +23,7 @@ Public Class MotionControlSolution
     Private plcNextMoveDwellTimeAddress As String = "416589"   ' /
     Private plcRunAddress As String = "017183"                  '"Run" button
     Private plcStopAddress As String = "017186"                 '"Stop" button
-    Private plcResetAddress As String = ""                      ' Resets motion data
+    Private plcResetAddress As String = "018383"                      ' Resets motion data
 
     '====================================================================
 
@@ -47,6 +47,8 @@ Public Class MotionControlSolution
         Dim totalNumberOfSteps As Integer = StepList.Count
         Dim currentStepNumber As Integer = 0
         Dim finalMoveTime As Integer = StepList(totalNumberOfSteps - 1).TotalMoveTimeMS
+
+        Reset(modbusDriver) 'clear any weird remaining PLC values, just in case
 
         For cycleNumber As Integer = 0 To cycles - 1
 
@@ -87,7 +89,7 @@ Public Class MotionControlSolution
         RaiseEvent OnFinished()
         modbusDriver.BeginWrite(plcRunAddress, 1, New String() {"0"}) 'Turn "run" bit off 
 
-
+        Reset(modbusDriver) 'clear PLC values again
 
     End Sub
 
@@ -158,16 +160,8 @@ Public Class MotionControlSolution
 
     Public Sub Reset(driver As ModbusTCPCom)
 
-        Try
-
-            MovesComplete = False
-            driver.Write(plcResetAddress, CStr(1))
-
-        Catch ex As Exception
-
-            End 'Kills entire program instantly
-
-        End Try
+        MovesComplete = False
+        driver.Write(plcResetAddress, CStr(1))
 
     End Sub
 

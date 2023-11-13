@@ -28,6 +28,7 @@ Module GlobalInstances
         FinishedMoving = True
         Debug.WriteLine("Finished")
         MainForm.StartButton.CheckState = CheckState.Unchecked
+        MainForm.LockControls("unlock")
 
     End Sub
 

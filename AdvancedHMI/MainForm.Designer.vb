@@ -57,6 +57,7 @@ Partial Class MainForm
         Me.StartButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.ConnectionCheckThread = New System.ComponentModel.BackgroundWorker()
         Me.ControlBlinker = New System.Windows.Forms.Timer(Me.components)
+        Me.CheckIfHoming = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -65,6 +66,7 @@ Partial Class MainForm
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -552,6 +554,12 @@ Partial Class MainForm
         'ControlBlinker
         '
         '
+        'CheckIfHoming
+        '
+        Me.CheckIfHoming.ComComponent = Me.ModbusTCPCom1
+        Me.CheckIfHoming.PLCAddressValue = CType(resources.GetObject("CheckIfHoming.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.CheckIfHoming.Value = Nothing
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -585,6 +593,7 @@ Partial Class MainForm
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -622,4 +631,5 @@ Partial Class MainForm
     Friend WithEvents StartButtonSubscriber As AdvancedHMIControls.DataSubscriber
     Friend WithEvents ConnectionCheckThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents ControlBlinker As Timer
+    Friend WithEvents CheckIfHoming As AdvancedHMIControls.DataSubscriber
 End Class

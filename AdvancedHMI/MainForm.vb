@@ -82,11 +82,18 @@ Public Class MainForm
 
                 If PLCconnection = "Connection Status: ✔" Then
 
+                    Do Until MotionControlThread.IsBusy = False
+
+                        MotionControlThread.CancelAsync()
+
+                    Loop
+
                     MotionControlThread.RunWorkerAsync()
                     ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
 
                     StartButton.Text = "❚❚"
+                    LockControls("run")
 
                 Else
 
@@ -116,6 +123,7 @@ Public Class MainForm
 
             ModbusTCPCom1.BeginWrite("017186", 1, New String() {"1"}) 'Trigger "off" button
             StartButton.Text = "▶"
+            LockControls("unlock")
 
         End If
 
@@ -162,17 +170,18 @@ Public Class MainForm
 
     Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
-        If MotionControlThread.CancellationPending = True Then
-            'this probably doesn't work
-            Return
+        While MotionControlThread.CancellationPending = False
 
-        End If
+            With GlobalInstances.MotionController
 
-        With GlobalInstances.MotionController
+                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
 
-            .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
+            End With
 
-        End With
+        End While
+
+        e.Cancel = True
+        Exit Sub
 
     End Sub
 
@@ -228,6 +237,54 @@ Public Class MainForm
 
     End Sub
 
-    Friend blinkCount As Integer = 0
+    Private blinkCount As Integer = 0
+
+    Private Sub CheckIfHoming_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfHoming.DataChanged
+
+        If CheckIfHoming.Value = "True" Then
+
+            LockControls("all")
+
+        ElseIf CheckIfHoming.Value = "False" Then
+
+            LockControls("unlock")
+
+        End If
+
+    End Sub
+
+    Public Sub LockControls(keyword As String)
+
+        If keyword = "all" Then
+            ForceZero.Enabled = False
+            DisplacementZero.Enabled = False
+            HW_Zero.Enabled = False
+            JogMinus.Enabled = False
+            JogPlus.Enabled = False
+            SetOrigin.Enabled = False
+            StartButton.Enabled = False
+        End If
+
+        If keyword = "run" Then
+            ForceZero.Enabled = False
+            DisplacementZero.Enabled = False
+            HW_Zero.Enabled = False
+            JogMinus.Enabled = False
+            JogPlus.Enabled = False
+            SetOrigin.Enabled = False
+            StartButton.Enabled = True
+        End If
+
+        If keyword = "unlock" Then
+            ForceZero.Enabled = True
+            DisplacementZero.Enabled = True
+            HW_Zero.Enabled = True
+            JogMinus.Enabled = True
+            JogPlus.Enabled = True
+            SetOrigin.Enabled = True
+            StartButton.Enabled = True
+        End If
+
+    End Sub
 
 End Class
