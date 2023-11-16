@@ -4,7 +4,9 @@ Imports System.Drawing.Text
 Imports System.Runtime.CompilerServices
 Imports System.Security.Permissions
 Imports System.Threading
+Imports System.Threading.Tasks
 Imports System.Timers
+Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Threading
 Imports AdvancedHMIControls
@@ -45,6 +47,8 @@ Public Class MainForm
     Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
         StartButton.Checked = False
+        ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
+
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
     End Sub
@@ -76,6 +80,8 @@ Public Class MainForm
 
     Private Sub StartButton_CheckedChanged(sender As Object, e As EventArgs) Handles StartButton.CheckedChanged
 
+        System.Windows.Forms.Application.DoEvents()
+
         If StartButton.Checked = True Then
 
             If StartReady = True Then
@@ -85,6 +91,7 @@ Public Class MainForm
                     Do Until MotionControlThread.IsBusy = False
 
                         MotionControlThread.CancelAsync()
+                        System.Windows.Forms.Application.DoEvents()
 
                     Loop
 
@@ -111,7 +118,7 @@ Public Class MainForm
 
         ElseIf StartButton.Checked = False And ExperimentStopwatch.IsRunning Then
 
-            MotionControlThread.CancelAsync() ' throws an error
+            MotionControlThread.CancelAsync()
             ExperimentRecordingTimer.Stop()
             ExperimentStopwatch.Stop()
 
@@ -170,7 +177,9 @@ Public Class MainForm
 
     Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
-        While MotionControlThread.CancellationPending = False
+        While MotionControlThread.CancellationPending = False AndAlso GlobalInstances.MotionController.MovesComplete = False
+
+            'ThreadPool.QueueUserWorkItem(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
 
             With GlobalInstances.MotionController
 
@@ -287,4 +296,7 @@ Public Class MainForm
 
     End Sub
 
+    Private Sub ConnectionIndicator_Click(sender As Object, e As EventArgs) Handles ConnectionIndicator.Click
+        DebugWindow.ShowDialog()
+    End Sub
 End Class
