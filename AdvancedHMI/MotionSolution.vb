@@ -29,7 +29,7 @@ Public Class MotionControlSolution
 
     Public ProgressValue As Decimal = 0
     Public MovesComplete As Boolean = False
-    Public CancelRequest As Boolean = False
+    Public Run As Boolean = False
     Public Event OnFinished()
 
     '====================================================================
@@ -54,7 +54,7 @@ Public Class MotionControlSolution
 
             While currentStepNumber < totalNumberOfSteps
 
-                If CancelRequest = True Then
+                If Run = False Then
 
                     MovesComplete = True
                     RaiseEvent OnFinished()
@@ -110,7 +110,7 @@ Public Class MotionControlSolution
 
         Dim ACK As Boolean = False 'AdvancedHMI returns a string of "0" "1" "False" or "True." No explaination. No documentation. Just magic. Converting to bool seems to work I guess?
 
-        If CancelRequest = True Then
+        If Run = False Then
 
             MovesComplete = True
             RaiseEvent OnFinished()
@@ -183,7 +183,6 @@ Public Class MotionControlSolution
     Public Sub Reset(driver As ModbusTCPCom)
 
         ProgressValue = 0
-        CancelRequest = False
         MovesComplete = False
         driver.BeginWrite(plcResetAddress, 1, New String() {"1"})
         Thread.Sleep(30)                                                    'Blocked wait time for 30ms to allow for the PLC to catch up. Maybe unneeded?

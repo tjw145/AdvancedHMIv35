@@ -47,20 +47,12 @@ Public Class MainForm
     Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
         StartButton.Checked = False
-
-        Do Until MotionControlThread.IsBusy = False
-
-            LockControls("all")
-            GlobalInstances.MotionController.CancelRequest = True
-            MotionControlThread.CancelAsync()
-            System.Windows.Forms.Application.DoEvents()
-
-        Loop
+        GlobalInstances.MotionController.Run = False
 
         LockControls("unlock")
         GlobalInstances.MotionController.Reset(ModbusTCPCom1)
 
-        'ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
+        ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
 
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
@@ -101,19 +93,10 @@ Public Class MainForm
 
                 If PLCconnection = "Connection Status: ✔" Then
 
-                    Do Until MotionControlThread.IsBusy = False
-
-                        LockControls("all")
-                        GlobalInstances.MotionController.CancelRequest = True
-                        MotionControlThread.CancelAsync()
-                        System.Windows.Forms.Application.DoEvents()
-
-                    Loop
-
-                    MotionControlThread.RunWorkerAsync()
+                    GlobalInstances.MotionController.Reset(ModbusTCPCom1)
+                    GlobalInstances.MotionController.Run = True
                     ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
-
                     StartButton.Text = "❚❚"
                     LockControls("run")
 
@@ -133,9 +116,9 @@ Public Class MainForm
 
         ElseIf StartButton.Checked = False And ExperimentStopwatch.IsRunning Then
 
-            MotionControlThread.CancelAsync()
             ExperimentRecordingTimer.Stop()
             ExperimentStopwatch.Stop()
+            GlobalInstances.MotionController.Run = False
 
             If SaveFileDialog.ShowDialog() = DialogResult.OK Then
 
@@ -186,29 +169,17 @@ Public Class MainForm
 
         ConnectionCheckTimer.Start()
         ConnectionCheckThread.RunWorkerAsync()
-        MotionControlThread.WorkerSupportsCancellation = True
+        MotionControlThread.RunWorkerAsync()
 
     End Sub
 
     Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
-        While MotionControlThread.CancellationPending = False AndAlso GlobalInstances.MotionController.MovesComplete = False
+        While GlobalInstances.MotionController.Run = True AndAlso GlobalInstances.MotionController.MovesComplete = False
 
-            'Dim asyncOutputThread As Task = Task.Factory.StartNew(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
-            'asyncOutputThread.Start()
-            'ThreadPool.QueueUserWorkItem(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
-            'Task.Run(Sub() GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
-
-            With GlobalInstances.MotionController
-
-                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
-
-            End With
+            GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
 
         End While
-
-        e.Cancel = True
-        Exit Sub
 
     End Sub
 
