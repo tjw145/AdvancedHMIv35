@@ -47,7 +47,20 @@ Public Class MainForm
     Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
         StartButton.Checked = False
-        ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
+
+        Do Until MotionControlThread.IsBusy = False
+
+            LockControls("all")
+            GlobalInstances.MotionController.CancelRequest = True
+            MotionControlThread.CancelAsync()
+            System.Windows.Forms.Application.DoEvents()
+
+        Loop
+
+        LockControls("unlock")
+        GlobalInstances.MotionController.Reset(ModbusTCPCom1)
+
+        'ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
 
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
@@ -90,6 +103,8 @@ Public Class MainForm
 
                     Do Until MotionControlThread.IsBusy = False
 
+                        LockControls("all")
+                        GlobalInstances.MotionController.CancelRequest = True
                         MotionControlThread.CancelAsync()
                         System.Windows.Forms.Application.DoEvents()
 
@@ -179,7 +194,10 @@ Public Class MainForm
 
         While MotionControlThread.CancellationPending = False AndAlso GlobalInstances.MotionController.MovesComplete = False
 
+            'Dim asyncOutputThread As Task = Task.Factory.StartNew(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
+            'asyncOutputThread.Start()
             'ThreadPool.QueueUserWorkItem(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
+            'Task.Run(Sub() GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
 
             With GlobalInstances.MotionController
 
@@ -215,6 +233,7 @@ Public Class MainForm
     Private Sub ConnectionCheckThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ConnectionCheckThread.DoWork
 
         CheckConnectionToPLC()
+        'ProgressBar.Value = CInt(100 * GlobalInstances.MotionController.ProgressValue)
         Return
 
     End Sub

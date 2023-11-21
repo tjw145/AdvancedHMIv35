@@ -396,11 +396,11 @@ Partial Class MainForm
         '
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(3, 9)
+        Me.Label2.Location = New System.Drawing.Point(-2, 9)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(138, 18)
+        Me.Label2.Size = New System.Drawing.Size(108, 18)
         Me.Label2.TabIndex = 26
-        Me.Label2.Text = "Displacement, mm"
+        Me.Label2.Text = "Displacement:"
         '
         'DisplacementChart
         '
@@ -446,11 +446,11 @@ Partial Class MainForm
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(5, 9)
+        Me.Label3.Location = New System.Drawing.Point(0, 9)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(68, 18)
+        Me.Label3.Size = New System.Drawing.Size(53, 18)
         Me.Label3.TabIndex = 26
-        Me.Label3.Text = "Force, N"
+        Me.Label3.Text = "Force:"
         '
         'ForceChart
         '

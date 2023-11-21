@@ -26,6 +26,7 @@ Module GlobalInstances
     Public Sub MotionController_OnFinished() Handles MotionController.OnFinished
 
         FinishedMoving = True
+        MainForm.MotionControlThread.CancelAsync()
         Debug.WriteLine("Finished")
         MainForm.StartButton.CheckState = CheckState.Unchecked
         MainForm.LockControls("unlock")
