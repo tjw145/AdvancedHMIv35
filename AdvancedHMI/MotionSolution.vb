@@ -100,8 +100,6 @@ Public Class MotionControlSolution
         modbusDriver.BeginWrite(plcRunAddress, 1, New String() {"0"}) 'Turn "run" bit off 
         System.Windows.Forms.Application.DoEvents()
 
-        Reset(modbusDriver) 'clear PLC values again
-
         Return True
 
     End Function

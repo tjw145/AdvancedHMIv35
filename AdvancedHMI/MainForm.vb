@@ -44,9 +44,7 @@ Public Class MainForm
 
     Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
 
-    Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
-
-        StartButton.Checked = False
+    Public Sub KillMCThread()
 
         Do Until MotionControlThread.IsBusy = False
 
@@ -56,6 +54,14 @@ Public Class MainForm
             System.Windows.Forms.Application.DoEvents()
 
         Loop
+
+    End Sub
+
+    Public Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
+
+        StartButton.Checked = False
+
+        KillMCThread()
 
         LockControls("unlock")
         GlobalInstances.MotionController.Reset(ModbusTCPCom1)
@@ -77,7 +83,7 @@ Public Class MainForm
         ' Log all real-time data
         Log.AddData(currentTime, displacment, 0)
 
-        If GlobalInstances.FinishedMoving = True Then
+        If GlobalInstances.MotionController.MovesComplete = True Then
 
             StartButton.CheckState = CheckState.Unchecked
 
@@ -101,15 +107,11 @@ Public Class MainForm
 
                 If PLCconnection = "Connection Status: ✔" Then
 
-                    Do Until MotionControlThread.IsBusy = False
+                    If MotionControlThread.IsBusy = True Then
+                        KillMCThread()
+                    End If
 
-                        LockControls("all")
-                        GlobalInstances.MotionController.CancelRequest = True
-                        MotionControlThread.CancelAsync()
-                        System.Windows.Forms.Application.DoEvents()
-
-                    Loop
-
+                    GlobalInstances.MotionController.Reset(ModbusTCPCom1)
                     MotionControlThread.RunWorkerAsync()
                     ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
@@ -131,11 +133,22 @@ Public Class MainForm
             End If
 
 
-        ElseIf StartButton.Checked = False And ExperimentStopwatch.IsRunning Then
+        ElseIf StartButton.Checked = False Then
 
-            MotionControlThread.CancelAsync()
-            ExperimentRecordingTimer.Stop()
-            ExperimentStopwatch.Stop()
+            If ExperimentRecordingTimer.Enabled = True Then
+                ExperimentRecordingTimer.Stop()
+            End If
+
+            If ExperimentStopwatch.IsRunning Then
+                ExperimentStopwatch.Stop()
+            End If
+
+            If MotionControlThread.IsBusy = True Then
+                KillMCThread()
+                StopButton.PerformClick()
+            End If
+
+            Thread.Sleep(1000)
 
             If SaveFileDialog.ShowDialog() = DialogResult.OK Then
 
@@ -190,7 +203,11 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
+    Public Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
+
+        'Time spent trying to figure out how make this multithreading work correctly:
+        '16 days
+
 
         While MotionControlThread.CancellationPending = False AndAlso GlobalInstances.MotionController.MovesComplete = False
 
@@ -199,14 +216,11 @@ Public Class MainForm
             'ThreadPool.QueueUserWorkItem(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
             'Task.Run(Sub() GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
 
-            With GlobalInstances.MotionController
-
-                .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
-
-            End With
-
+            GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
+            System.Windows.Forms.Application.DoEvents()
         End While
 
+        System.Windows.Forms.Application.DoEvents()
         e.Cancel = True
         Exit Sub
 

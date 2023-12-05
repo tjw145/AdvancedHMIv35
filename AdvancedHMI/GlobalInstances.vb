@@ -1,5 +1,6 @@
 ﻿Option Strict On
 Imports AdvancedHMIControls
+Imports AdvancedHMIDrivers
 
 Module GlobalInstances
 
@@ -19,17 +20,13 @@ Module GlobalInstances
     Public loggerInterval As Integer
     Public PLCconnection As String
     Public StartReady As Boolean = False
-    Public FinishedMoving As Boolean = False
 
     Public BackgroundDarkColor As Color = Color.FromArgb(24, 25, 27)
 
     Public Sub MotionController_OnFinished() Handles MotionController.OnFinished
 
-        FinishedMoving = True
-        MainForm.MotionControlThread.CancelAsync()
-        Debug.WriteLine("Finished")
         MainForm.StartButton.CheckState = CheckState.Unchecked
-        MainForm.LockControls("unlock")
+        Debug.WriteLine("Finished")
 
     End Sub
 
