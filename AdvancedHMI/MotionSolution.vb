@@ -10,7 +10,12 @@ Public Class MotionControlSolution
 
     'This class contains methods for sending commands to the flexure rig's programmable logic controller.
     '
-    'Thomas Waybright, 9/15/2023
+    'Note: Our PLC cannot recieve direct commands from the PC -- the PC can only write values to a few selected
+    'memory registers. Because of this, the only way to communicate a complete cycle's worth of move-commands
+    'is to feed them from the PC to the PLC one move at a time. After each command has been executed, the next 
+    'command is given. 
+    '
+    'Thomas Waybright, 2/12/2025
 
     '============== Hard-coded PLC memory address values: ===============
 
@@ -33,7 +38,80 @@ Public Class MotionControlSolution
 
     '====================================================================
 
+    Public Function GenerateSteps(Grid As DataGridView, stepList As List(Of MotionProfile)) As Boolean
 
+        stepList.Clear() 'invalidate current list
+
+        For currentRow As Integer = 0 To (Grid.RowCount - 2)
+
+            'Generates motion profile for each row, then sends them to the master step list.
+
+            Dim CurrentStep As New MotionProfile
+            Dim distance As Decimal = CDec(Grid.Item(0, currentRow).Value)
+            Dim time As Decimal = CDec(Grid.Item(1, currentRow).Value)
+            Dim dwell As Decimal = CDec(Grid.Item(2, currentRow).Value)
+
+            If CurrentStep.GenerateProfile(time, distance, dwell) = False Then
+
+                Return False
+
+            End If
+
+            stepList.Add(CurrentStep)
+
+        Next
+
+        Return True
+
+    End Function
+
+    Public Function MoveToStartPosition(modbusDriver As ModbusTCPCom, motionProfiles As List(Of MotionProfile)) As Boolean
+
+        ' This function takes the difference between the platform's current position and its desired starting position,
+        ' and commands the platform to move there using the user-defined experiment parameters. This move-command is 
+        ' limited to an acceleration equal to that of the first step in the "experiment procedure" window.
+
+        Dim currentPosition As Decimal = CDec(MainForm.ModbusTCPCom1.Read("400008")) ' Pulses
+        Dim firstPosInCycle As Decimal = motionProfiles(0).TargetPositionPLC         ' Pulses
+        Dim firstPointAccel As Decimal = motionProfiles(0).AccelerationPLC           ' Pulses/sec^2
+
+        ' d = (1/4)at^2    - pulses
+        ' a = 4d/t^2       - pulses/sec^2 
+        ' t = sqrt(4d/a)   - seconds
+
+        ' We're using 4 here rather than 2 (like in the typical kinnematic eq.) to account for both acceleration
+        ' and deceleration of the platform.
+
+        Dim distance As Decimal = Math.Abs(currentPosition - firstPosInCycle) ' The missile knows where it Is at all times. It knows this because it knows where it isn't. By subtracting where it is from where it isn't, or where it isn't from where it is (whichever is greater), it obtains a difference, or deviation. The guidance subsystem uses deviations to generate corrective commands to drive the missile from a position where it is to a position where it isn't, and arriving at a position where it wasn't, it now is. Consequently, the position where it is, is now the position that it wasn't, and it follows that the position that it was, is now the position that it isn't. In the event that the position that it Is in Is Not the position that it wasn't, the system has acquired a variation, the variation being the difference between where the missile is, and where it wasn't. If variation is considered to be a significant factor, it too may be corrected by the GEA. However, the missile must also know where it was. The missile guidance computer scenario works As follows. Because a variation has modified some Of the information the missile has obtained, it Is Not sure just where it Is. However, it Is sure where it isn't, within reason, and it knows where it was. It now subtracts where it should be from where it wasn't, or vice-versa, and by differentiating this from the algebraic sum of where it shouldn't be, and where it was, it is able to obtain the deviation and its variation, which is called error.
+        Dim time As Decimal = CDec(Math.Sqrt(4 * distance / firstPointAccel))
+        Dim dwell As Decimal = 0
+
+
+        Dim moveCommand As New MotionProfile
+
+        If moveCommand.GenerateProfile(time, distance, dwell) = False Then
+
+            Return False
+
+        End If
+
+        StartMotionDataTransfer(modbusDriver)
+
+        If CBool(modbusDriver.Read(plcACKaddress)) = False Then 'Checks if ACK reads low before sending
+
+            If SendCommand(modbusDriver, moveCommand) = True Then 'And if we can successfully send over the command
+
+                Return True
+
+            Else
+
+                Debug.WriteLine("Motion command procedure timeout")
+
+            End If
+
+        End If
+
+    End Function
 
     Public Async Sub OutputMotionSolution(modbusDriver As ModbusTCPCom, motionProfiles As List(Of MotionProfile), cycles As Integer)
 
@@ -53,15 +131,15 @@ Public Class MotionControlSolution
 
                 If cycleNumber = 0 Then
 
-                    PrepareFirstStep(modbusDriver)
+                    StartMotionDataTransfer(modbusDriver)
 
                 End If
 
                 If CBool(modbusDriver.Read(plcACKaddress)) = False Then 'Checks if ACK reads low before sending
 
-                    If SendCommand(modbusDriver, StepList(currentStepNumber)) = True Then
+                    If SendCommand(modbusDriver, StepList(currentStepNumber)) = True Then 'And if we can successfully send over the command
 
-                        currentStepNumber += 1
+                        currentStepNumber += 1 'Then move to the next step
                         ProgressValue = CalculateProgress(cycleNumber + 1, cycles, currentStepNumber + 1, StepList.Count)
 
                     Else
@@ -141,7 +219,7 @@ Public Class MotionControlSolution
 
     End Function
 
-    Private Sub PrepareFirstStep(driver As ModbusTCPCom)
+    Private Sub StartMotionDataTransfer(driver As ModbusTCPCom)
 
         driver.BeginWrite(plcRequestDataTrigger, 1, New String() {"1"})     'Triggers request before first command execution
         driver.BeginWrite(plcRunAddress, 1, New String() {"1"})             'Triggers "start" bit

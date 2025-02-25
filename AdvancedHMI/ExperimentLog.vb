@@ -16,12 +16,6 @@ Public Class ExperimentLog
             ReDim Preserve dispLog(length)
             ReDim Preserve forceLog(length)
 
-            'If length = 1 Then
-
-            '    time = "0"
-
-            'End If
-
             timeLog(length) = time
             dispLog(length) = CDec(displacement) / 1000 'Values sent from the PLC are *1000, so this rescales the incoming data.
             forceLog(length) = force
@@ -55,6 +49,9 @@ Public Class ExperimentLog
             .Write("Displacement (mm): " & ",")
             .Write("Force (N): " & ",")
             .WriteLine()
+            ' ADD EXPERIMENT PARAMETERS
+            ' Preferably in their own cells, with an "END" marker of some kind, so that the file can be automatically
+            ' parsed by some code for analysis.
 
         End With
 

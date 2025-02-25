@@ -24,9 +24,9 @@ Partial Class MainForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ForceItemsIntoToolBox1 = New MfgControl.AdvancedHMI.Drivers.ForceItemsIntoToolbox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -79,9 +79,10 @@ Partial Class MainForm
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!)
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(6, 732)
+        Me.Label1.Location = New System.Drawing.Point(8, 915)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(194, 32)
+        Me.Label1.Size = New System.Drawing.Size(242, 40)
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "For Development Source Code Visit" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "http://www.advancedhmi.com"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -96,10 +97,12 @@ Partial Class MainForm
         Me.GroupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.White
-        Me.GroupBox2.Location = New System.Drawing.Point(9, 235)
+        Me.GroupBox2.Location = New System.Drawing.Point(11, 294)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.GroupBox2.Size = New System.Drawing.Size(182, 225)
+        Me.GroupBox2.Size = New System.Drawing.Size(228, 281)
         Me.GroupBox2.TabIndex = 13
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Manual Control / Jog"
@@ -116,14 +119,15 @@ Partial Class MainForm
         Me.SetOrigin.ForeColorAltername = System.Drawing.Color.Black
         Me.SetOrigin.Highlight = False
         Me.SetOrigin.HighlightColor = System.Drawing.Color.Green
-        Me.SetOrigin.Location = New System.Drawing.Point(7, 158)
+        Me.SetOrigin.Location = New System.Drawing.Point(9, 198)
+        Me.SetOrigin.Margin = New System.Windows.Forms.Padding(4)
         Me.SetOrigin.MaximumHoldTime = 3000
         Me.SetOrigin.MinimumHoldTime = 500
         Me.SetOrigin.Name = "SetOrigin"
         Me.SetOrigin.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
         Me.SetOrigin.PLCAddressClick = "017189"
         Me.SetOrigin.SelectTextAlternate = False
-        Me.SetOrigin.Size = New System.Drawing.Size(168, 60)
+        Me.SetOrigin.Size = New System.Drawing.Size(210, 75)
         Me.SetOrigin.TabIndex = 12
         Me.SetOrigin.Text = "Set Origin"
         Me.SetOrigin.TextAlternate = Nothing
@@ -149,10 +153,12 @@ Partial Class MainForm
         Me.GroupBox4.Controls.Add(Me.DRO_N)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox4.ForeColor = System.Drawing.Color.White
-        Me.GroupBox4.Location = New System.Drawing.Point(73, 90)
+        Me.GroupBox4.Location = New System.Drawing.Point(91, 112)
+        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox4.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.GroupBox4.Size = New System.Drawing.Size(102, 62)
+        Me.GroupBox4.Size = New System.Drawing.Size(128, 78)
         Me.GroupBox4.TabIndex = 36
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Force, N"
@@ -173,7 +179,8 @@ Partial Class MainForm
         Me.DRO_N.KeypadScaleFactor = 1.0R
         Me.DRO_N.KeypadText = Nothing
         Me.DRO_N.KeypadWidth = 300
-        Me.DRO_N.Location = New System.Drawing.Point(13, 18)
+        Me.DRO_N.Location = New System.Drawing.Point(16, 22)
+        Me.DRO_N.Margin = New System.Windows.Forms.Padding(4)
         Me.DRO_N.Name = "DRO_N"
         Me.DRO_N.NumberOfDigits = 3
         Me.DRO_N.PLCAddressKeypad = ""
@@ -182,7 +189,7 @@ Partial Class MainForm
         Me.DRO_N.PLCAddressVisible = ""
         Me.DRO_N.ResolutionOfLastDigit = New Decimal(New Integer() {1, 0, 0, 0})
         Me.DRO_N.ShowOffSegments = True
-        Me.DRO_N.Size = New System.Drawing.Size(79, 34)
+        Me.DRO_N.Size = New System.Drawing.Size(99, 43)
         Me.DRO_N.TabIndex = 11
         Me.DRO_N.Text = "SevenSegment21"
         Me.DRO_N.Value = 0R
@@ -192,10 +199,12 @@ Partial Class MainForm
         Me.GroupBox3.Controls.Add(Me.DRO_mm)
         Me.GroupBox3.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.ForeColor = System.Drawing.Color.White
-        Me.GroupBox3.Location = New System.Drawing.Point(73, 24)
+        Me.GroupBox3.Location = New System.Drawing.Point(91, 30)
+        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.GroupBox3.Size = New System.Drawing.Size(102, 62)
+        Me.GroupBox3.Size = New System.Drawing.Size(128, 78)
         Me.GroupBox3.TabIndex = 36
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Position, mm"
@@ -216,7 +225,8 @@ Partial Class MainForm
         Me.DRO_mm.KeypadScaleFactor = 1.0R
         Me.DRO_mm.KeypadText = Nothing
         Me.DRO_mm.KeypadWidth = 300
-        Me.DRO_mm.Location = New System.Drawing.Point(13, 18)
+        Me.DRO_mm.Location = New System.Drawing.Point(16, 22)
+        Me.DRO_mm.Margin = New System.Windows.Forms.Padding(4)
         Me.DRO_mm.Name = "DRO_mm"
         Me.DRO_mm.NumberOfDigits = 3
         Me.DRO_mm.PLCAddressKeypad = ""
@@ -225,7 +235,7 @@ Partial Class MainForm
         Me.DRO_mm.PLCAddressVisible = ""
         Me.DRO_mm.ResolutionOfLastDigit = New Decimal(New Integer() {1, 0, 0, 0})
         Me.DRO_mm.ShowOffSegments = True
-        Me.DRO_mm.Size = New System.Drawing.Size(79, 34)
+        Me.DRO_mm.Size = New System.Drawing.Size(99, 43)
         Me.DRO_mm.TabIndex = 11
         Me.DRO_mm.Text = "SevenSegment21"
         Me.DRO_mm.Value = 0R
@@ -242,7 +252,8 @@ Partial Class MainForm
         Me.JogMinus.ForeColorAltername = System.Drawing.Color.Black
         Me.JogMinus.Highlight = False
         Me.JogMinus.HighlightColor = System.Drawing.Color.Green
-        Me.JogMinus.Location = New System.Drawing.Point(7, 26)
+        Me.JogMinus.Location = New System.Drawing.Point(9, 32)
+        Me.JogMinus.Margin = New System.Windows.Forms.Padding(4)
         Me.JogMinus.MaximumHoldTime = 90000
         Me.JogMinus.MinimumHoldTime = 2
         Me.JogMinus.Name = "JogMinus"
@@ -250,7 +261,7 @@ Partial Class MainForm
         Me.JogMinus.PLCAddressClick = "017188"
         Me.JogMinus.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.JogMinus.SelectTextAlternate = False
-        Me.JogMinus.Size = New System.Drawing.Size(60, 60)
+        Me.JogMinus.Size = New System.Drawing.Size(75, 75)
         Me.JogMinus.TabIndex = 8
         Me.JogMinus.Text = "-"
         Me.JogMinus.TextAlternate = Nothing
@@ -269,14 +280,15 @@ Partial Class MainForm
         Me.JogPlus.ForeColorAltername = System.Drawing.Color.Black
         Me.JogPlus.Highlight = False
         Me.JogPlus.HighlightColor = System.Drawing.Color.Green
-        Me.JogPlus.Location = New System.Drawing.Point(7, 92)
+        Me.JogPlus.Location = New System.Drawing.Point(9, 115)
+        Me.JogPlus.Margin = New System.Windows.Forms.Padding(4)
         Me.JogPlus.MaximumHoldTime = 90000
         Me.JogPlus.MinimumHoldTime = 2
         Me.JogPlus.Name = "JogPlus"
         Me.JogPlus.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
         Me.JogPlus.PLCAddressClick = "017187"
         Me.JogPlus.SelectTextAlternate = False
-        Me.JogPlus.Size = New System.Drawing.Size(60, 60)
+        Me.JogPlus.Size = New System.Drawing.Size(75, 75)
         Me.JogPlus.TabIndex = 9
         Me.JogPlus.Text = "+"
         Me.JogPlus.TextAlternate = Nothing
@@ -291,10 +303,12 @@ Partial Class MainForm
         Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.GroupBox1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.ForeColor = System.Drawing.Color.White
-        Me.GroupBox1.Location = New System.Drawing.Point(9, 3)
+        Me.GroupBox1.Location = New System.Drawing.Point(11, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.GroupBox1.Size = New System.Drawing.Size(182, 226)
+        Me.GroupBox1.Size = New System.Drawing.Size(228, 282)
         Me.GroupBox1.TabIndex = 14
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Auto Home"
@@ -311,14 +325,15 @@ Partial Class MainForm
         Me.HW_Zero.ForeColorAltername = System.Drawing.Color.Black
         Me.HW_Zero.Highlight = False
         Me.HW_Zero.HighlightColor = System.Drawing.Color.Green
-        Me.HW_Zero.Location = New System.Drawing.Point(7, 158)
+        Me.HW_Zero.Location = New System.Drawing.Point(9, 198)
+        Me.HW_Zero.Margin = New System.Windows.Forms.Padding(4)
         Me.HW_Zero.MaximumHoldTime = 3000
         Me.HW_Zero.MinimumHoldTime = 500
         Me.HW_Zero.Name = "HW_Zero"
         Me.HW_Zero.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
         Me.HW_Zero.PLCAddressClick = "017190"
         Me.HW_Zero.SelectTextAlternate = False
-        Me.HW_Zero.Size = New System.Drawing.Size(168, 60)
+        Me.HW_Zero.Size = New System.Drawing.Size(210, 75)
         Me.HW_Zero.TabIndex = 15
         Me.HW_Zero.Text = "Hardware"
         Me.HW_Zero.TextAlternate = Nothing
@@ -330,6 +345,7 @@ Partial Class MainForm
         Me.ForceZero.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.ForceZero.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         Me.ForceZero.ComComponent = Me.ModbusTCPCom1
+        Me.ForceZero.Enabled = False
         Me.ForceZero.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         Me.ForceZero.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ForceZero.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -337,14 +353,15 @@ Partial Class MainForm
         Me.ForceZero.ForeColorAltername = System.Drawing.Color.Black
         Me.ForceZero.Highlight = False
         Me.ForceZero.HighlightColor = System.Drawing.Color.Green
-        Me.ForceZero.Location = New System.Drawing.Point(7, 92)
+        Me.ForceZero.Location = New System.Drawing.Point(9, 115)
+        Me.ForceZero.Margin = New System.Windows.Forms.Padding(4)
         Me.ForceZero.MaximumHoldTime = 3000
         Me.ForceZero.MinimumHoldTime = 500
         Me.ForceZero.Name = "ForceZero"
         Me.ForceZero.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
         Me.ForceZero.PLCAddressClick = ""
         Me.ForceZero.SelectTextAlternate = False
-        Me.ForceZero.Size = New System.Drawing.Size(168, 60)
+        Me.ForceZero.Size = New System.Drawing.Size(210, 75)
         Me.ForceZero.TabIndex = 13
         Me.ForceZero.Text = "Force"
         Me.ForceZero.TextAlternate = Nothing
@@ -356,6 +373,7 @@ Partial Class MainForm
         Me.DisplacementZero.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.DisplacementZero.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         Me.DisplacementZero.ComComponent = Me.ModbusTCPCom1
+        Me.DisplacementZero.Enabled = False
         Me.DisplacementZero.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         Me.DisplacementZero.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.DisplacementZero.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -363,14 +381,15 @@ Partial Class MainForm
         Me.DisplacementZero.ForeColorAltername = System.Drawing.Color.Black
         Me.DisplacementZero.Highlight = False
         Me.DisplacementZero.HighlightColor = System.Drawing.Color.Green
-        Me.DisplacementZero.Location = New System.Drawing.Point(7, 26)
+        Me.DisplacementZero.Location = New System.Drawing.Point(9, 32)
+        Me.DisplacementZero.Margin = New System.Windows.Forms.Padding(4)
         Me.DisplacementZero.MaximumHoldTime = 3000
         Me.DisplacementZero.MinimumHoldTime = 500
         Me.DisplacementZero.Name = "DisplacementZero"
         Me.DisplacementZero.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
         Me.DisplacementZero.PLCAddressClick = ""
         Me.DisplacementZero.SelectTextAlternate = False
-        Me.DisplacementZero.Size = New System.Drawing.Size(168, 60)
+        Me.DisplacementZero.Size = New System.Drawing.Size(210, 75)
         Me.DisplacementZero.TabIndex = 12
         Me.DisplacementZero.Text = "Displacement"
         Me.DisplacementZero.TextAlternate = Nothing
@@ -379,9 +398,10 @@ Partial Class MainForm
         '
         'ProgressBar
         '
-        Me.ProgressBar.Location = New System.Drawing.Point(9, 598)
+        Me.ProgressBar.Location = New System.Drawing.Point(11, 748)
+        Me.ProgressBar.Margin = New System.Windows.Forms.Padding(4)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(182, 22)
+        Me.ProgressBar.Size = New System.Drawing.Size(228, 28)
         Me.ProgressBar.Step = 1
         Me.ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar.TabIndex = 29
@@ -392,36 +412,40 @@ Partial Class MainForm
         Me.Panel2.Controls.Add(Me.DispGraph)
         Me.Panel2.Controls.Add(Me.Label2)
         Me.Panel2.Controls.Add(Me.DisplacementChart)
-        Me.Panel2.Location = New System.Drawing.Point(197, 3)
+        Me.Panel2.Location = New System.Drawing.Point(246, 4)
+        Me.Panel2.Margin = New System.Windows.Forms.Padding(4)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(402, 617)
+        Me.Panel2.Size = New System.Drawing.Size(502, 771)
         Me.Panel2.TabIndex = 27
         '
         'DispGraph
         '
         Me.DispGraph.BackColor = System.Drawing.Color.WhiteSmoke
-        ChartArea1.Name = "ChartArea1"
-        Me.DispGraph.ChartAreas.Add(ChartArea1)
-        Legend1.Name = "Legend1"
-        Me.DispGraph.Legends.Add(Legend1)
-        Me.DispGraph.Location = New System.Drawing.Point(32, 158)
+        ChartArea2.Name = "ChartArea1"
+        Me.DispGraph.ChartAreas.Add(ChartArea2)
+        Legend2.Name = "Legend1"
+        Me.DispGraph.Legends.Add(Legend2)
+        Me.DispGraph.Location = New System.Drawing.Point(40, 198)
+        Me.DispGraph.Margin = New System.Windows.Forms.Padding(4)
         Me.DispGraph.Name = "DispGraph"
         Me.DispGraph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
-        Series1.ChartArea = "ChartArea1"
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.DispGraph.Series.Add(Series1)
-        Me.DispGraph.Size = New System.Drawing.Size(300, 300)
+        Series2.ChartArea = "ChartArea1"
+        Series2.Legend = "Legend1"
+        Series2.Name = "Series1"
+        Me.DispGraph.Series.Add(Series2)
+        Me.DispGraph.Size = New System.Drawing.Size(375, 375)
         Me.DispGraph.TabIndex = 27
         Me.DispGraph.Text = "Chart1"
+        Me.DispGraph.Visible = False
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(3, 9)
+        Me.Label2.Location = New System.Drawing.Point(4, 11)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(138, 18)
+        Me.Label2.Size = New System.Drawing.Size(172, 23)
         Me.Label2.TabIndex = 26
         Me.Label2.Text = "Displacement, mm"
         '
@@ -431,13 +455,13 @@ Partial Class MainForm
         Me.DisplacementChart.ComComponent = Me.ModbusTCPCom1
         Me.DisplacementChart.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.DisplacementChart.ForeColor = System.Drawing.Color.White
-        Me.DisplacementChart.Location = New System.Drawing.Point(0, 35)
-        Me.DisplacementChart.Margin = New System.Windows.Forms.Padding(8)
+        Me.DisplacementChart.Location = New System.Drawing.Point(0, 44)
+        Me.DisplacementChart.Margin = New System.Windows.Forms.Padding(10)
         Me.DisplacementChart.MaxPoints = 1000
         Me.DisplacementChart.Name = "DisplacementChart"
         Me.DisplacementChart.PLCAddressValue = "400008"
         Me.DisplacementChart.PLCAddressVisible = ""
-        Me.DisplacementChart.Size = New System.Drawing.Size(394, 582)
+        Me.DisplacementChart.Size = New System.Drawing.Size(492, 728)
         Me.DisplacementChart.TabIndex = 16
         Me.DisplacementChart.Text = "BasicTrendChart1"
         Me.DisplacementChart.Value = ""
@@ -449,9 +473,10 @@ Partial Class MainForm
         Me.Panel1.Controls.Add(Me.ConnectionIndicator)
         Me.Panel1.Controls.Add(Me.Label3)
         Me.Panel1.Controls.Add(Me.ForceChart)
-        Me.Panel1.Location = New System.Drawing.Point(600, 3)
+        Me.Panel1.Location = New System.Drawing.Point(750, 4)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(399, 617)
+        Me.Panel1.Size = New System.Drawing.Size(499, 771)
         Me.Panel1.TabIndex = 27
         '
         'ConnectionIndicator
@@ -459,9 +484,10 @@ Partial Class MainForm
         Me.ConnectionIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ConnectionIndicator.Font = New System.Drawing.Font("Arial", 9.0!)
         Me.ConnectionIndicator.ForeColor = System.Drawing.Color.White
-        Me.ConnectionIndicator.Location = New System.Drawing.Point(250, 9)
+        Me.ConnectionIndicator.Location = New System.Drawing.Point(312, 11)
+        Me.ConnectionIndicator.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.ConnectionIndicator.Name = "ConnectionIndicator"
-        Me.ConnectionIndicator.Size = New System.Drawing.Size(141, 18)
+        Me.ConnectionIndicator.Size = New System.Drawing.Size(176, 22)
         Me.ConnectionIndicator.TabIndex = 38
         Me.ConnectionIndicator.Text = "Connection Status: "
         '
@@ -469,9 +495,10 @@ Partial Class MainForm
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(5, 9)
+        Me.Label3.Location = New System.Drawing.Point(6, 11)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(68, 18)
+        Me.Label3.Size = New System.Drawing.Size(86, 23)
         Me.Label3.TabIndex = 26
         Me.Label3.Text = "Force, N"
         '
@@ -481,13 +508,13 @@ Partial Class MainForm
         Me.ForceChart.ComComponent = Me.ModbusTCPCom1
         Me.ForceChart.Font = New System.Drawing.Font("Arial", 12.0!)
         Me.ForceChart.ForeColor = System.Drawing.Color.White
-        Me.ForceChart.Location = New System.Drawing.Point(0, 35)
-        Me.ForceChart.Margin = New System.Windows.Forms.Padding(8)
+        Me.ForceChart.Location = New System.Drawing.Point(0, 44)
+        Me.ForceChart.Margin = New System.Windows.Forms.Padding(10)
         Me.ForceChart.MaxPoints = 100
         Me.ForceChart.Name = "ForceChart"
         Me.ForceChart.PLCAddressValue = ""
         Me.ForceChart.PLCAddressVisible = ""
-        Me.ForceChart.Size = New System.Drawing.Size(391, 582)
+        Me.ForceChart.Size = New System.Drawing.Size(489, 728)
         Me.ForceChart.TabIndex = 16
         Me.ForceChart.Text = "BasicTrendChart1"
         Me.ForceChart.Value = ""
@@ -510,9 +537,10 @@ Partial Class MainForm
         Me.SetupButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         Me.SetupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SetupButton.ForeColor = System.Drawing.Color.White
-        Me.SetupButton.Location = New System.Drawing.Point(9, 466)
+        Me.SetupButton.Location = New System.Drawing.Point(11, 582)
+        Me.SetupButton.Margin = New System.Windows.Forms.Padding(4)
         Me.SetupButton.Name = "SetupButton"
-        Me.SetupButton.Size = New System.Drawing.Size(182, 60)
+        Me.SetupButton.Size = New System.Drawing.Size(228, 75)
         Me.SetupButton.TabIndex = 41
         Me.SetupButton.Text = "⬑ Experimental Setup"
         Me.SetupButton.UseVisualStyleBackColor = False
@@ -525,9 +553,10 @@ Partial Class MainForm
         Me.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.StartButton.Font = New System.Drawing.Font("OCR A Extended", 27.75!)
         Me.StartButton.ForeColor = System.Drawing.Color.White
-        Me.StartButton.Location = New System.Drawing.Point(131, 532)
+        Me.StartButton.Location = New System.Drawing.Point(164, 665)
+        Me.StartButton.Margin = New System.Windows.Forms.Padding(4)
         Me.StartButton.Name = "StartButton"
-        Me.StartButton.Size = New System.Drawing.Size(60, 60)
+        Me.StartButton.Size = New System.Drawing.Size(75, 75)
         Me.StartButton.TabIndex = 43
         Me.StartButton.Text = "▶"
         Me.StartButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -551,14 +580,15 @@ Partial Class MainForm
         Me.StopButton.ForeColorAltername = System.Drawing.Color.Black
         Me.StopButton.Highlight = False
         Me.StopButton.HighlightColor = System.Drawing.Color.Red
-        Me.StopButton.Location = New System.Drawing.Point(9, 532)
+        Me.StopButton.Location = New System.Drawing.Point(11, 665)
+        Me.StopButton.Margin = New System.Windows.Forms.Padding(4)
         Me.StopButton.MaximumHoldTime = 3000
         Me.StopButton.MinimumHoldTime = 500
         Me.StopButton.Name = "StopButton"
         Me.StopButton.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.SetTrue
         Me.StopButton.PLCAddressClick = "017186"
         Me.StopButton.SelectTextAlternate = False
-        Me.StopButton.Size = New System.Drawing.Size(116, 60)
+        Me.StopButton.Size = New System.Drawing.Size(145, 75)
         Me.StopButton.TabIndex = 13
         Me.StopButton.Text = "■"
         Me.StopButton.TextAlternate = Nothing
@@ -577,15 +607,12 @@ Partial Class MainForm
         'ControlBlinker
         '
         '
-        'GraphUpdater
-        '
-        '
         'MainForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(120.0!, 120.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1003, 631)
+        Me.ClientSize = New System.Drawing.Size(1254, 789)
         Me.Controls.Add(Me.StartButton)
         Me.Controls.Add(Me.SetupButton)
         Me.Controls.Add(Me.Panel1)
@@ -599,6 +626,7 @@ Partial Class MainForm
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.KeyPreview = True
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

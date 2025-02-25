@@ -3,33 +3,6 @@ Imports System.Runtime.CompilerServices
 
 Public Class ExperimentSetupWindow
 
-    Private Function GenerateSteps(Grid As DataGridView, stepList As List(Of MotionProfile))
-
-        stepList.Clear() 'invalidate current list
-
-        For currentRow As Integer = 0 To (Grid.RowCount - 2)
-
-            'Generates motion profile for each row, then sends them to the master step list.
-
-            Dim CurrentStep As New MotionProfile
-            Dim distance As Decimal = CDec(Grid.Item(0, currentRow).Value)
-            Dim time As Decimal = CDec(Grid.Item(1, currentRow).Value)
-            Dim dwell As Decimal = CDec(Grid.Item(2, currentRow).Value)
-
-            If CurrentStep.GenerateProfile(time, distance, dwell) = False Then
-
-                Return False
-
-            End If
-
-            stepList.Add(CurrentStep)
-
-        Next
-
-        Return True
-
-    End Function
-
     Private Function CheckInputErrors(Grid As DataGridView) As Boolean
 
         'Checks to see that at least two positions have been added to the list, all time vales are greater than zero, and that all cells contain a value.
@@ -78,7 +51,7 @@ Public Class ExperimentSetupWindow
 
         If CheckInputErrors(DisplacementStepsInput) = False Then
 
-            If GenerateSteps(DisplacementStepsInput, MovePoints) = False Then
+            If MotionController.GenerateSteps(DisplacementStepsInput, MovePoints) = False Then
 
                 StartReady = False
                 InputFeedback.Text = "❌ Error: Maximum acceleration rate exceeded."

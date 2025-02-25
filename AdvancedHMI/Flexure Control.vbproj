@@ -78,10 +78,16 @@
     <ManifestKeyFile>AdvancedHMI_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MfgControl.AdvancedHMI.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -118,6 +124,10 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExperimentLog.Designer.vb">
+      <DependentUpon>ExperimentLog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ExperimentLog.vb" />
     <Compile Include="Graph.vb" />
     <Compile Include="MotionSolution.vb" />
     <Compile Include="ExperimentSetupWindow.Designer.vb">

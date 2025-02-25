@@ -49,6 +49,8 @@ Public Class MainForm
 
     End Sub
 
+
+    'RECORDING SYSTEM'
     Public Sub ExperimentRecordingTimer_Tick(sender As Object, e As EventArgs) Handles ExperimentRecordingTimer.Tick
 
         Dim currentTime As String
@@ -63,15 +65,15 @@ Public Class MainForm
 
         If ExperimentSetupWindow.RecForceCheckBox.CheckState = CheckState.Checked Then
 
-            'force = whatever the force PLC address will end up being
+            force = 0 ' whatever the force PLC address will end up being
 
         End If
 
-        ' Gets current stopwatch time in seconds, and rounds to nearest millisecond
-        currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 3))
+        ' Gets current stopwatch time in seconds, and rounds to nearest 0.1 ms
+        currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
 
         ' Log all real-time data
-        Log.AddData(currentTime, displacment, 0) '<----- arg format will need changed when force param is added
+        Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
 
         If GlobalInstances.FinishedMoving = True Then
 
@@ -87,6 +89,8 @@ Public Class MainForm
 
     End Sub
 
+
+    'START/STOP TRIGGER'
     Private Sub StartButton_CheckedChanged(sender As Object, e As EventArgs) Handles StartButton.CheckedChanged
 
         If StartButton.Checked = True Then
@@ -96,7 +100,7 @@ Public Class MainForm
                 If PLCconnection = "Connection Status: ✔" Then
 
                     MotionControlThread.RunWorkerAsync()
-                    ExperimentRecordingTimer.Start()
+                    ExperimentRecordingTimer.Start() '<------- Might be unneeded?
                     ExperimentStopwatch.Start()
 
                     StartButton.Text = "❚❚"
@@ -211,7 +215,12 @@ Public Class MainForm
 
     Private Sub ConnectionCheckThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ConnectionCheckThread.DoWork
 
-        CheckConnectionToPLC()
+        While StartButton.Checked = False
+
+            CheckConnectionToPLC()
+            System.Threading.Thread.Sleep(1000)
+
+        End While
         Return
 
     End Sub
@@ -245,11 +254,11 @@ Public Class MainForm
 
     Private blinkCount As Integer = 0
 
-    Private Sub GraphUpdater_Tick(sender As Object, e As EventArgs) Handles GraphUpdater.Tick
+    'Private Sub GraphUpdater_Tick(sender As Object, e As EventArgs) Handles GraphUpdater.Tick
 
-        DispGraph.Series.Clear()
-        DispGraph.Series.Add(DisplacementGraphData.CurrentData(TestDataGen()))
+    '    DispGraph.Series.Clear()
+    '    DispGraph.Series.Add(DisplacementGraphData.CurrentData(TestDataGen()))
 
-    End Sub
+    'End Sub
 
 End Class

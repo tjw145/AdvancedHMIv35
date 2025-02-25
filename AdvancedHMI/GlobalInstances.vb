@@ -8,11 +8,7 @@ Module GlobalInstances
 
     Public WithEvents MotionController As New MotionControlSolution
     Public MovePoints As New List(Of MotionProfile)
-    Public MotionProfile1 As New MotionProfile
     Public cycles As Integer = 1
-
-    Public DisplacementGraphData As Graph
-
     Public Log As New ExperimentLog
     Public ElapsedTime As String
     Public ExperimentStopwatch As New Stopwatch
@@ -20,6 +16,8 @@ Module GlobalInstances
     Public PLCconnection As String
     Public StartReady As Boolean = False
     Public FinishedMoving As Boolean = False
+
+    Public DisplacementGraphData As Graph
 
     Public BackgroundDarkColor As Color = Color.FromArgb(24, 25, 27)
 
@@ -33,18 +31,18 @@ Module GlobalInstances
 
     Public testTimer As Stopwatch
 
-    Public Function TestDataGen() As Double
+    'Public Function TestDataGen() As Double
 
-        If testTimer.IsRunning = False Then
+    '    If testTimer.IsRunning = False Then
 
-            testTimer.Start()
+    '        testTimer.Start()
 
-        End If
+    '    End If
 
-        Dim out As Double
-        out = Math.Sin(CDbl(testTimer.ElapsedMilliseconds / 100))
-        Return out
+    '    Dim out As Double
+    '    out = Math.Sin(CDbl(testTimer.ElapsedMilliseconds / 100))
+    '    Return out
 
-    End Function
+    'End Function
 
 End Module
