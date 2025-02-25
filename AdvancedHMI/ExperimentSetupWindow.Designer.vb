@@ -448,8 +448,8 @@ Partial Class ExperimentSetupWindow
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.08997!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.91003!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.98972!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.01028!))
         Me.TableLayoutPanel2.Controls.Add(Me.hzLabel, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.RecForceCheckBox, 1, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.RecDispCheckBox, 1, 1)
@@ -472,7 +472,7 @@ Partial Class ExperimentSetupWindow
         Me.hzLabel.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.hzLabel.AutoSize = True
         Me.hzLabel.ForeColor = System.Drawing.Color.White
-        Me.hzLabel.Location = New System.Drawing.Point(188, 8)
+        Me.hzLabel.Location = New System.Drawing.Point(22, 10)
         Me.hzLabel.Name = "hzLabel"
         Me.hzLabel.Size = New System.Drawing.Size(140, 16)
         Me.hzLabel.TabIndex = 39
@@ -481,33 +481,34 @@ Partial Class ExperimentSetupWindow
         '
         'RecForceCheckBox
         '
-        Me.RecForceCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.RecForceCheckBox.AutoSize = True
-        Me.RecForceCheckBox.Enabled = False
-        Me.RecForceCheckBox.Location = New System.Drawing.Point(334, 74)
-        Me.RecForceCheckBox.Name = "RecForceCheckBox"
-        Me.RecForceCheckBox.Size = New System.Drawing.Size(18, 17)
-        Me.RecForceCheckBox.TabIndex = 47
-        Me.RecForceCheckBox.UseVisualStyleBackColor = True
+        Me.ForceCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.ForceCheckBox.AutoSize = True
+        Me.ForceCheckBox.Checked = True
+        Me.ForceCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ForceCheckBox.Location = New System.Drawing.Point(143, 75)
+        Me.ForceCheckBox.Name = "ForceCheckBox"
+        Me.ForceCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.ForceCheckBox.TabIndex = 47
+        Me.ForceCheckBox.UseVisualStyleBackColor = True
         '
         'RecDispCheckBox
         '
-        Me.RecDispCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.RecDispCheckBox.AutoSize = True
-        Me.RecDispCheckBox.Checked = True
-        Me.RecDispCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.RecDispCheckBox.Location = New System.Drawing.Point(334, 41)
-        Me.RecDispCheckBox.Name = "RecDispCheckBox"
-        Me.RecDispCheckBox.Size = New System.Drawing.Size(18, 17)
-        Me.RecDispCheckBox.TabIndex = 46
-        Me.RecDispCheckBox.UseVisualStyleBackColor = True
+        Me.DispCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.DispCheckBox.AutoSize = True
+        Me.DispCheckBox.Checked = True
+        Me.DispCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.DispCheckBox.Location = New System.Drawing.Point(143, 42)
+        Me.DispCheckBox.Name = "DispCheckBox"
+        Me.DispCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.DispCheckBox.TabIndex = 46
+        Me.DispCheckBox.UseVisualStyleBackColor = True
         '
         'Label2
         '
         Me.Label2.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(219, 74)
+        Me.Label2.Location = New System.Drawing.Point(48, 76)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(109, 16)
         Me.Label2.TabIndex = 41
@@ -524,7 +525,7 @@ Partial Class ExperimentSetupWindow
         Me.RecordingRateHz.Font = New System.Drawing.Font("Arial", 9.25!)
         Me.RecordingRateHz.ForeColor = System.Drawing.Color.White
         Me.RecordingRateHz.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.RecordingRateHz.Location = New System.Drawing.Point(334, 4)
+        Me.RecordingRateHz.Location = New System.Drawing.Point(143, 5)
         Me.RecordingRateHz.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.RecordingRateHz.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.RecordingRateHz.Name = "RecordingRateHz"
@@ -538,7 +539,7 @@ Partial Class ExperimentSetupWindow
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label1.AutoSize = True
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(164, 41)
+        Me.Label1.Location = New System.Drawing.Point(8, 43)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(164, 16)
         Me.Label1.TabIndex = 40
@@ -590,13 +591,17 @@ Partial Class ExperimentSetupWindow
         'ExperimentSetupWindow
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(426, 292)
         Me.Controls.Add(Me.InputFeedback)
         Me.Controls.Add(Me.OKbutton)
         Me.Controls.Add(Me.DispControlPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "ExperimentSetupWindow"
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Experiment Setup"
         Me.DispControlPanel.ResumeLayout(False)

@@ -10,7 +10,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>MfgControl.AdvancedHMI.My.MyApplication</StartupObject>
     <RootNamespace>MfgControl.AdvancedHMI</RootNamespace>
-    <AssemblyName>Flexure Control</AssemblyName>
+    <AssemblyName>Flexure Control 1.2</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -26,7 +26,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>C:\Users\tjw145\Documents\</PublishUrl>
+    <PublishUrl>C:\Users\tjw145\OneDrive - The University of Akron\NRL Flexible CMCs\Control Software\FlexControl4\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -36,8 +36,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -49,7 +48,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Flexure Control.xml</DocumentationFile>
+    <DocumentationFile>Flexure Control 1.2.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
@@ -63,7 +62,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Flexure Control.xml</DocumentationFile>
+    <DocumentationFile>Flexure Control 1.2.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
@@ -128,7 +127,12 @@
       <DependentUpon>ExperimentLog.vb</DependentUpon>
     </Compile>
     <Compile Include="ExperimentLog.vb" />
-    <Compile Include="Graph.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MotionSolution.vb" />
     <Compile Include="ExperimentSetupWindow.Designer.vb">
       <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>
@@ -181,6 +185,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ExperimentSetupWindow.resx">
       <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormChangeControls\MainMenuDriven\MainMenu.resx">
       <DependentUpon>MainMenu.vb</DependentUpon>

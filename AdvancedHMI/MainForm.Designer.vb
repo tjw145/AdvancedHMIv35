@@ -61,7 +61,7 @@ Partial Class MainForm
         Me.StartButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.ConnectionCheckThread = New System.ComponentModel.BackgroundWorker()
         Me.ControlBlinker = New System.Windows.Forms.Timer(Me.components)
-        Me.GraphUpdater = New System.Windows.Forms.Timer(Me.components)
+        Me.CheckIfHoming = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -71,6 +71,7 @@ Partial Class MainForm
         CType(Me.DispGraph, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -442,12 +443,11 @@ Partial Class MainForm
         '
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(4, 11)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(-2, 9)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(172, 23)
+        Me.Label2.Size = New System.Drawing.Size(108, 18)
         Me.Label2.TabIndex = 26
-        Me.Label2.Text = "Displacement, mm"
+        Me.Label2.Text = "Displacement:"
         '
         'DisplacementChart
         '
@@ -495,12 +495,11 @@ Partial Class MainForm
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(6, 11)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(0, 9)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(86, 23)
+        Me.Label3.Size = New System.Drawing.Size(53, 18)
         Me.Label3.TabIndex = 26
-        Me.Label3.Text = "Force, N"
+        Me.Label3.Text = "Force:"
         '
         'ForceChart
         '
@@ -607,6 +606,12 @@ Partial Class MainForm
         'ControlBlinker
         '
         '
+        'CheckIfHoming
+        '
+        Me.CheckIfHoming.ComComponent = Me.ModbusTCPCom1
+        Me.CheckIfHoming.PLCAddressValue = CType(resources.GetObject("CheckIfHoming.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.CheckIfHoming.Value = Nothing
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(120.0!, 120.0!)
@@ -642,6 +647,7 @@ Partial Class MainForm
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -679,6 +685,5 @@ Partial Class MainForm
     Friend WithEvents StartButtonSubscriber As AdvancedHMIControls.DataSubscriber
     Friend WithEvents ConnectionCheckThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents ControlBlinker As Timer
-    Friend WithEvents DispGraph As DataVisualization.Charting.Chart
-    Friend WithEvents GraphUpdater As Timer
+    Friend WithEvents CheckIfHoming As AdvancedHMIControls.DataSubscriber
 End Class

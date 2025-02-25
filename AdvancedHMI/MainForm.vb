@@ -4,7 +4,9 @@ Imports System.Drawing.Text
 Imports System.Runtime.CompilerServices
 Imports System.Security.Permissions
 Imports System.Threading
+Imports System.Threading.Tasks
 Imports System.Timers
+Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Threading
 Imports AdvancedHMIControls
@@ -42,9 +44,30 @@ Public Class MainForm
 
     Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
 
-    Private Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
+    Public Sub KillMCThread()
+
+        Do Until MotionControlThread.IsBusy = False
+
+            LockControls("all")
+            GlobalInstances.MotionController.CancelRequest = True
+            MotionControlThread.CancelAsync()
+            System.Windows.Forms.Application.DoEvents()
+
+        Loop
+
+    End Sub
+
+    Public Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
         StartButton.Checked = False
+
+        KillMCThread()
+
+        LockControls("unlock")
+        GlobalInstances.MotionController.Reset(ModbusTCPCom1)
+
+        'ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
+
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
     End Sub
@@ -75,7 +98,7 @@ Public Class MainForm
         ' Log all real-time data
         Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
 
-        If GlobalInstances.FinishedMoving = True Then
+        If GlobalInstances.MotionController.MovesComplete = True Then
 
             StartButton.CheckState = CheckState.Unchecked
 
@@ -93,17 +116,25 @@ Public Class MainForm
     'START/STOP TRIGGER'
     Private Sub StartButton_CheckedChanged(sender As Object, e As EventArgs) Handles StartButton.CheckedChanged
 
+        System.Windows.Forms.Application.DoEvents()
+
         If StartButton.Checked = True Then
 
             If StartReady = True Then
 
                 If PLCconnection = "Connection Status: ✔" Then
 
+                    If MotionControlThread.IsBusy = True Then
+                        KillMCThread()
+                    End If
+
+                    GlobalInstances.MotionController.Reset(ModbusTCPCom1)
                     MotionControlThread.RunWorkerAsync()
                     ExperimentRecordingTimer.Start() '<------- Might be unneeded?
                     ExperimentStopwatch.Start()
 
                     StartButton.Text = "❚❚"
+                    LockControls("run")
 
                 Else
 
@@ -119,11 +150,22 @@ Public Class MainForm
             End If
 
 
-        ElseIf StartButton.Checked = False And ExperimentStopwatch.IsRunning Then
+        ElseIf StartButton.Checked = False Then
 
-            MotionControlThread.CancelAsync() ' throws an error
-            ExperimentRecordingTimer.Stop()
-            ExperimentStopwatch.Stop()
+            If ExperimentRecordingTimer.Enabled = True Then
+                ExperimentRecordingTimer.Stop()
+            End If
+
+            If ExperimentStopwatch.IsRunning Then
+                ExperimentStopwatch.Stop()
+            End If
+
+            If MotionControlThread.IsBusy = True Then
+                KillMCThread()
+                StopButton.PerformClick()
+            End If
+
+            Thread.Sleep(1000)
 
             If SaveFileDialog.ShowDialog() = DialogResult.OK Then
 
@@ -133,6 +175,7 @@ Public Class MainForm
 
             ModbusTCPCom1.BeginWrite("017186", 1, New String() {"1"}) 'Trigger "off" button
             StartButton.Text = "▶"
+            LockControls("unlock")
 
         End If
 
@@ -179,19 +222,26 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
+    Public Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
-        If MotionControlThread.CancellationPending = True Then
-            'this probably doesn't work
-            Return
+        'Time spent trying to figure out how make this multithreading work correctly:
+        '16 days
 
-        End If
 
-        With GlobalInstances.MotionController
+        While MotionControlThread.CancellationPending = False AndAlso GlobalInstances.MotionController.MovesComplete = False
 
-            .OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
+            'Dim asyncOutputThread As Task = Task.Factory.StartNew(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
+            'asyncOutputThread.Start()
+            'ThreadPool.QueueUserWorkItem(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
+            'Task.Run(Sub() GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
 
-        End With
+            GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
+            System.Windows.Forms.Application.DoEvents()
+        End While
+
+        System.Windows.Forms.Application.DoEvents()
+        e.Cancel = True
+        Exit Sub
 
     End Sub
 
@@ -254,11 +304,63 @@ Public Class MainForm
 
     Private blinkCount As Integer = 0
 
+    Private Sub CheckIfHoming_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfHoming.DataChanged
+
+        If CheckIfHoming.Value = "True" Then
+
+            LockControls("all")
+
+        ElseIf CheckIfHoming.Value = "False" Then
+
+            LockControls("unlock")
+
+        End If
+
+    End Sub
+
+    Private blinkCount As Integer = 0
+
     'Private Sub GraphUpdater_Tick(sender As Object, e As EventArgs) Handles GraphUpdater.Tick
 
     '    DispGraph.Series.Clear()
     '    DispGraph.Series.Add(DisplacementGraphData.CurrentData(TestDataGen()))
 
     'End Sub
+    Public Sub LockControls(keyword As String)
 
+        If keyword = "all" Then
+            ForceZero.Enabled = False
+            DisplacementZero.Enabled = False
+            HW_Zero.Enabled = False
+            JogMinus.Enabled = False
+            JogPlus.Enabled = False
+            SetOrigin.Enabled = False
+            StartButton.Enabled = False
+        End If
+
+        If keyword = "run" Then
+            ForceZero.Enabled = False
+            DisplacementZero.Enabled = False
+            HW_Zero.Enabled = False
+            JogMinus.Enabled = False
+            JogPlus.Enabled = False
+            SetOrigin.Enabled = False
+            StartButton.Enabled = True
+        End If
+
+        If keyword = "unlock" Then
+            ForceZero.Enabled = True
+            DisplacementZero.Enabled = True
+            HW_Zero.Enabled = True
+            JogMinus.Enabled = True
+            JogPlus.Enabled = True
+            SetOrigin.Enabled = True
+            StartButton.Enabled = True
+        End If
+
+    End Sub
+
+    Private Sub ConnectionIndicator_Click(sender As Object, e As EventArgs) Handles ConnectionIndicator.Click
+        DebugWindow.ShowDialog()
+    End Sub
 End Class
