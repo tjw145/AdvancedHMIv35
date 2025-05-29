@@ -12,9 +12,9 @@ Public Class MotionProfile
 
     '============== Maximum Physical Ratings: ===============
 
-    Private maxRPM As Integer = 2400 ' motor sharft revolutions per minute
-    Private maxAccel As Integer = 32 ' mm/s^2
-    Private maxPPS As Integer = 100000 ' pulses per second
+    Private maxRPM As Integer = 2400    ' motor sharft revolutions per minute
+    Private maxAccel As Integer = 32    ' mm/s^2
+    Private maxPPS As Integer = 100000  ' pulses per second
 
     '========== Physical Hardware Configurations: ===========
 
@@ -27,8 +27,9 @@ Public Class MotionProfile
 
     '================== Output Variables: ===================
 
-    Public AccelerationPLC As Int16 ' PLC = Pulses/sec^2
-    Public AccelerationMM As Decimal ' mm = mm/sec^2
+    Public NewPosition As Decimal       ' mm, for experiment recording file metadata
+    Public AccelerationPLC As Int16     ' PLC = Pulses/sec^2
+    Public AccelerationMM As Decimal    ' mm = mm/sec^2
     Public DecelerationPLC As Int16
     Public DecelerationMM As Decimal
     Public TargetPositionPLC As Int16
@@ -37,7 +38,6 @@ Public Class MotionProfile
     Public AccelDecelDistanceTime As Decimal
     Public CoastTime As Decimal
     Public TotalMoveTimeMS As Integer
-    Public TotalExperimentTime As Decimal
     Public DwellTime As UInt16
 
     Public Function GenerateProfile(moveTime As Decimal, distance As Decimal, dwell As Decimal) As Boolean
@@ -60,6 +60,7 @@ Public Class MotionProfile
         If accel <= maxAccel Then
 
             withinLimits = True
+            NewPosition = distance
             AccelerationMM = CDec(accel)
             DecelerationMM = CDec(accel)
             PeakVelocityMM = CDec((2 * distance) / moveTime)
@@ -67,13 +68,16 @@ Public Class MotionProfile
 
         ElseIf accel > maxAccel Then
 
-            withinLimits = False
-            AccelerationMM = maxAccel
-            DecelerationMM = maxAccel
-            PeakVelocityMM = maxAccel
-            AccelDecelDistanceTime = CDec((1 / 2) * 1 * (accel) + (1 / 2) * 1 * (accel))
-            CoastTime = ((distance - AccelDecelDistanceTime) / PeakVelocityMM)
-            TotalMoveTimeMS = CInt((CoastTime + 2) * 1000)
+            '**Trapezodial code branch commented out since it's not being used and could potentially lead to bugs(?)
+            'Also, I think there's a math error or two in there. (not the velocity one though, that's just a happy accident with the motor limits)
+
+            'withinLimits = False
+            'AccelerationMM = maxAccel
+            'DecelerationMM = maxAccel
+            'PeakVelocityMM = maxAccel
+            'AccelDecelDistanceTime = CDec((1 / 2) * 1 * (accel) + (1 / 2) * 1 * (accel))
+            'CoastTime = ((distance - AccelDecelDistanceTime) / PeakVelocityMM)
+            'TotalMoveTimeMS = CInt((CoastTime + 2) * 1000)
 
         End If
 
@@ -137,7 +141,8 @@ Public Class MotionProfile
 
     Function DecimalShift(input As Integer) As Int16
 
-        Return CShort(input / 10)
+        Return CShort(input / 10) '<----- the fuck? that's gotta be backwards right?
+        'this might actually be the problem (?)
 
     End Function
 

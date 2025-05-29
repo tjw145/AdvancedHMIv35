@@ -23,12 +23,12 @@ Partial Class ExperimentSetupWindow
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.DispControlPanel = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -187,7 +187,7 @@ Partial Class ExperimentSetupWindow
         Me.ControlForDisp.Location = New System.Drawing.Point(3, 3)
         Me.ControlForDisp.Name = "ControlForDisp"
         Me.ControlForDisp.Size = New System.Drawing.Size(185, 19)
-        Me.ControlForDisp.TabIndex = 90
+        Me.ControlForDisp.TabIndex = 46
         Me.ControlForDisp.Text = "Control for Displacement"
         Me.ControlForDisp.UseVisualStyleBackColor = True
         '
@@ -199,25 +199,25 @@ Partial Class ExperimentSetupWindow
         Me.DisplacementStepsInput.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
         Me.DisplacementStepsInput.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DisplacementStepsInput.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Arial", 8.25!)
-        DataGridViewCellStyle16.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle16.Padding = New System.Windows.Forms.Padding(2)
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DisplacementStepsInput.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial", 8.25!)
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.Padding = New System.Windows.Forms.Padding(2)
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DisplacementStepsInput.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.DisplacementStepsInput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DisplacementStepsInput.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.target, Me.time, Me.dwell, Me.delete})
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Arial", 8.25!)
-        DataGridViewCellStyle18.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DisplacementStepsInput.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DisplacementStepsInput.DefaultCellStyle = DataGridViewCellStyle3
         Me.DisplacementStepsInput.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DisplacementStepsInput.EnableHeadersVisualStyles = False
         Me.DisplacementStepsInput.GridColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
@@ -257,9 +257,9 @@ Partial Class ExperimentSetupWindow
         'delete
         '
         Me.delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.delete.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.delete.DefaultCellStyle = DataGridViewCellStyle2
         Me.delete.FillWeight = 50.76142!
         Me.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.delete.HeaderText = ""
@@ -348,12 +348,14 @@ Partial Class ExperimentSetupWindow
         '
         Me.ControlForForce.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.ControlForForce.AutoSize = True
+        Me.ControlForForce.Checked = True
+        Me.ControlForForce.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ControlForForce.Enabled = False
         Me.ControlForForce.ForeColor = System.Drawing.Color.White
         Me.ControlForForce.Location = New System.Drawing.Point(3, 3)
         Me.ControlForForce.Name = "ControlForForce"
         Me.ControlForForce.Size = New System.Drawing.Size(137, 19)
-        Me.ControlForForce.TabIndex = 90
+        Me.ControlForForce.TabIndex = 47
         Me.ControlForForce.Text = "Control for Force"
         Me.ControlForForce.UseVisualStyleBackColor = True
         '
@@ -363,25 +365,25 @@ Partial Class ExperimentSetupWindow
         Me.ForceStepsInput.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
         Me.ForceStepsInput.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.ForceStepsInput.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Arial", 8.25!)
-        DataGridViewCellStyle13.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle13.Padding = New System.Windows.Forms.Padding(2)
-        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.ForceStepsInput.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial", 8.25!)
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle4.Padding = New System.Windows.Forms.Padding(2)
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.ForceStepsInput.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.ForceStepsInput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.ForceStepsInput.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewButtonColumn1})
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Arial", 8.25!)
-        DataGridViewCellStyle15.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.ForceStepsInput.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial", 8.25!)
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.ForceStepsInput.DefaultCellStyle = DataGridViewCellStyle6
         Me.ForceStepsInput.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ForceStepsInput.Enabled = False
         Me.ForceStepsInput.EnableHeadersVisualStyles = False
@@ -423,9 +425,9 @@ Partial Class ExperimentSetupWindow
         'DataGridViewButtonColumn1
         '
         Me.DataGridViewButtonColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.DataGridViewButtonColumn1.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.DataGridViewButtonColumn1.DefaultCellStyle = DataGridViewCellStyle5
         Me.DataGridViewButtonColumn1.FillWeight = 50.76142!
         Me.DataGridViewButtonColumn1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.DataGridViewButtonColumn1.HeaderText = ""
@@ -472,43 +474,36 @@ Partial Class ExperimentSetupWindow
         Me.hzLabel.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.hzLabel.AutoSize = True
         Me.hzLabel.ForeColor = System.Drawing.Color.White
-        Me.hzLabel.Location = New System.Drawing.Point(22, 10)
+        Me.hzLabel.Location = New System.Drawing.Point(27, 0)
         Me.hzLabel.Name = "hzLabel"
-        Me.hzLabel.Size = New System.Drawing.Size(140, 16)
+        Me.hzLabel.Size = New System.Drawing.Size(110, 32)
         Me.hzLabel.TabIndex = 39
         Me.hzLabel.Text = "Data capture rate (Hz):"
         Me.hzLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'RecForceCheckBox
         '
-        Me.ForceCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.ForceCheckBox.AutoSize = True
-        Me.ForceCheckBox.Checked = True
-        Me.ForceCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ForceCheckBox.Location = New System.Drawing.Point(143, 75)
-        Me.ForceCheckBox.Name = "ForceCheckBox"
-        Me.ForceCheckBox.Size = New System.Drawing.Size(15, 14)
-        Me.ForceCheckBox.TabIndex = 47
-        Me.ForceCheckBox.UseVisualStyleBackColor = True
+        Me.RecForceCheckBox.Enabled = False
+        Me.RecForceCheckBox.Location = New System.Drawing.Point(143, 69)
+        Me.RecForceCheckBox.Name = "RecForceCheckBox"
+        Me.RecForceCheckBox.Size = New System.Drawing.Size(104, 24)
+        Me.RecForceCheckBox.TabIndex = 40
         '
         'RecDispCheckBox
         '
-        Me.DispCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.DispCheckBox.AutoSize = True
-        Me.DispCheckBox.Checked = True
-        Me.DispCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.DispCheckBox.Location = New System.Drawing.Point(143, 42)
-        Me.DispCheckBox.Name = "DispCheckBox"
-        Me.DispCheckBox.Size = New System.Drawing.Size(15, 14)
-        Me.DispCheckBox.TabIndex = 46
-        Me.DispCheckBox.UseVisualStyleBackColor = True
+        Me.RecDispCheckBox.Checked = True
+        Me.RecDispCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.RecDispCheckBox.Location = New System.Drawing.Point(143, 36)
+        Me.RecDispCheckBox.Name = "RecDispCheckBox"
+        Me.RecDispCheckBox.Size = New System.Drawing.Size(104, 24)
+        Me.RecDispCheckBox.TabIndex = 41
         '
         'Label2
         '
         Me.Label2.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(48, 76)
+        Me.Label2.Location = New System.Drawing.Point(28, 74)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(109, 16)
         Me.Label2.TabIndex = 41
@@ -525,7 +520,7 @@ Partial Class ExperimentSetupWindow
         Me.RecordingRateHz.Font = New System.Drawing.Font("Arial", 9.25!)
         Me.RecordingRateHz.ForeColor = System.Drawing.Color.White
         Me.RecordingRateHz.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.RecordingRateHz.Location = New System.Drawing.Point(143, 5)
+        Me.RecordingRateHz.Location = New System.Drawing.Point(143, 4)
         Me.RecordingRateHz.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.RecordingRateHz.Minimum = New Decimal(New Integer() {1, 0, 0, 65536})
         Me.RecordingRateHz.Name = "RecordingRateHz"
@@ -539,9 +534,9 @@ Partial Class ExperimentSetupWindow
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label1.AutoSize = True
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(8, 43)
+        Me.Label1.Location = New System.Drawing.Point(9, 33)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(164, 16)
+        Me.Label1.Size = New System.Drawing.Size(128, 32)
         Me.Label1.TabIndex = 40
         Me.Label1.Text = "Record displacment (mm):"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

@@ -8,27 +8,32 @@ Imports AdvancedHMIDrivers
 
 Public Class MotionControlSolution
 
-    'This class contains methods for sending commands to the flexure rig's programmable logic controller.
+    'This class contains methods for generating and sending commands to the flexure rig's programmable logic controller.
     '
-    'Note: Our PLC cannot recieve direct commands from the PC -- the PC can only write values to a few selected
-    'memory registers. Because of this, the only way to communicate a complete cycle's worth of move-commands
-    'is to feed them from the PC to the PLC one move at a time. After each command has been executed, the next 
-    'command is given. 
+    'Note: Our PLC cannot recieve a full array of commands from the PC; the PC can only write values to a few selected
+    'memory registers. Because of this, the only real way to communicate a complete cycle's worth of move-commands
+    'is to feed them from the PC to the PLC one set at a time. After each command has been executed, the PLC
+    'requests a new command by pulling the ACK bit low. When ACK is pulled low, the next set of values are written
+    'to the memory registers, as well as a send recipt from the PC. If you're cool, you'll recognize this that this
+    'is essentially a very trashy hand-written serial protocol running on top of another awful serial protocol (MODBUS).
+    'Sorry in advance :)
     '
     'Thomas Waybright, 2/12/2025
 
     '============== Hard-coded PLC memory address values: ===============
 
+    'Another note: these strings are hexadecimal MODBUS adresses.
+
     Private plcACKaddress As String = "017384"                  'Move command acknowledgement bit address
     Private plcReceipt As String = "017383"                     'Sent to the PLC after data is transfered as a check
-    Private plcRequestDataTrigger As String = "018287"          'Forces the PLC to ask for a command
+    Private plcRequestDataTrigger As String = "018287"          'Forces the PLC to ask for a command <------ not implemented in PLC code?
 
-    Private plcNextMoveTargetAddress As String = "416585"      'Memory addresss of next move command; current command handled internally by PLC /
+    Private plcNextMoveTargetAddress As String = "416585"       'Memory addresss of next move command; current command handled internally by PLC /
     Private plcNextMoveAccelAddress As String = "416587"
-    Private plcNextMoveDwellTimeAddress As String = "416589"   ' /
+    Private plcNextMoveDwellTimeAddress As String = "416589"    ' /
     Private plcRunAddress As String = "017183"                  '"Run" button
     Private plcStopAddress As String = "017186"                 '"Stop" button
-    Private plcResetAddress As String = "018383"                      ' Resets motion data
+    Private plcResetAddress As String = "018383"                ' Resets motion data
 
     '====================================================================
 
@@ -69,7 +74,7 @@ Public Class MotionControlSolution
     Public Function MoveToStartPosition(modbusDriver As ModbusTCPCom, motionProfiles As List(Of MotionProfile)) As Boolean
 
         ' This function takes the difference between the platform's current position and its desired starting position,
-        ' and commands the platform to move there using the user-defined experiment parameters. This move-command is 
+        ' and commands the platform to move there using the user-defined parameters. This move-command is 
         ' limited to an acceleration equal to that of the first step in the "experiment procedure" window.
 
         Dim currentPosition As Decimal = CDec(MainForm.ModbusTCPCom1.Read("400008")) ' Pulses
@@ -171,7 +176,7 @@ Public Class MotionControlSolution
 
         'Wait for the final move to finish, plus a little extra, before triggering "stop" bit.
         Thread.Sleep(finalMoveTime + 200)
-        modbusDriver.BeginWrite(plcStopAddress, 1, New String() {"1"})
+        modbusDriver.BeginWrite(plcStopAddress, 1, New String() {"1"}) 'Turn "stop" bit on 
 
         MovesComplete = True
         RaiseEvent OnFinished()
@@ -203,7 +208,7 @@ Public Class MotionControlSolution
 
                     'Check for changes every (x)ms. Blocking function.
                     ACK = CBool(driver.Read(plcACKaddress))
-                    Thread.Sleep(30)
+                    Thread.Sleep(30) '<----------------------------- I THINK I FOUND THE DELAY
 
                 Catch ex As Exception
 

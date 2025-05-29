@@ -218,7 +218,7 @@ Public Class MainForm
         ConnectionCheckThread.RunWorkerAsync()
         MotionControlThread.WorkerSupportsCancellation = True
 
-        GraphUpdater.Start()
+        'GraphUpdater.Start()
 
     End Sub
 
@@ -277,6 +277,8 @@ Public Class MainForm
 
     Private Sub ControlBlinker_Tick(sender As Object, e As EventArgs) Handles ControlBlinker.Tick
 
+        Dim blinkCount As Integer = 0
+
         If blinkCount < 5 Then
 
             If ConnectionIndicator.ForeColor = Color.White Then
@@ -301,8 +303,6 @@ Public Class MainForm
 
 
     End Sub
-
-    Private blinkCount As Integer = 0
 
     Private Sub CheckIfHoming_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfHoming.DataChanged
 
@@ -329,8 +329,8 @@ Public Class MainForm
     Public Sub LockControls(keyword As String)
 
         If keyword = "all" Then
-            ForceZero.Enabled = False
-            DisplacementZero.Enabled = False
+            'ForceZero.Enabled = False              Not Implemented
+            'DisplacementZero.Enabled = False       Not Implemented
             HW_Zero.Enabled = False
             JogMinus.Enabled = False
             JogPlus.Enabled = False
@@ -349,8 +349,8 @@ Public Class MainForm
         End If
 
         If keyword = "unlock" Then
-            ForceZero.Enabled = True
-            DisplacementZero.Enabled = True
+            'ForceZero.Enabled = True               Not Implemented
+            'DisplacementZero.Enabled = True        Not Implemented
             HW_Zero.Enabled = True
             JogMinus.Enabled = True
             JogPlus.Enabled = True
