@@ -117,29 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="residual_compensation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\residual_compensation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Traverse_time" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Traverse_time.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cycles" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cycles.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="flex_distance" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flex_distance.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AdvancedHMILogoBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AdvancedHMILogoBR.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="data_rate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\data_rate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="progressive_compensation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\progressive_compensation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="data_rate1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\data_rate1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>The data log rate control dictates the rate at which experimental results are recorded, in Hertz.
+
+A higher data capture rate will result in a higher resolution of graph data, but may be unnecessary. Rates lower than 5Hz are not reccomended, and rates higher than 10-15Hz may be unstable, depending on your PC. 
+
+This software's timing is not perfect - it has to share it's resources with every other program running on your computer, and this can cause anomalies in recordings. To ensure maximum consistency, close any unnecessary programs before an experiment! </value>
   </data>
 </root>

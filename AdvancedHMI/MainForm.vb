@@ -80,17 +80,20 @@ Public Class MainForm
         Dim displacment As Integer = 0
         Dim force As Integer = 0
 
-        If ExperimentSetupWindow.RecDispCheckBox.CheckState = CheckState.Checked Then
+        '* Note: the two statements below correspond to force and displacment recording; this will need dealt with once we
+        '*       implement force tracking (if ever), but for now it will always record displacement.
 
-            displacment = ModbusTCPCom1.Read("400008") '"accurate" position log address
+        'If ExperimentSetupWindow.RecDispCheckBox.CheckState = CheckState.Checked Then
 
-        End If
+        displacment = ModbusTCPCom1.Read("400008") '"accurate" position log address
 
-        If ExperimentSetupWindow.RecForceCheckBox.CheckState = CheckState.Checked Then
+        'End If
 
-            force = 0 ' whatever the force PLC address will end up being
+        'If ExperimentSetupWindow.RecForceCheckBox.CheckState = CheckState.Checked Then
 
-        End If
+        '    force = 0 ' whatever the force PLC address will end up being
+
+        'End If
 
         ' Gets current stopwatch time in seconds, and rounds to nearest 0.1 ms
         currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
@@ -360,7 +363,4 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub ConnectionIndicator_Click(sender As Object, e As EventArgs) Handles ConnectionIndicator.Click
-        DebugWindow.ShowDialog()
-    End Sub
 End Class

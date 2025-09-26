@@ -123,23 +123,53 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgCompensationHelpWindow.Designer.vb">
+      <DependentUpon>ProgCompensationHelpWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProgCompensationHelpWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataLogRateHelpWindow.Designer.vb">
+      <DependentUpon>DataLogRateHelpWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DataLogRateHelpWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RadiiCompensationHelpWindow.Designer.vb">
+      <DependentUpon>RadiiCompensationHelpWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="RadiiCompensationHelpWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisplacementHelpWindow.Designer.vb">
+      <DependentUpon>DisplacementHelpWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DisplacementHelpWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TraverseTimeHelpWindow.Designer.vb">
+      <DependentUpon>TraverseTimeHelpWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TraverseTimeHelpWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CyclesHelpWindow.Designer.vb">
+      <DependentUpon>CyclesHelpWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CyclesHelpWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ExperimentLog.Designer.vb">
       <DependentUpon>ExperimentLog.vb</DependentUpon>
     </Compile>
     <Compile Include="ExperimentLog.vb" />
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Form1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MotionSolution.vb" />
     <Compile Include="ExperimentSetupWindow.Designer.vb">
       <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>
     </Compile>
     <Compile Include="ExperimentSetupWindow.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MotionSolution.vb" />
     <Compile Include="GlobalInstances.vb" />
     <Compile Include="MotionProfile.vb" />
     <Compile Include="FormChangeControls\FormChangeButton.vb">
@@ -183,11 +213,26 @@
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ProgCompensationHelpWindow.resx">
+      <DependentUpon>ProgCompensationHelpWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataLogRateHelpWindow.resx">
+      <DependentUpon>DataLogRateHelpWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RadiiCompensationHelpWindow.resx">
+      <DependentUpon>RadiiCompensationHelpWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisplacementHelpWindow.resx">
+      <DependentUpon>DisplacementHelpWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TraverseTimeHelpWindow.resx">
+      <DependentUpon>TraverseTimeHelpWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CyclesHelpWindow.resx">
+      <DependentUpon>CyclesHelpWindow.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExperimentSetupWindow.resx">
       <DependentUpon>ExperimentSetupWindow.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormChangeControls\MainMenuDriven\MainMenu.resx">
       <DependentUpon>MainMenu.vb</DependentUpon>
@@ -240,6 +285,13 @@
     <Content Include="icons\AHMI32x32-3.ico" />
     <Content Include="icons\AHMI32x32-4.ico" />
     <Content Include="icons\Credit.txt" />
+    <None Include="Resources\cycles.png" />
+    <None Include="Resources\Traverse_time.png" />
+    <None Include="Resources\flex_distance.png" />
+    <None Include="Resources\residual_compensation.png" />
+    <None Include="Resources\progressive_compensation.png" />
+    <None Include="Resources\data_rate.png" />
+    <None Include="Resources\data_rate1.png" />
     <Content Include="SampleINIfiles\Alarms.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="ReleaseNotes399.txt" />

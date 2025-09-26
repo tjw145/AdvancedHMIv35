@@ -55,8 +55,12 @@ Public Class ExperimentLog
             .WriteLine("SoftwareVersion:" & CStr(GlobalInstances.CurrentVersion))
             .WriteLine("Time: " & CStr(System.DateTime.Now))
             .WriteLine()
-            .WriteLine("#Data capture rate (hz): " & CStr(ExperimentSetupWindow.RecordingRateHz.Value) & "Hz")
-            .WriteLine("No. of Cycles: " & CStr(ExperimentSetupWindow.CyclesControl.Value))
+            .WriteLine("#Data Log rate (Hz): " & CStr(ExperimentSetupWindow.DataLogRateInput.Value) & "Hz")
+            .WriteLine("No. of Cycles: " & CStr(ExperimentSetupWindow.CyclesInput.Value))
+            .WriteLine("Traverse Time (s): " & CStr(ExperimentSetupWindow.TraverseTimeInput.Value))
+            .WriteLine("Flex Dist. (mm): " & CStr(ExperimentSetupWindow.FlexDistInput.Value))
+            .WriteLine("Traverse Time: " & CStr(ExperimentSetupWindow.TraverseTimeInput.Value))
+
             .WriteLine()
 
             'Headers (for motion inputs)
