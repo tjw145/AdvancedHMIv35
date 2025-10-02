@@ -123,6 +123,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HardwareLimits.vb" />
     <Compile Include="ProgCompensationHelpWindow.Designer.vb">
       <DependentUpon>ProgCompensationHelpWindow.vb</DependentUpon>
     </Compile>
@@ -170,7 +171,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MotionSolution.vb" />
-    <Compile Include="GlobalInstances.vb" />
+    <Compile Include="Globals.vb" />
     <Compile Include="MotionProfile.vb" />
     <Compile Include="FormChangeControls\FormChangeButton.vb">
       <SubType>Component</SubType>

@@ -60,7 +60,7 @@ Partial Class DisplacementHelpWindow
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'DisplacmentHelpWindow
+        'DisplacementHelpWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -68,7 +68,8 @@ Partial Class DisplacementHelpWindow
         Me.ClientSize = New System.Drawing.Size(560, 451)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Name = "DisplacmentHelpWindow"
+        Me.Name = "DisplacementHelpWindow"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = """Displacement"" Information"
         Me.GroupBox1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

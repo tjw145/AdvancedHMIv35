@@ -52,36 +52,14 @@ Public Class ExperimentLog
         With writer
 
             'Writes experimental parameters as metadata
-            .WriteLine("SoftwareVersion:" & CStr(GlobalInstances.CurrentVersion))
+            .WriteLine("SoftwareVersion:" & CStr(Globals.CurrentVersion))
             .WriteLine("Time: " & CStr(System.DateTime.Now))
             .WriteLine()
-            .WriteLine("#Data Log rate (Hz): " & CStr(ExperimentSetupWindow.DataLogRateInput.Value) & "Hz")
-            .WriteLine("No. of Cycles: " & CStr(ExperimentSetupWindow.CyclesInput.Value))
-            .WriteLine("Traverse Time (s): " & CStr(ExperimentSetupWindow.TraverseTimeInput.Value))
-            .WriteLine("Flex Dist. (mm): " & CStr(ExperimentSetupWindow.FlexDistInput.Value))
-            .WriteLine("Traverse Time: " & CStr(ExperimentSetupWindow.TraverseTimeInput.Value))
-
+            .WriteLine("No. of Cycles: " & CStr(Globals.numberOfCycles))
+            .WriteLine("Traverse Time (s): " & CStr(Globals.traverseTime_s))
+            .WriteLine("Displacement. (mm): " & CStr(Globals.displacement_mm))
+            .WriteLine("#Data Log rate (Hz): " & CStr(1 / (Globals.dataLogRate_ms / 1000) & "Hz")) 'Conv. ms to Hz
             .WriteLine()
-
-            'Headers (for motion inputs)
-            .Write("Command #:" & ",")
-            .Write("Move Dist. (mm):" & ",")
-            .Write("Move Time (s):" & ",")
-            .Write("Accel./Decel. (mm/s^2):" & ",")
-            .Write("Peak Vel. (mm/s):")
-            .WriteLine()
-
-            'Inputs
-            For index As Integer = 0 To (GlobalInstances.MovePoints.Count - 1)
-
-                .Write("#" & (index + 1) & ",")
-                .Write(GlobalInstances.MovePoints(index).NewPosition & ",")
-                .Write((GlobalInstances.MovePoints(index).TotalMoveTimeMS) / 1000 & ",") ' Milliseconds to seconds conv.
-                .Write(GlobalInstances.MovePoints(index).AccelerationMM & ",")
-                .Write(GlobalInstances.MovePoints(index).PeakVelocityMM & ",")
-                .WriteLine()
-
-            Next
 
             'Write "end of metadata" marker
             .WriteLine("/metadata")
@@ -90,7 +68,7 @@ Public Class ExperimentLog
             'Writes column headers
             .Write("Time (s): " & ",")
             .Write("Displacement (mm): " & ",")
-            .Write("Force (N): " & ",")
+            '.Write("Force (N): " & ",")
             .WriteLine()
 
 

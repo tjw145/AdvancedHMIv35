@@ -44,29 +44,15 @@ Public Class MainForm
 
     Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
 
-    Public Sub KillMCThread()
-
-        Do Until MotionControlThread.IsBusy = False
-
-            LockControls("all")
-            GlobalInstances.MotionController.CancelRequest = True
-            MotionControlThread.CancelAsync()
-            System.Windows.Forms.Application.DoEvents()
-
-        Loop
-
-    End Sub
 
     Public Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
         StartButton.Checked = False
 
-        KillMCThread()
+        'send kill cmd to PLC <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!!!!!!!!!!!!!!!!!!!!!
+
 
         LockControls("unlock")
-        GlobalInstances.MotionController.Reset(ModbusTCPCom1)
-
-        'ModbusTCPCom1.BeginWrite("061490", 1, New String() {"1"}) 'Forces PLC to hard-reset. Must toggle run/stop switch after. This functions as a kind of E-stop.
 
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
 
@@ -80,32 +66,14 @@ Public Class MainForm
         Dim displacment As Integer = 0
         Dim force As Integer = 0
 
-        '* Note: the two statements below correspond to force and displacment recording; this will need dealt with once we
-        '*       implement force tracking (if ever), but for now it will always record displacement.
-
-        'If ExperimentSetupWindow.RecDispCheckBox.CheckState = CheckState.Checked Then
-
-        displacment = ModbusTCPCom1.Read("400008") '"accurate" position log address
-
-        'End If
-
-        'If ExperimentSetupWindow.RecForceCheckBox.CheckState = CheckState.Checked Then
-
-        '    force = 0 ' whatever the force PLC address will end up being
-
-        'End If
+        ' Gets "high accuracy" position data from PLC
+        displacment = ModbusTCPCom1.Read("400008")
 
         ' Gets current stopwatch time in seconds, and rounds to nearest 0.1 ms
         currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
 
         ' Log all real-time data
         Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
-
-        If GlobalInstances.MotionController.MovesComplete = True Then
-
-            StartButton.CheckState = CheckState.Unchecked
-
-        End If
 
     End Sub
 
@@ -127,12 +95,11 @@ Public Class MainForm
 
                 If PLCconnection = "Connection Status: ✔" Then
 
-                    If MotionControlThread.IsBusy = True Then
-                        KillMCThread()
-                    End If
 
-                    GlobalInstances.MotionController.Reset(ModbusTCPCom1)
-                    MotionControlThread.RunWorkerAsync()
+                    'trigger control code in PLC
+
+
+
                     ExperimentRecordingTimer.Start() '<------- Might be unneeded?
                     ExperimentStopwatch.Start()
 
@@ -163,11 +130,6 @@ Public Class MainForm
                 ExperimentStopwatch.Stop()
             End If
 
-            If MotionControlThread.IsBusy = True Then
-                KillMCThread()
-                StopButton.PerformClick()
-            End If
-
             Thread.Sleep(1000)
 
             If SaveFileDialog.ShowDialog() = DialogResult.OK Then
@@ -190,19 +152,19 @@ Public Class MainForm
 
             If CBool(ModbusTCPCom1.Read("018384")) = False Then
 
-                GlobalInstances.PLCconnection = "Connection Status: ✔"
+                Globals.PLCconnection = "Connection Status: ✔"
                 Return True
 
             Else
 
-                GlobalInstances.PLCconnection = "Connection Status: ❌"
+                Globals.PLCconnection = "Connection Status: ❌"
                 Return False
 
             End If
 
         Catch ex As Exception
 
-            GlobalInstances.PLCconnection = "Connection Status: ❌"
+            Globals.PLCconnection = "Connection Status: ❌"
             Return False
 
         End Try
@@ -219,52 +181,31 @@ Public Class MainForm
 
         ConnectionCheckTimer.Start()
         ConnectionCheckThread.RunWorkerAsync()
-        MotionControlThread.WorkerSupportsCancellation = True
-
-        'GraphUpdater.Start()
 
     End Sub
 
-    Public Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
+    'Public Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
 
-        'Time spent trying to figure out how make this multithreading work correctly:
-        '16 days
+    '    'Time spent trying to figure out how make this multithreading work correctly:
+    '    '16 days
 
 
-        While MotionControlThread.CancellationPending = False AndAlso GlobalInstances.MotionController.MovesComplete = False
+    '    While MotionControlThread.CancellationPending = False AndAlso Globals.MotionController.MovesComplete = False
 
-            'Dim asyncOutputThread As Task = Task.Factory.StartNew(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
-            'asyncOutputThread.Start()
-            'ThreadPool.QueueUserWorkItem(GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
-            'Task.Run(Sub() GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, GlobalInstances.cycles))
+    '        'Dim asyncOutputThread As Task = Task.Factory.StartNew(Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, Globals.cycles))
+    '        'asyncOutputThread.Start()
+    '        'ThreadPool.QueueUserWorkItem(Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, Globals.cycles))
+    '        'Task.Run(Sub() Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, Globals.cycles))
 
-            GlobalInstances.MotionController.OutputMotionSolution(ModbusTCPCom1, GlobalInstances.MovePoints, cycles)
-            System.Windows.Forms.Application.DoEvents()
-        End While
+    '        Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, cycles)
+    '        System.Windows.Forms.Application.DoEvents()
+    '    End While
 
-        System.Windows.Forms.Application.DoEvents()
-        e.Cancel = True
-        Exit Sub
+    '    System.Windows.Forms.Application.DoEvents()
+    '    e.Cancel = True
+    '    Exit Sub
 
-    End Sub
-
-    Private Sub StartButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles StartButtonSubscriber.DataChanged
-
-        'I don't think this does anything but I'm too scared to remove it.
-
-        Dim runBitOn = StartButtonSubscriber.Value
-
-        If runBitOn Is "False" Then
-
-            StartButton.CheckState = CheckState.Unchecked
-
-        ElseIf runBitOn Is "True" Then
-
-            StartButton.CheckState = CheckState.Checked
-
-        End If
-
-    End Sub
+    'End Sub
 
     Private Sub ConnectionCheckThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ConnectionCheckThread.DoWork
 
@@ -274,11 +215,12 @@ Public Class MainForm
             System.Threading.Thread.Sleep(1000)
 
         End While
-        Return
 
     End Sub
 
     Private Sub ControlBlinker_Tick(sender As Object, e As EventArgs) Handles ControlBlinker.Tick
+
+        ' Makes the PLC connection indicator blink repeatedly if you try to run without being connected
 
         Dim blinkCount As Integer = 0
 
@@ -321,15 +263,13 @@ Public Class MainForm
 
     End Sub
 
+    'for connection check blinker ^^^
     Private blinkCount As Integer = 0
 
-    'Private Sub GraphUpdater_Tick(sender As Object, e As EventArgs) Handles GraphUpdater.Tick
-
-    '    DispGraph.Series.Clear()
-    '    DispGraph.Series.Add(DisplacementGraphData.CurrentData(TestDataGen()))
-
-    'End Sub
     Public Sub LockControls(keyword As String)
+
+        'Locks controls while flex rig is in motion to prevent damage or accidental interruptions during
+        'experiments; has three different modes.
 
         If keyword = "all" Then
             'ForceZero.Enabled = False              Not Implemented

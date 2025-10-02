@@ -24,7 +24,6 @@ Partial Class ExperimentSetupWindow
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ExperimentSetupWindow))
-        Me.EthernetIPforCLXCom1 = New AdvancedHMIDrivers.EthernetIPforCLXCom(Me.components)
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.DataLogRateHelp = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -41,7 +40,7 @@ Partial Class ExperimentSetupWindow
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.FlexDistInput = New System.Windows.Forms.NumericUpDown()
+        Me.DisplacementInput = New System.Windows.Forms.NumericUpDown()
         Me.RadiiCompInput = New System.Windows.Forms.NumericUpDown()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.ProgCompInput = New System.Windows.Forms.CheckBox()
@@ -51,32 +50,19 @@ Partial Class ExperimentSetupWindow
         Me.Label7 = New System.Windows.Forms.Label()
         Me.EstTimeLabel = New System.Windows.Forms.Label()
         Me.ConfirmButton = New System.Windows.Forms.Button()
-        CType(Me.EthernetIPforCLXCom1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.EthernetIPforCLXCom1 = New AdvancedHMIDrivers.EthernetIPforCLXCom(Me.components)
         Me.GroupBox4.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.DataLogRateInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         CType(Me.CyclesInput, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.FlexDistInput, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DisplacementInput, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadiiCompInput, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TraverseTimeInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel3.SuspendLayout()
+        CType(Me.EthernetIPforCLXCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'EthernetIPforCLXCom1
-        '
-        Me.EthernetIPforCLXCom1.CIPConnectionSize = 508
-        Me.EthernetIPforCLXCom1.DisableMultiServiceRequest = False
-        Me.EthernetIPforCLXCom1.DisableSubscriptions = False
-        Me.EthernetIPforCLXCom1.IniFileName = ""
-        Me.EthernetIPforCLXCom1.IniFileSection = Nothing
-        Me.EthernetIPforCLXCom1.IPAddress = "192.168.0.10"
-        Me.EthernetIPforCLXCom1.PollRateOverride = 500
-        Me.EthernetIPforCLXCom1.Port = 44818
-        Me.EthernetIPforCLXCom1.ProcessorSlot = 0
-        Me.EthernetIPforCLXCom1.RoutePath = Nothing
-        Me.EthernetIPforCLXCom1.Timeout = 4000
         '
         'GroupBox4
         '
@@ -227,7 +213,7 @@ Partial Class ExperimentSetupWindow
         Me.TableLayoutPanel2.Controls.Add(Me.Label2, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.Label3, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.Label4, 0, 3)
-        Me.TableLayoutPanel2.Controls.Add(Me.FlexDistInput, 1, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.DisplacementInput, 1, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.RadiiCompInput, 1, 3)
         Me.TableLayoutPanel2.Controls.Add(Me.Label5, 0, 4)
         Me.TableLayoutPanel2.Controls.Add(Me.ProgCompInput, 1, 4)
@@ -283,6 +269,7 @@ Partial Class ExperimentSetupWindow
         Me.Label4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
+        Me.Label4.ForeColor = System.Drawing.SystemColors.WindowFrame
         Me.Label4.Location = New System.Drawing.Point(3, 209)
         Me.Label4.Name = "Label4"
         Me.Label4.Padding = New System.Windows.Forms.Padding(0, 8, 0, 0)
@@ -290,16 +277,16 @@ Partial Class ExperimentSetupWindow
         Me.Label4.TabIndex = 3
         Me.Label4.Text = "Residual Radii of Curvature Compensation (mm):"
         '
-        'FlexDistInput
+        'DisplacementInput
         '
-        Me.FlexDistInput.DecimalPlaces = 1
-        Me.FlexDistInput.Location = New System.Drawing.Point(315, 145)
-        Me.FlexDistInput.Maximum = New Decimal(New Integer() {40, 0, 0, 0})
-        Me.FlexDistInput.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.FlexDistInput.Name = "FlexDistInput"
-        Me.FlexDistInput.Size = New System.Drawing.Size(104, 35)
-        Me.FlexDistInput.TabIndex = 2
-        Me.FlexDistInput.Value = New Decimal(New Integer() {254, 0, 0, 65536})
+        Me.DisplacementInput.DecimalPlaces = 1
+        Me.DisplacementInput.Location = New System.Drawing.Point(315, 145)
+        Me.DisplacementInput.Maximum = New Decimal(New Integer() {40, 0, 0, 0})
+        Me.DisplacementInput.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.DisplacementInput.Name = "DisplacementInput"
+        Me.DisplacementInput.Size = New System.Drawing.Size(104, 35)
+        Me.DisplacementInput.TabIndex = 2
+        Me.DisplacementInput.Value = New Decimal(New Integer() {254, 0, 0, 65536})
         '
         'RadiiCompInput
         '
@@ -317,6 +304,7 @@ Partial Class ExperimentSetupWindow
         Me.Label5.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label5.AutoSize = True
+        Me.Label5.ForeColor = System.Drawing.SystemColors.WindowFrame
         Me.Label5.Location = New System.Drawing.Point(3, 305)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(306, 42)
@@ -348,6 +336,7 @@ Partial Class ExperimentSetupWindow
         '
         'TraverseTimeInput
         '
+        Me.TraverseTimeInput.DecimalPlaces = 1
         Me.TraverseTimeInput.Location = New System.Drawing.Point(315, 75)
         Me.TraverseTimeInput.Maximum = New Decimal(New Integer() {900, 0, 0, 0})
         Me.TraverseTimeInput.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -408,6 +397,20 @@ Partial Class ExperimentSetupWindow
         Me.ConfirmButton.Text = "Confirm"
         Me.ConfirmButton.UseVisualStyleBackColor = True
         '
+        'EthernetIPforCLXCom1
+        '
+        Me.EthernetIPforCLXCom1.CIPConnectionSize = 508
+        Me.EthernetIPforCLXCom1.DisableMultiServiceRequest = False
+        Me.EthernetIPforCLXCom1.DisableSubscriptions = False
+        Me.EthernetIPforCLXCom1.IniFileName = ""
+        Me.EthernetIPforCLXCom1.IniFileSection = Nothing
+        Me.EthernetIPforCLXCom1.IPAddress = "192.168.0.10"
+        Me.EthernetIPforCLXCom1.PollRateOverride = 500
+        Me.EthernetIPforCLXCom1.Port = 44818
+        Me.EthernetIPforCLXCom1.ProcessorSlot = 0
+        Me.EthernetIPforCLXCom1.RoutePath = Nothing
+        Me.EthernetIPforCLXCom1.Timeout = 4000
+        '
         'ExperimentSetupWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
@@ -418,10 +421,11 @@ Partial Class ExperimentSetupWindow
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TableLayoutPanel3)
         Me.Controls.Add(Me.GroupBox4)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "ExperimentSetupWindow"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Experimental Setup"
-        CType(Me.EthernetIPforCLXCom1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox4.ResumeLayout(False)
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
@@ -430,11 +434,12 @@ Partial Class ExperimentSetupWindow
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
         CType(Me.CyclesInput, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.FlexDistInput, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DisplacementInput, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadiiCompInput, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TraverseTimeInput, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.TableLayoutPanel3.PerformLayout()
+        CType(Me.EthernetIPforCLXCom1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -449,7 +454,7 @@ Partial Class ExperimentSetupWindow
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
-    Friend WithEvents FlexDistInput As NumericUpDown
+    Friend WithEvents DisplacementInput As NumericUpDown
     Friend WithEvents RadiiCompInput As NumericUpDown
     Friend WithEvents Label5 As Label
     Friend WithEvents ProgCompInput As CheckBox
