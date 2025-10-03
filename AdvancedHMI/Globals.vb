@@ -18,9 +18,10 @@ Module Globals
 
     'Experimental Parameters:
     Public numberOfCycles As Integer = 1
-    Public traverseTime_s As Integer = 10   'x10
+    Public traverseTime_s As Integer = 100   'x100
     Public displacement_mm As Integer = 50  'x10
     Public dataLogRate_ms As Integer = 200
+    Public estRunTime_s As Decimal = 1
 
     'Live Experiment Recording:
     Public Log As New ExperimentLog
@@ -28,6 +29,5 @@ Module Globals
 
     'Motion Control & Connection:
     Public PLCconnection As String
-    Public StartReady As Boolean = False
 
 End Module

@@ -123,7 +123,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HardwareLimits.vb" />
+    <Compile Include="Hardware.vb" />
     <Compile Include="ProgCompensationHelpWindow.Designer.vb">
       <DependentUpon>ProgCompensationHelpWindow.vb</DependentUpon>
     </Compile>

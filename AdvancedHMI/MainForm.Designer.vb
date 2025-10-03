@@ -23,6 +23,9 @@ Partial Class MainForm
     ' <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ForceItemsIntoToolBox1 = New MfgControl.AdvancedHMI.Drivers.ForceItemsIntoToolbox()
@@ -34,18 +37,18 @@ Partial Class MainForm
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.ConnectionIndicator = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.ExperimentRecordingTimer = New System.Windows.Forms.Timer(Me.components)
         Me.SetupButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.CheckBox()
-        Me.ConnectionCheckTimer = New System.Windows.Forms.Timer(Me.components)
         Me.ConnectionCheckThread = New System.ComponentModel.BackgroundWorker()
         Me.ControlBlinker = New System.Windows.Forms.Timer(Me.components)
-        Me.ForceChart = New AdvancedHMIControls.BasicTrendChart()
-        Me.ModbusTCPCom1 = New AdvancedHMIDrivers.ModbusTCPCom(Me.components)
+        Me.ConnectionCheckTimer = New System.Windows.Forms.Timer(Me.components)
         Me.DisplacementChart = New AdvancedHMIControls.BasicTrendChart()
+        Me.ModbusTCPCom1 = New AdvancedHMIDrivers.ModbusTCPCom(Me.components)
         Me.StopButton = New AdvancedHMIControls.BasicButton()
         Me.HW_Zero = New AdvancedHMIControls.BasicButton()
         Me.ForceZero = New AdvancedHMIControls.BasicButton()
@@ -55,7 +58,7 @@ Partial Class MainForm
         Me.DRO_mm = New AdvancedHMIControls.SevenSegment2()
         Me.JogMinus = New AdvancedHMIControls.BasicButton()
         Me.JogPlus = New AdvancedHMIControls.BasicButton()
-        Me.StartButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
+        Me.StopButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.CheckIfHoming = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -63,8 +66,9 @@ Partial Class MainForm
         Me.GroupBox1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.StopButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -184,14 +188,30 @@ Partial Class MainForm
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.Chart1)
         Me.Panel1.Controls.Add(Me.ConnectionIndicator)
         Me.Panel1.Controls.Add(Me.Label3)
-        Me.Panel1.Controls.Add(Me.ForceChart)
         Me.Panel1.Location = New System.Drawing.Point(1200, 6)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(6)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(798, 1234)
         Me.Panel1.TabIndex = 27
+        '
+        'Chart1
+        '
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend1)
+        Me.Chart1.Location = New System.Drawing.Point(16, 70)
+        Me.Chart1.Name = "Chart1"
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
+        Me.Chart1.Size = New System.Drawing.Size(765, 1164)
+        Me.Chart1.TabIndex = 39
+        Me.Chart1.Text = "Chart1"
         '
         'ConnectionIndicator
         '
@@ -257,48 +277,16 @@ Partial Class MainForm
         Me.StartButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.StartButton.UseVisualStyleBackColor = False
         '
-        'ConnectionCheckTimer
-        '
-        Me.ConnectionCheckTimer.Interval = 2000
-        '
         'ConnectionCheckThread
         '
         '
         'ControlBlinker
         '
         '
-        'ForceChart
+        'ConnectionCheckTimer
         '
-        Me.ForceChart.BackColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(27, Byte), Integer))
-        Me.ForceChart.ComComponent = Me.ModbusTCPCom1
-        Me.ForceChart.Font = New System.Drawing.Font("Arial", 12.0!)
-        Me.ForceChart.ForeColor = System.Drawing.Color.White
-        Me.ForceChart.Location = New System.Drawing.Point(0, 70)
-        Me.ForceChart.Margin = New System.Windows.Forms.Padding(16)
-        Me.ForceChart.MaxPoints = 100
-        Me.ForceChart.Name = "ForceChart"
-        Me.ForceChart.PLCAddressValue = ""
-        Me.ForceChart.PLCAddressVisible = ""
-        Me.ForceChart.Size = New System.Drawing.Size(782, 1165)
-        Me.ForceChart.TabIndex = 16
-        Me.ForceChart.Text = "BasicTrendChart1"
-        Me.ForceChart.Value = ""
-        Me.ForceChart.YMaximum = 5000
-        Me.ForceChart.YMinimum = 0
-        '
-        'ModbusTCPCom1
-        '
-        Me.ModbusTCPCom1.DisableSubscriptions = False
-        Me.ModbusTCPCom1.IniFileName = ""
-        Me.ModbusTCPCom1.IniFileSection = Nothing
-        Me.ModbusTCPCom1.IPAddress = "169.254.223.102"
-        Me.ModbusTCPCom1.MaxReadGroupSize = 20
-        Me.ModbusTCPCom1.PollRateOverride = 10
-        Me.ModbusTCPCom1.SwapBytes = True
-        Me.ModbusTCPCom1.SwapWords = True
-        Me.ModbusTCPCom1.TcpipPort = CType(502US, UShort)
-        Me.ModbusTCPCom1.TimeOut = 3000
-        Me.ModbusTCPCom1.UnitId = CType(1, Byte)
+        Me.ConnectionCheckTimer.Enabled = True
+        Me.ConnectionCheckTimer.Interval = 1000
         '
         'DisplacementChart
         '
@@ -318,6 +306,20 @@ Partial Class MainForm
         Me.DisplacementChart.Value = ""
         Me.DisplacementChart.YMaximum = 50000
         Me.DisplacementChart.YMinimum = 0
+        '
+        'ModbusTCPCom1
+        '
+        Me.ModbusTCPCom1.DisableSubscriptions = False
+        Me.ModbusTCPCom1.IniFileName = ""
+        Me.ModbusTCPCom1.IniFileSection = Nothing
+        Me.ModbusTCPCom1.IPAddress = "169.254.223.102"
+        Me.ModbusTCPCom1.MaxReadGroupSize = 20
+        Me.ModbusTCPCom1.PollRateOverride = 10
+        Me.ModbusTCPCom1.SwapBytes = True
+        Me.ModbusTCPCom1.SwapWords = True
+        Me.ModbusTCPCom1.TcpipPort = CType(502US, UShort)
+        Me.ModbusTCPCom1.TimeOut = 3000
+        Me.ModbusTCPCom1.UnitId = CType(1, Byte)
         '
         'StopButton
         '
@@ -465,7 +467,7 @@ Partial Class MainForm
         Me.DRO_N.ForeColorInLimits = System.Drawing.Color.IndianRed
         Me.DRO_N.ForecolorLowLimitValue = -0.01R
         Me.DRO_N.ForeColorOverHighLimit = System.Drawing.Color.Red
-        Me.DRO_N.ForeColorUnderLowLimit = System.Drawing.Color.Yellow
+        Me.DRO_N.ForeColorUnderLowLimit = System.Drawing.Color.Red
         Me.DRO_N.KeypadFontColor = System.Drawing.Color.WhiteSmoke
         Me.DRO_N.KeypadMaxValue = 0R
         Me.DRO_N.KeypadMinValue = 0R
@@ -485,7 +487,7 @@ Partial Class MainForm
         Me.DRO_N.Size = New System.Drawing.Size(159, 69)
         Me.DRO_N.TabIndex = 11
         Me.DRO_N.Text = "SevenSegment21"
-        Me.DRO_N.Value = 999.0R
+        Me.DRO_N.Value = 999999.0R
         '
         'DRO_mm
         '
@@ -573,11 +575,11 @@ Partial Class MainForm
         Me.JogPlus.UseVisualStyleBackColor = False
         Me.JogPlus.ValueToWrite = 0
         '
-        'StartButtonSubscriber
+        'StopButtonSubscriber
         '
-        Me.StartButtonSubscriber.ComComponent = Me.ModbusTCPCom1
-        Me.StartButtonSubscriber.PLCAddressValue = CType(resources.GetObject("StartButtonSubscriber.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
-        Me.StartButtonSubscriber.Value = Nothing
+        Me.StopButtonSubscriber.ComComponent = Me.ModbusTCPCom1
+        Me.StopButtonSubscriber.PLCAddressValue = CType(resources.GetObject("StopButtonSubscriber.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
+        Me.StopButtonSubscriber.Value = Nothing
         '
         'CheckIfHoming
         '
@@ -618,8 +620,9 @@ Partial Class MainForm
         Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.StartButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.StopButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -643,7 +646,6 @@ Partial Class MainForm
     Friend WithEvents DisplacementChart As AdvancedHMIControls.BasicTrendChart
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Label3 As Label
-    Friend WithEvents ForceChart As AdvancedHMIControls.BasicTrendChart
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents DRO_mm As AdvancedHMIControls.SevenSegment2
     Friend WithEvents SaveFileDialog As SaveFileDialog
@@ -653,9 +655,10 @@ Partial Class MainForm
     Friend WithEvents SetupButton As Button
     Friend WithEvents StartButton As CheckBox
     Friend WithEvents ConnectionIndicator As Label
-    Friend WithEvents ConnectionCheckTimer As Timer
-    Friend WithEvents StartButtonSubscriber As AdvancedHMIControls.DataSubscriber
+    Friend WithEvents StopButtonSubscriber As AdvancedHMIControls.DataSubscriber
     Friend WithEvents ConnectionCheckThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents ControlBlinker As Timer
     Friend WithEvents CheckIfHoming As AdvancedHMIControls.DataSubscriber
+    Friend WithEvents ConnectionCheckTimer As Timer
+    Friend WithEvents Chart1 As DataVisualization.Charting.Chart
 End Class

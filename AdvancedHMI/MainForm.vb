@@ -1,4 +1,6 @@
-﻿Imports System.Collections.ObjectModel
+﻿Option Strict On
+
+Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Drawing.Text
 Imports System.Runtime.CompilerServices
@@ -49,9 +51,6 @@ Public Class MainForm
 
         StartButton.Checked = False
 
-        'send kill cmd to PLC <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!!!!!!!!!!!!!!!!!!!!!
-
-
         LockControls("unlock")
 
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
@@ -66,10 +65,10 @@ Public Class MainForm
         Dim displacment As Integer = 0
         Dim force As Integer = 0
 
-        ' Gets "high accuracy" position data from PLC
-        displacment = ModbusTCPCom1.Read("400008")
+        ' Get "high accuracy" position data from PLC
+        displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
 
-        ' Gets current stopwatch time in seconds, and rounds to nearest 0.1 ms
+        ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
         currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
 
         ' Log all real-time data
@@ -91,30 +90,30 @@ Public Class MainForm
 
         If StartButton.Checked = True Then
 
-            If StartReady = True Then
+            If PLCconnection = "Connection Status: ✔" = True Then
 
-                If PLCconnection = "Connection Status: ✔" Then
+                SendExperimentParametersToPLC()
 
+                If CheckPLCexperimentParameters() = True Then
 
-                    'trigger control code in PLC
+                    LockControls("run")
+                    StartButton.Text = "❚❚"
 
-
-
-                    ExperimentRecordingTimer.Start() '<------- Might be unneeded?
+                    ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
 
-                    StartButton.Text = "❚❚"
-                    LockControls("run")
+                    ModbusTCPCom1.BeginWrite(Hardware.START_BIT, 1, New String() {"1"}) 'Trigger "start" button
 
                 Else
 
-                    ControlBlinker.Start()
+                    StartButton.CheckState = CheckState.Unchecked
+                    PLCconnection = "Unknown Connection Error - Please Restart"
 
                 End If
 
+            Else
 
-            ElseIf StartReady = False Then
-
+                ControlBlinker.Start()
                 StartButton.CheckState = CheckState.Unchecked
 
             End If
@@ -122,12 +121,18 @@ Public Class MainForm
 
         ElseIf StartButton.Checked = False Then
 
+            ModbusTCPCom1.BeginWrite(Hardware.STOP_BIT, 1, New String() {"1"}) 'Trigger "stop" button
+
             If ExperimentRecordingTimer.Enabled = True Then
+
                 ExperimentRecordingTimer.Stop()
+
             End If
 
             If ExperimentStopwatch.IsRunning Then
+
                 ExperimentStopwatch.Stop()
+
             End If
 
             Thread.Sleep(1000)
@@ -138,7 +143,6 @@ Public Class MainForm
 
             End If
 
-            ModbusTCPCom1.BeginWrite("017186", 1, New String() {"1"}) 'Trigger "off" button
             StartButton.Text = "▶"
             LockControls("unlock")
 
@@ -171,7 +175,7 @@ Public Class MainForm
 
     End Function
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles ConnectionCheckTimer.Tick
+    Private Sub ConnectionCheckTimer_Tick(sender As Object, e As EventArgs) Handles ConnectionCheckTimer.Tick
 
         ConnectionIndicator.Text = PLCconnection
 
@@ -179,6 +183,7 @@ Public Class MainForm
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'Start checking for PLC connection as soon as page loads
         ConnectionCheckTimer.Start()
         ConnectionCheckThread.RunWorkerAsync()
 
@@ -209,6 +214,8 @@ Public Class MainForm
 
     Private Sub ConnectionCheckThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ConnectionCheckThread.DoWork
 
+        'While not running an active program, this constantly tests to make sure the PLC and software are connected.
+
         While StartButton.Checked = False
 
             CheckConnectionToPLC()
@@ -220,7 +227,7 @@ Public Class MainForm
 
     Private Sub ControlBlinker_Tick(sender As Object, e As EventArgs) Handles ControlBlinker.Tick
 
-        ' Makes the PLC connection indicator blink repeatedly if you try to run without being connected
+        ' Makes the PLC connection indicator flash/blink repeatedly if you try to run without being connected
 
         Dim blinkCount As Integer = 0
 
@@ -249,7 +256,9 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub CheckIfHoming_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfHoming.DataChanged
+    Private Sub CheckIfCurrentlyHoming(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfHoming.DataChanged
+
+        'Locks the controls if the flex rig is performing a homing operation
 
         If CheckIfHoming.Value = "True" Then
 
@@ -262,9 +271,6 @@ Public Class MainForm
         End If
 
     End Sub
-
-    'for connection check blinker ^^^
-    Private blinkCount As Integer = 0
 
     Public Sub LockControls(keyword As String)
 
@@ -303,4 +309,50 @@ Public Class MainForm
 
     End Sub
 
+    Public Sub SendExperimentParametersToPLC()
+
+        'Sends the stored experiment parameters in Globals over to the PLC.
+
+        With ModbusTCPCom1
+
+            .Write(Hardware.NO_OF_CYCLES_USER_INPUT, CStr(Globals.numberOfCycles))
+            .Write(Hardware.DISPLACEMENT_USER_INPUT, CStr(Globals.displacement_mm))
+            .Write(Hardware.TRAVERSE_TIME_USER_INPUT, CStr(Globals.traverseTime_s))
+
+        End With
+
+    End Sub
+
+    Public Function CheckPLCexperimentParameters() As Boolean
+
+        'Double-check to make sure the experiment parameters stored in the PLC's memory match the current
+        'parameters selected my the user. Used before running.
+
+        With ModbusTCPCom1
+
+            If _
+                    .Read(Hardware.NO_OF_CYCLES_USER_INPUT) = CStr(Globals.numberOfCycles) _
+                And .Read(Hardware.DISPLACEMENT_USER_INPUT) = CStr(Globals.displacement_mm) _
+                And .Read(Hardware.TRAVERSE_TIME_USER_INPUT) = CStr(Globals.traverseTime_s) Then
+
+                Return True
+
+            Else Return False
+
+            End If
+        End With
+
+    End Function
+
+    Private Sub StopButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles StopButtonSubscriber.DataChanged
+
+        'Supposed to reset mainform controls after cycle stops and PLC resets stop bit to true. TEST THIS
+
+        If StartButton.Checked = True And ModbusTCPCom1.Read(STOP_BIT) = "1" Then
+
+            StartButton.Checked = False
+
+        End If
+
+    End Sub
 End Class

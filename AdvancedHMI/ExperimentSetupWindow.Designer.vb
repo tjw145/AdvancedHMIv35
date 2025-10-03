@@ -336,7 +336,7 @@ Partial Class ExperimentSetupWindow
         '
         'TraverseTimeInput
         '
-        Me.TraverseTimeInput.DecimalPlaces = 1
+        Me.TraverseTimeInput.DecimalPlaces = 2
         Me.TraverseTimeInput.Location = New System.Drawing.Point(315, 75)
         Me.TraverseTimeInput.Maximum = New Decimal(New Integer() {900, 0, 0, 0})
         Me.TraverseTimeInput.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
