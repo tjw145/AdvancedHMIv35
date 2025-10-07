@@ -9,6 +9,7 @@ Imports System.Threading
 Imports System.Threading.Tasks
 Imports System.Timers
 Imports System.Windows
+Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Windows.Input
 Imports System.Windows.Threading
 Imports AdvancedHMIControls
@@ -186,6 +187,8 @@ Public Class MainForm
         'Start checking for PLC connection as soon as page loads
         ConnectionCheckTimer.Start()
         ConnectionCheckThread.RunWorkerAsync()
+        GraphUpdateTimer.Start()
+        Me.DoubleBuffered = True
 
     End Sub
 
@@ -355,4 +358,80 @@ Public Class MainForm
         End If
 
     End Sub
+
+    Dim testx As Double = 1
+    Dim testsin As Double = 0
+
+    Private Sub UpdateGraph()
+
+        Dim x As Double = testx
+        Dim y As Double = (15 * Math.Sin(testsin)) + 15
+        Dim NewPoint As New DataPoint(x, y)
+
+        Dim datapointsPerSecond As Integer = CInt(1000 / GraphUpdateTimer.Interval) 'ms to Hz
+        Dim minimumDataPoint As Integer
+
+        'Find minimum X-value for display based on user selection
+        If HalfCycleButton.Checked = True Then
+            minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100)
+        End If
+        If OneCycleButton.Checked = True Then
+            minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100) * 2
+        End If
+        If TwoCycleButton.Checked = True Then
+            minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100) * 4
+        End If
+        If UserSecondsButton.Checked = True Then
+            minimumDataPoint = CInt(datapointsPerSecond * UserSecondsInput.Value)
+        End If
+
+        'LiveGraph.Series("DisplacementSeries").Points.AddXY(x, y)
+        LiveGraph.Series("DisplacementSeries").Points.Insert(0, NewPoint)
+
+        If LiveGraph.Series("DisplacementSeries").Points.Count > minimumDataPoint Then
+
+            'Update X-axis boundaries
+            LiveGraph.ChartAreas(0).AxisX.Minimum = LiveGraph.Series("DisplacementSeries").Points.Item(minimumDataPoint).XValue
+            LiveGraph.ChartAreas(0).AxisX.Maximum = LiveGraph.Series("DisplacementSeries").Points.Item(0).XValue
+
+        End If
+
+        'Graph data storage tops out at approximately 10 full minutes of recording time, or 600 seconds. Should work?
+        If LiveGraph.Series("DisplacementSeries").Points.Count >= datapointsPerSecond * 60 * 10 Then
+
+            '= last point in series
+            Dim lastPoint As Integer = LiveGraph.Series("DisplacementSeries").Points.Count - 1
+
+            'Remove last item
+            LiveGraph.Series("DisplacementSeries").Points.RemoveAt(lastPoint)
+
+        End If
+
+        testx = testx + 0.05
+        testsin = testsin + 0.01
+
+    End Sub
+
+    Private Sub GraphUpdateTimer_Tick(sender As Object, e As EventArgs) Handles GraphUpdateTimer.Tick
+        UpdateGraph()
+    End Sub
+
+    Private Sub DataMarkersCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles DataMarkersCheckbox.CheckedChanged
+
+        'Switches data markers on the live graph on/off.
+
+        If DataMarkersCheckbox.CheckState = CheckState.Checked Then
+
+            LiveGraph.Series("DisplacementSeries").ChartType = SeriesChartType.Line
+
+        Else
+
+            'FastLine doesn't support datamarkers, so by doing it this way we get a little extra performance as
+            'opposed to just switching markers off :)
+            LiveGraph.Series("DisplacementSeries").ChartType = SeriesChartType.FastLine
+
+        End If
+
+    End Sub
+
 End Class
