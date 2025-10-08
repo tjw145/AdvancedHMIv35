@@ -24,6 +24,7 @@ Module Globals
     Public estRunTime_s As Decimal = 1
 
     'Live Experiment Recording:
+    Public ExperimentRunning As Boolean = False
     Public Log As New ExperimentLog
     Public ExperimentStopwatch As New Stopwatch
 

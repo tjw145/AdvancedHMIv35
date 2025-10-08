@@ -45,8 +45,22 @@ Public Class MainForm
         End While
     End Sub
 
-    Dim taskbarProgress As New Windows.Shell.TaskbarItemInfo
+    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'Start checking for PLC connection as soon as page loads
+        ConnectionCheckTimer.Start()
+        ConnectionCheckThread.RunWorkerAsync()
+
+        'Repeatedly run graph updater sub on UI thread (heavy)
+        GraphUpdateTimer.Start()
+
+        'Separate thread for recording experiment data so that it doesn't get jammed up by the UI
+        ExperimentRecordingThread.RunWorkerAsync()
+
+        'Smooth out form graphics
+        Me.DoubleBuffered = True
+
+    End Sub
 
     Public Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
@@ -55,25 +69,6 @@ Public Class MainForm
         LockControls("unlock")
 
         'taskbarProgress.ProgressState = taskbarProgress.ProgressState.None
-
-    End Sub
-
-
-    'RECORDING SYSTEM'
-    Public Sub ExperimentRecordingTimer_Tick(sender As Object, e As EventArgs) Handles ExperimentRecordingTimer.Tick
-
-        Dim currentTime As String
-        Dim displacment As Integer = 0
-        Dim force As Integer = 0
-
-        ' Get "high accuracy" position data from PLC
-        displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
-
-        ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
-        currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
-
-        ' Log all real-time data
-        Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
 
     End Sub
 
@@ -99,6 +94,7 @@ Public Class MainForm
 
                     LockControls("run")
                     StartButton.Text = "❚❚"
+                    Globals.ExperimentRunning = True
 
                     ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
@@ -136,13 +132,19 @@ Public Class MainForm
 
             End If
 
-            Thread.Sleep(1000)
+            If Globals.ExperimentRunning = True Then
 
-            If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+                If SaveFileDialog.ShowDialog() = DialogResult.OK Then
 
-                Log.ExportAsCSV(SaveFileDialog.FileName)
+                    Log.ExportAsCSV(SaveFileDialog.FileName)
+
+                End If
+
+                Globals.ExperimentRunning = False
 
             End If
+
+            Thread.Sleep(1000)
 
             StartButton.Text = "▶"
             LockControls("unlock")
@@ -152,6 +154,9 @@ Public Class MainForm
     End Sub
 
     Private Function CheckConnectionToPLC() As Boolean
+
+        'Checks connection to PLC by returning the value of a PLC memory bit which is always pulled high. 
+        'I used strings here because it works and I didn't want to think about it.
 
         Try
 
@@ -179,16 +184,6 @@ Public Class MainForm
     Private Sub ConnectionCheckTimer_Tick(sender As Object, e As EventArgs) Handles ConnectionCheckTimer.Tick
 
         ConnectionIndicator.Text = PLCconnection
-
-    End Sub
-
-    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        'Start checking for PLC connection as soon as page loads
-        ConnectionCheckTimer.Start()
-        ConnectionCheckThread.RunWorkerAsync()
-        GraphUpdateTimer.Start()
-        Me.DoubleBuffered = True
 
     End Sub
 
@@ -228,11 +223,11 @@ Public Class MainForm
 
     End Sub
 
+    Private blinkCount As Integer = 0
     Private Sub ControlBlinker_Tick(sender As Object, e As EventArgs) Handles ControlBlinker.Tick
 
         ' Makes the PLC connection indicator flash/blink repeatedly if you try to run without being connected
-
-        Dim blinkCount As Integer = 0
+        ' I probably didn't need a whole timer component for this but whatever
 
         If blinkCount < 5 Then
 
@@ -359,13 +354,21 @@ Public Class MainForm
 
     End Sub
 
-    Dim testx As Double = 1
-    Dim testsin As Double = 0
-
     Private Sub UpdateGraph()
 
-        Dim x As Double = testx
-        Dim y As Double = (15 * Math.Sin(testsin)) + 15
+        'Update DRO
+        DRO_mm.Value = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
+
+        If DRO_mm.Value < 10 Then
+            DRO_mm.DecimalPosition = 2
+        Else
+            DRO_mm.DecimalPosition = 1
+        End If
+
+
+        'Update Live Graph
+        Dim x As Double = Now.TimeOfDay.TotalMilliseconds
+        Dim y As Double = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
         Dim NewPoint As New DataPoint(x, y)
 
         Dim datapointsPerSecond As Integer = CInt(1000 / GraphUpdateTimer.Interval) 'ms to Hz
@@ -407,13 +410,14 @@ Public Class MainForm
 
         End If
 
-        testx = testx + 0.05
-        testsin = testsin + 0.01
-
     End Sub
 
     Private Sub GraphUpdateTimer_Tick(sender As Object, e As EventArgs) Handles GraphUpdateTimer.Tick
-        UpdateGraph()
+
+        If Globals.PLCconnection = "Connection Status: ✔" Then
+            UpdateGraph()
+        End If
+
     End Sub
 
     Private Sub DataMarkersCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles DataMarkersCheckbox.CheckedChanged
@@ -434,4 +438,36 @@ Public Class MainForm
 
     End Sub
 
+    Private Sub ExperimentRecordingThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ExperimentRecordingThread.DoWork
+
+        'If this code snippet works on the first try, I'll eat my hat
+
+        If StartButton.Checked = True Then
+
+            Dim currentTime As String
+            Dim displacment As Integer = 0
+            Dim force As Integer = 0
+
+            ' Get "high accuracy" position data from PLC
+            displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
+
+            ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
+            currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
+
+            ' Log all real-time data
+            Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
+
+            Thread.Sleep(Globals.dataLogRate_ms)
+
+        End If
+
+    End Sub
+
+    Private Sub ExperimentCompleteSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles ExperimentCompleteSubscriber.DataChanged
+
+        'If "experiment complete" bit on PLC is pulled high;
+        StartButton.CheckState = CheckState.Unchecked
+        StopButton.PerformClick()
+
+    End Sub
 End Class

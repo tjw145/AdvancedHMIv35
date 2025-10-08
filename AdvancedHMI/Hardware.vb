@@ -21,9 +21,11 @@ Public Module Hardware
     Public SET_ORIGIN As String = "017189"
     Public HOME As String = "017190"
     Public NO_OF_CYCLES_USER_INPUT As String = "400999"
+    Public CYCLE_COMPLETE As String = "149162"
     Public DISPLACEMENT_USER_INPUT As String = "401000"
     Public TRAVERSE_TIME_USER_INPUT As String = "401001"
     Public CURRENT_DISPLACEMENT_ACCURATE As String = "400008"
+    Public CURRENT_DISPLACEMENT_ROUGH As String = "400007"
 
     '============== Maximum Physical Ratings: ===============
 
