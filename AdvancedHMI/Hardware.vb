@@ -26,6 +26,7 @@ Public Module Hardware
     Public TRAVERSE_TIME_USER_INPUT As String = "401001"
     Public CURRENT_DISPLACEMENT_ACCURATE As String = "400008"
     Public CURRENT_DISPLACEMENT_ROUGH As String = "400007"
+    Public CONNECTION_TEST_BIT As String = "018384"
 
     '============== Maximum Physical Ratings: ===============
 

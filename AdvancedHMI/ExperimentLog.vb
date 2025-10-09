@@ -56,7 +56,7 @@ Public Class ExperimentLog
             .WriteLine("Time: " & CStr(System.DateTime.Now))
             .WriteLine()
             .WriteLine("No. of Cycles: " & CStr(Globals.numberOfCycles))
-            .WriteLine("Traverse Time (s): " & CStr(Globals.traverseTime_s))
+            .WriteLine("Traverse Time (s): " & CStr(Globals.traverseTime_s / 100))
             .WriteLine("Displacement. (mm): " & CStr(Globals.displacement_mm))
             .WriteLine("#Data Log rate (Hz): " & CStr(1 / (Globals.dataLogRate_ms / 1000) & "Hz")) 'Conv. ms to Hz
             .WriteLine()

@@ -41,7 +41,6 @@ Partial Class MainForm
         Me.HW_Zero = New AdvancedHMIControls.BasicButton()
         Me.ForceZero = New AdvancedHMIControls.BasicButton()
         Me.DisplacementZero = New AdvancedHMIControls.BasicButton()
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         Me.GraphPanel = New System.Windows.Forms.Panel()
         Me.LiveGraph = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
@@ -62,10 +61,8 @@ Partial Class MainForm
         Me.OneCycleButton = New System.Windows.Forms.RadioButton()
         Me.ConnectionStatusBox = New System.Windows.Forms.GroupBox()
         Me.StopButton = New AdvancedHMIControls.BasicButton()
-        Me.StopButtonSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
-        Me.CheckIfHoming = New AdvancedHMIControls.DataSubscriber(Me.components)
         Me.ExperimentRecordingThread = New System.ComponentModel.BackgroundWorker()
-        Me.ExperimentCompleteSubscriber = New AdvancedHMIControls.DataSubscriber(Me.components)
+        Me.GeneralCommsUpdateTimer = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -76,9 +73,6 @@ Partial Class MainForm
         Me.GraphControlBox.SuspendLayout()
         CType(Me.UserSecondsInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ConnectionStatusBox.SuspendLayout()
-        CType(Me.StopButtonSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ExperimentCompleteSubscriber, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -87,7 +81,7 @@ Partial Class MainForm
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!)
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(8, 1042)
+        Me.Label1.Location = New System.Drawing.Point(8, 1005)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(242, 40)
@@ -405,17 +399,6 @@ Partial Class MainForm
         Me.DisplacementZero.UseVisualStyleBackColor = False
         Me.DisplacementZero.ValueToWrite = 0
         '
-        'ProgressBar
-        '
-        Me.ProgressBar.Location = New System.Drawing.Point(9, 748)
-        Me.ProgressBar.Margin = New System.Windows.Forms.Padding(4)
-        Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(230, 28)
-        Me.ProgressBar.Step = 1
-        Me.ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.ProgressBar.TabIndex = 29
-        Me.ProgressBar.Value = 1
-        '
         'GraphPanel
         '
         Me.GraphPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -425,7 +408,7 @@ Partial Class MainForm
         Me.GraphPanel.Location = New System.Drawing.Point(248, 68)
         Me.GraphPanel.Margin = New System.Windows.Forms.Padding(4)
         Me.GraphPanel.Name = "GraphPanel"
-        Me.GraphPanel.Size = New System.Drawing.Size(892, 708)
+        Me.GraphPanel.Size = New System.Drawing.Size(892, 672)
         Me.GraphPanel.TabIndex = 27
         '
         'LiveGraph
@@ -513,7 +496,7 @@ Partial Class MainForm
         Series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Star4
         Series1.Name = "DisplacementSeries"
         Me.LiveGraph.Series.Add(Series1)
-        Me.LiveGraph.Size = New System.Drawing.Size(971, 746)
+        Me.LiveGraph.Size = New System.Drawing.Size(971, 709)
         Me.LiveGraph.TabIndex = 39
         '
         'SaveFileDialog
@@ -707,26 +690,11 @@ Partial Class MainForm
         Me.StopButton.UseVisualStyleBackColor = False
         Me.StopButton.ValueToWrite = 1
         '
-        'StopButtonSubscriber
-        '
-        Me.StopButtonSubscriber.ComComponent = Me.ModbusTCPCom1
-        Me.StopButtonSubscriber.PLCAddressValue = Nothing
-        Me.StopButtonSubscriber.Value = Nothing
-        '
-        'CheckIfHoming
-        '
-        Me.CheckIfHoming.ComComponent = Me.ModbusTCPCom1
-        Me.CheckIfHoming.PLCAddressValue = Nothing
-        Me.CheckIfHoming.Value = Nothing
-        '
         'ExperimentRecordingThread
         '
         '
-        'ExperimentCompleteSubscriber
+        'GeneralCommsUpdateTimer
         '
-        Me.ExperimentCompleteSubscriber.ComComponent = Me.ModbusTCPCom1
-        Me.ExperimentCompleteSubscriber.PLCAddressValue = CType(resources.GetObject("ExperimentCompleteSubscriber.PLCAddressValue"), MfgControl.AdvancedHMI.Drivers.PLCAddressItem)
-        Me.ExperimentCompleteSubscriber.Value = Nothing
         '
         'MainForm
         '
@@ -734,13 +702,12 @@ Partial Class MainForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1151, 788)
+        Me.ClientSize = New System.Drawing.Size(1151, 751)
         Me.Controls.Add(Me.ConnectionStatusBox)
         Me.Controls.Add(Me.GraphControlBox)
         Me.Controls.Add(Me.StartButton)
         Me.Controls.Add(Me.SetupButton)
         Me.Controls.Add(Me.GraphPanel)
-        Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.StopButton)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox2)
@@ -767,9 +734,6 @@ Partial Class MainForm
         Me.GraphControlBox.PerformLayout()
         CType(Me.UserSecondsInput, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ConnectionStatusBox.ResumeLayout(False)
-        CType(Me.StopButtonSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CheckIfHoming, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ExperimentCompleteSubscriber, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -786,7 +750,6 @@ Partial Class MainForm
     Friend WithEvents DisplacementZero As AdvancedHMIControls.BasicButton
     Friend WithEvents HW_Zero As AdvancedHMIControls.BasicButton
     Friend WithEvents ModbusTCPCom1 As AdvancedHMIDrivers.ModbusTCPCom
-    Friend WithEvents ProgressBar As ProgressBar
     Friend WithEvents GraphPanel As Panel
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents DRO_mm As AdvancedHMIControls.SevenSegment2
@@ -796,10 +759,8 @@ Partial Class MainForm
     Friend WithEvents ExperimentRecordingTimer As Timer
     Friend WithEvents SetupButton As Button
     Friend WithEvents StartButton As CheckBox
-    Friend WithEvents StopButtonSubscriber As AdvancedHMIControls.DataSubscriber
     Friend WithEvents ConnectionCheckThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents ControlBlinker As Timer
-    Friend WithEvents CheckIfHoming As AdvancedHMIControls.DataSubscriber
     Friend WithEvents ConnectionCheckTimer As Timer
     Friend WithEvents LiveGraph As DataVisualization.Charting.Chart
     Friend WithEvents ConnectionIndicator As Label
@@ -813,5 +774,5 @@ Partial Class MainForm
     Friend WithEvents UserSecondsButton As RadioButton
     Friend WithEvents UserSecondsInput As NumericUpDown
     Friend WithEvents ExperimentRecordingThread As System.ComponentModel.BackgroundWorker
-    Friend WithEvents ExperimentCompleteSubscriber As AdvancedHMIControls.DataSubscriber
+    Friend WithEvents GeneralCommsUpdateTimer As Timer
 End Class

@@ -54,6 +54,9 @@ Public Class MainForm
         'Repeatedly run graph updater sub on UI thread (heavy)
         GraphUpdateTimer.Start()
 
+        'General communications for UI
+        GeneralCommsUpdateTimer.Start()
+
         'Separate thread for recording experiment data so that it doesn't get jammed up by the UI
         ExperimentRecordingThread.RunWorkerAsync()
 
@@ -79,7 +82,7 @@ Public Class MainForm
     End Sub
 
 
-    'START/STOP TRIGGER'
+    'EXPERIMENT START/STOP TRIGGER'
     Private Sub StartButton_CheckedChanged(sender As Object, e As EventArgs) Handles StartButton.CheckedChanged
 
         System.Windows.Forms.Application.DoEvents()
@@ -160,7 +163,7 @@ Public Class MainForm
 
         Try
 
-            If CBool(ModbusTCPCom1.Read("018384")) = False Then
+            If CBool(ModbusTCPCom1.Read(Hardware.CONNECTION_TEST_BIT)) = False Then
 
                 Globals.PLCconnection = "Connection Status: ✔"
                 Return True
@@ -254,22 +257,6 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub CheckIfCurrentlyHoming(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles CheckIfHoming.DataChanged
-
-        'Locks the controls if the flex rig is performing a homing operation
-
-        If CheckIfHoming.Value = "True" Then
-
-            LockControls("all")
-
-        ElseIf CheckIfHoming.Value = "False" Then
-
-            LockControls("unlock")
-
-        End If
-
-    End Sub
-
     Public Sub LockControls(keyword As String)
 
         'Locks controls while flex rig is in motion to prevent damage or accidental interruptions during
@@ -342,9 +329,9 @@ Public Class MainForm
 
     End Function
 
-    Private Sub StopButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles StopButtonSubscriber.DataChanged
+    Private Sub StopButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs)
 
-        'Supposed to reset mainform controls after cycle stops and PLC resets stop bit to true. TEST THIS
+        'Supposed to reset mainform controls after cycle stops and PLC resets stop bit to true. NOT WORKING
 
         If StartButton.Checked = True And ModbusTCPCom1.Read(STOP_BIT) = "1" Then
 
@@ -355,65 +342,70 @@ Public Class MainForm
     End Sub
 
     Private Sub UpdateGraph()
+        Try
+            'Update DRO
+            DRO_mm.Value = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
 
-        'Update DRO
-        DRO_mm.Value = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
-
-        If DRO_mm.Value < 10 Then
-            DRO_mm.DecimalPosition = 2
-        Else
-            DRO_mm.DecimalPosition = 1
-        End If
+            'DRO reads as two decimal places if the number is under 10mm, one if over
+            If DRO_mm.Value < 10 Then
+                DRO_mm.DecimalPosition = 2
+            Else
+                DRO_mm.DecimalPosition = 1
+            End If
 
 
-        'Update Live Graph
-        Dim x As Double = Now.TimeOfDay.TotalMilliseconds
-        Dim y As Double = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
-        Dim NewPoint As New DataPoint(x, y)
+            'Update Live Graph
+            Dim x As Double = Now.TimeOfDay.TotalMilliseconds
+            Dim y As Double = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
+            Dim NewPoint As New DataPoint(x, y)
 
-        Dim datapointsPerSecond As Integer = CInt(1000 / GraphUpdateTimer.Interval) 'ms to Hz
-        Dim minimumDataPoint As Integer
+            Dim datapointsPerSecond As Integer = CInt(1000 / GraphUpdateTimer.Interval) 'ms to Hz
+            Dim minimumDataPoint As Integer
 
-        'Find minimum X-value for display based on user selection
-        If HalfCycleButton.Checked = True Then
-            minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100)
-        End If
-        If OneCycleButton.Checked = True Then
-            minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100) * 2
-        End If
-        If TwoCycleButton.Checked = True Then
-            minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100) * 4
-        End If
-        If UserSecondsButton.Checked = True Then
-            minimumDataPoint = CInt(datapointsPerSecond * UserSecondsInput.Value)
-        End If
+            'Find minimum X-value for display based on user selection
+            If HalfCycleButton.Checked = True Then
+                minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100)
+            End If
+            If OneCycleButton.Checked = True Then
+                minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100) * 2
+            End If
+            If TwoCycleButton.Checked = True Then
+                minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100) * 4
+            End If
+            If UserSecondsButton.Checked = True Then
+                minimumDataPoint = CInt(datapointsPerSecond * UserSecondsInput.Value)
+            End If
 
-        'LiveGraph.Series("DisplacementSeries").Points.AddXY(x, y)
-        LiveGraph.Series("DisplacementSeries").Points.Insert(0, NewPoint)
+            'LiveGraph.Series("DisplacementSeries").Points.AddXY(x, y)
+            LiveGraph.Series("DisplacementSeries").Points.Insert(0, NewPoint)
 
-        If LiveGraph.Series("DisplacementSeries").Points.Count > minimumDataPoint Then
+            If LiveGraph.Series("DisplacementSeries").Points.Count > minimumDataPoint Then
 
-            'Update X-axis boundaries
-            LiveGraph.ChartAreas(0).AxisX.Minimum = LiveGraph.Series("DisplacementSeries").Points.Item(minimumDataPoint).XValue
-            LiveGraph.ChartAreas(0).AxisX.Maximum = LiveGraph.Series("DisplacementSeries").Points.Item(0).XValue
+                'Update X-axis boundaries
+                LiveGraph.ChartAreas(0).AxisX.Minimum = LiveGraph.Series("DisplacementSeries").Points.Item(minimumDataPoint).XValue
+                LiveGraph.ChartAreas(0).AxisX.Maximum = LiveGraph.Series("DisplacementSeries").Points.Item(0).XValue
 
-        End If
+            End If
 
-        'Graph data storage tops out at approximately 10 full minutes of recording time, or 600 seconds. Should work?
-        If LiveGraph.Series("DisplacementSeries").Points.Count >= datapointsPerSecond * 60 * 10 Then
+            'Graph data storage tops out at approximately 10 full minutes of recording time, or 600 seconds. Should work?
+            If LiveGraph.Series("DisplacementSeries").Points.Count >= datapointsPerSecond * 60 * 10 Then
 
-            '= last point in series
-            Dim lastPoint As Integer = LiveGraph.Series("DisplacementSeries").Points.Count - 1
+                '= last point in series
+                Dim lastPoint As Integer = LiveGraph.Series("DisplacementSeries").Points.Count - 1
 
-            'Remove last item
-            LiveGraph.Series("DisplacementSeries").Points.RemoveAt(lastPoint)
+                'Remove last item
+                LiveGraph.Series("DisplacementSeries").Points.RemoveAt(lastPoint)
 
-        End If
+            End If
+        Catch
+            Debug.WriteLine("Error attempting to update graph/DRO")
+        End Try
 
     End Sub
 
     Private Sub GraphUpdateTimer_Tick(sender As Object, e As EventArgs) Handles GraphUpdateTimer.Tick
 
+        'As long as connection is good, update graph
         If Globals.PLCconnection = "Connection Status: ✔" Then
             UpdateGraph()
         End If
@@ -440,34 +432,87 @@ Public Class MainForm
 
     Private Sub ExperimentRecordingThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ExperimentRecordingThread.DoWork
 
-        'If this code snippet works on the first try, I'll eat my hat
+        'doing this loop /dirty/ because i have 3 hours to have it running and this one is important, all those other
+        '"precious" system resources can get off my recording thread's fucking lawn
 
-        If StartButton.Checked = True Then
+        While True
 
-            Dim currentTime As String
-            Dim displacment As Integer = 0
-            Dim force As Integer = 0
+            If StartButton.Checked = True Then
 
-            ' Get "high accuracy" position data from PLC
-            displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
+                Dim currentTime As String
+                Dim displacment As Integer = 0
+                Dim force As Integer = 0
 
-            ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
-            currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
+                ' Get "high accuracy" position data from PLC
+                displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
 
-            ' Log all real-time data
-            Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
+                ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
+                currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
 
-            Thread.Sleep(Globals.dataLogRate_ms)
+                ' Log all real-time data
+                Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
 
-        End If
+                Thread.Sleep(Globals.dataLogRate_ms)
+
+            End If
+
+
+            Try
+                If ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE) = "{1}" Then
+
+                    Globals.ExperimentRunning = False
+
+                End If
+            Catch
+            End Try
+
+        End While
 
     End Sub
 
-    Private Sub ExperimentCompleteSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs) Handles ExperimentCompleteSubscriber.DataChanged
+    Private Sub ExperimentRecordingThread_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles ExperimentRecordingThread.RunWorkerCompleted
+        ExperimentRecordingThread.RunWorkerAsync() 'YOU ARE NOT ALLOWED TO DIE
+    End Sub
+
+    Private Sub ExperimentCompleteSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs)
 
         'If "experiment complete" bit on PLC is pulled high;
         StartButton.CheckState = CheckState.Unchecked
         StopButton.PerformClick()
 
     End Sub
+
+    Private Sub GeneralCommsUpdateTimer_Tick(sender As Object, e As EventArgs) Handles GeneralCommsUpdateTimer.Tick
+
+        'As one final act of spite, the ONLY remaining thing that actually worked in the AdvancedHMI lib has also inexplicably
+        'broken. this is my replacement - testing the state of each individual bit manually every 0.1s. I hate you, Archie.
+
+        Try
+            Dim homing As Boolean = CBool(ModbusTCPCom1.Read(Hardware.HOMING_ACTIVE))
+            Dim experimentComplete As Boolean = CBool(ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE))
+            Dim stopped As Boolean = CBool(ModbusTCPCom1.Read(Hardware.STOP_BIT))
+
+            'Locks the controls if the flex rig is performing a homing operation
+            If homing = True Then
+                LockControls("all")
+            Else
+                LockControls("unlock")
+            End If
+
+            'Not super clean but *taps watch* not gonna hurt anytihng
+            If stopped = True Then
+                StartButton.Checked = False
+            End If
+
+            If experimentComplete = True Then
+                Globals.ExperimentRunning = False
+                StopButton.PerformClick()
+            End If
+
+        Catch
+            Debug.WriteLine("Error attempting to update UI by reading PLC bits")
+        End Try
+
+    End Sub
+
 End Class
