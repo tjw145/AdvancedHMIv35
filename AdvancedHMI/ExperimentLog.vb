@@ -8,6 +8,8 @@ Imports System.IO
 ' controls should be locked against inputs, but the samples cost like $50,000 or whatever and I cost $14/hr. so I might as well fix it.
 '
 ' (if you are reading this, i did not, in fact, fix it)
+'
+' EDIT: it should be running on a separate thread now (declared in MainForm) but still not sure how well it's running
 
 Public Class ExperimentLog
 

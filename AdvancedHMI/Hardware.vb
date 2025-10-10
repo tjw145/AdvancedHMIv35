@@ -31,7 +31,7 @@ Public Module Hardware
     '============== Maximum Physical Ratings: ===============
 
     Private maxRPM As Integer = 2400    ' motor sharft revolutions per minute
-    Private maxAccel As Integer = 32    ' mm/s^2
+    Private maxAccel As Integer = 24    ' mm/s^2
     Private maxPPS As Integer = 100000  ' pulses per second
 
     '========== Physical Hardware Configurations: ===========
@@ -41,10 +41,11 @@ Public Module Hardware
     Private gearRatio As Integer = 5
     Private screwLead As Decimal = CDec(0.125) ' inches per revolution
     Private mmPerRev As Decimal = CDec(25.4 * (screwLead / gearRatio))
+    Private maxVelocityMM As Decimal = maxRPM * mmPerRev / 60
     Private pulsesPerMM As Decimal = (1 * stepsPerRev / mmPerRev) * uStepFactor
 
 
-    Public Function TestProfile(moveTime As Decimal, distance As Decimal) As Boolean
+    Public Function TestAccelProfile(moveTime As Decimal, distance As Decimal) As Boolean
 
         ' Tests the input motion parameters against the physical limits of the machine; if 
         ' within limits, returns true. If OOR, returns false.
@@ -62,14 +63,33 @@ Public Module Hardware
 
     End Function
 
+    'Public Function TestVelocityProfile(moveTime As Decimal, distance As Decimal) As Boolean
+
+    '    Dim velocity As Double
+    '    Dim accel As Double
+
+    '    accel = (4.0 * distance) / (moveTime ^ 2)
+    '    velocity = moveTime * accel
+
+    '    If velocity > maxVelocityMM Then
+    '        Return False
+    '    Else Return True
+    '    End If
+
+    'End Function
+
+
     Public Function AdjustTime(time As Decimal, displacement As Decimal) As Decimal
         'If the user adjusts displacement values out of range, this function will adjust the traverse time input
         'value to keep the motion profile within the limits of the machine.
 
         Dim newTime As Decimal
+        If TestAccelProfile(time, displacement) = False Then
 
-        newTime = CDec(Math.Sqrt(displacement * 4 / maxAccel))
-        Return newTime
+            newTime = CDec(Math.Sqrt(displacement * 4 / maxAccel))
+            Return newTime
+
+        End If
 
     End Function
 

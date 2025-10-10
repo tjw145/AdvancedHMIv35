@@ -256,6 +256,7 @@ Public Class MainForm
             JogPlus.Enabled = False
             SetOrigin.Enabled = False
             StartButton.Enabled = False
+            SetupButton.Enabled = False
         End If
 
         If keyword = "run" Then
@@ -266,6 +267,7 @@ Public Class MainForm
             JogPlus.Enabled = False
             SetOrigin.Enabled = False
             StartButton.Enabled = True
+            SetupButton.Enabled = False
         End If
 
         If keyword = "unlock" Then
@@ -276,6 +278,7 @@ Public Class MainForm
             JogPlus.Enabled = True
             SetOrigin.Enabled = True
             StartButton.Enabled = True
+            SetupButton.Enabled = True
         End If
 
     End Sub
@@ -317,6 +320,7 @@ Public Class MainForm
     End Function
 
     Private Sub UpdateGraph()
+
         Try
             'Update DRO
             DRO_mm.Value = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
@@ -500,34 +504,37 @@ Public Class MainForm
 
         'As one final act of spite, the ONLY remaining thing that actually worked in the AdvancedHMI lib has also inexplicably
         'broken. this is my replacement - testing the state of each individual bit manually every 0.1s. I hate you, Archie.
+        If Globals.PLCconnection = "Connection Status: ✔" Then
 
-        Try
-            Dim homing As Boolean = CBool(ModbusTCPCom1.Read(Hardware.HOMING_ACTIVE))
-            Dim experimentComplete As Boolean = CBool(ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE))
-            Dim stopped As Boolean = CBool(ModbusTCPCom1.Read(Hardware.STOP_BIT))
+            Try
+                Dim homing As Boolean = CBool(ModbusTCPCom1.Read(Hardware.HOMING_ACTIVE))
+                Dim experimentComplete As Boolean = CBool(ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE))
+                Dim stopped As Boolean = CBool(ModbusTCPCom1.Read(Hardware.STOP_BIT))
 
-            'Locks the controls if the flex rig is performing a homing operation
-            If homing = True Then
-                LockControls("all")
-            Else
-                If StartButton.Checked = False Then
-                    LockControls("unlock")
+                'Locks the controls if the flex rig is performing a homing operation
+                If homing = True Then
+                    LockControls("all")
+                Else
+                    If StartButton.Checked = False Then
+                        LockControls("unlock")
+                    End If
                 End If
-            End If
 
-            'Not super clean but *taps watch* not gonna hurt anytihng
-            If stopped = True Then
-                StartButton.Checked = False
-            End If
+                'Not super clean but *taps watch* not gonna hurt anytihng
+                If stopped = True Then
+                    StartButton.Checked = False
+                End If
 
-            If experimentComplete = True Then
-                Globals.ExperimentRunning = False
-                StopButton.PerformClick()
-            End If
+                If experimentComplete = True Then
+                    Globals.ExperimentRunning = False
+                    StopButton.PerformClick()
+                End If
 
-        Catch
-            Debug.WriteLine("Error attempting to update UI by reading PLC bits")
-        End Try
+            Catch
+                Debug.WriteLine("Error attempting to update UI by reading PLC bits")
+            End Try
+
+        End If
 
     End Sub
 
