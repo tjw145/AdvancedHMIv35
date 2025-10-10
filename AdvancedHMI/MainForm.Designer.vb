@@ -147,7 +147,7 @@ Partial Class MainForm
         Me.ModbusTCPCom1.SwapBytes = True
         Me.ModbusTCPCom1.SwapWords = True
         Me.ModbusTCPCom1.TcpipPort = CType(502US, UShort)
-        Me.ModbusTCPCom1.TimeOut = 3000
+        Me.ModbusTCPCom1.TimeOut = 100
         Me.ModbusTCPCom1.UnitId = CType(1, Byte)
         '
         'GroupBox4
@@ -546,7 +546,7 @@ Partial Class MainForm
         'ConnectionCheckTimer
         '
         Me.ConnectionCheckTimer.Enabled = True
-        Me.ConnectionCheckTimer.Interval = 1000
+        Me.ConnectionCheckTimer.Interval = 1001
         '
         'ConnectionIndicator
         '
@@ -562,7 +562,7 @@ Partial Class MainForm
         '
         'GraphUpdateTimer
         '
-        Me.GraphUpdateTimer.Interval = 50
+        Me.GraphUpdateTimer.Interval = 49
         '
         'GraphControlBox
         '
@@ -614,9 +614,11 @@ Partial Class MainForm
         Me.UserSecondsInput.Location = New System.Drawing.Point(372, 24)
         Me.UserSecondsInput.Margin = New System.Windows.Forms.Padding(2)
         Me.UserSecondsInput.Maximum = New Decimal(New Integer() {600, 0, 0, 0})
+        Me.UserSecondsInput.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.UserSecondsInput.Name = "UserSecondsInput"
         Me.UserSecondsInput.Size = New System.Drawing.Size(75, 25)
         Me.UserSecondsInput.TabIndex = 1
+        Me.UserSecondsInput.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'TwoCycleButton
         '
@@ -695,6 +697,7 @@ Partial Class MainForm
         '
         'GeneralCommsUpdateTimer
         '
+        Me.GeneralCommsUpdateTimer.Interval = 99
         '
         'MainForm
         '

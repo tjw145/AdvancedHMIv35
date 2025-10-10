@@ -52,13 +52,13 @@ Public Class ExperimentLog
         With writer
 
             'Writes experimental parameters as metadata
-            .WriteLine("SoftwareVersion:" & CStr(Globals.CurrentVersion))
+            .WriteLine("SoftwareVersion: " & CStr(Globals.CurrentVersion))
             .WriteLine("Time: " & CStr(System.DateTime.Now))
             .WriteLine()
-            .WriteLine("No. of Cycles: " & CStr(Globals.numberOfCycles))
-            .WriteLine("Traverse Time (s): " & CStr(Globals.traverseTime_s / 100))
-            .WriteLine("Displacement. (mm): " & CStr(Globals.displacement_mm))
-            .WriteLine("#Data Log rate (Hz): " & CStr(1 / (Globals.dataLogRate_ms / 1000) & "Hz")) 'Conv. ms to Hz
+            .WriteLine("No. of Cycles:," & CStr(Globals.numberOfCycles))
+            .WriteLine("Traverse Time (s):," & CStr(Globals.traverseTime_s / 100))
+            .WriteLine("Displacement. (mm):," & CStr(Globals.displacement_mm))
+            .WriteLine("#Data Log rate (Hz):," & CStr(1 / (Globals.dataLogRate_ms / 1000) & "Hz")) 'Conv. ms to Hz
             .WriteLine()
 
             'Write "end of metadata" marker
@@ -91,6 +91,16 @@ Public Class ExperimentLog
         writer.Close()
 
         Debug.WriteLine("Export successful. File saved at: " & file)
+
+    End Sub
+
+    Public Sub ClearLog()
+
+        'Wipe log for next recording
+        length = 0
+        timeLog = Nothing
+        dispLog = Nothing
+        forceLog = Nothing
 
     End Sub
 

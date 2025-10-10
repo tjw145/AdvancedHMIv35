@@ -107,7 +107,7 @@ Public Class MainForm
                 Else
 
                     StartButton.CheckState = CheckState.Unchecked
-                    PLCconnection = "Unknown Connection Error - Please Restart"
+                    Globals.PLCconnection = "Connection Status: ❌"
 
                 End If
 
@@ -144,6 +144,7 @@ Public Class MainForm
                 End If
 
                 Globals.ExperimentRunning = False
+                Log.ClearLog()
 
             End If
 
@@ -190,39 +191,24 @@ Public Class MainForm
 
     End Sub
 
-    'Public Sub MotionControlThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles MotionControlThread.DoWork
-
-    '    'Time spent trying to figure out how make this multithreading work correctly:
-    '    '16 days
-
-
-    '    While MotionControlThread.CancellationPending = False AndAlso Globals.MotionController.MovesComplete = False
-
-    '        'Dim asyncOutputThread As Task = Task.Factory.StartNew(Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, Globals.cycles))
-    '        'asyncOutputThread.Start()
-    '        'ThreadPool.QueueUserWorkItem(Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, Globals.cycles))
-    '        'Task.Run(Sub() Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, Globals.cycles))
-
-    '        Globals.MotionController.OutputMotionSolution(ModbusTCPCom1, Globals.MovePoints, cycles)
-    '        System.Windows.Forms.Application.DoEvents()
-    '    End While
-
-    '    System.Windows.Forms.Application.DoEvents()
-    '    e.Cancel = True
-    '    Exit Sub
-
-    'End Sub
-
     Private Sub ConnectionCheckThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ConnectionCheckThread.DoWork
 
         'While not running an active program, this constantly tests to make sure the PLC and software are connected.
+        Try
 
-        While StartButton.Checked = False
+            While StartButton.Checked = False
 
-            CheckConnectionToPLC()
-            System.Threading.Thread.Sleep(1000)
+                CheckConnectionToPLC()
+                System.Threading.Thread.Sleep(1000)
 
-        End While
+            End While
+
+        Catch ex As Exception
+
+            Debug.WriteLine("Error attempting to check connection")
+            Globals.PLCconnection = "Connection Status: ❌"
+
+        End Try
 
     End Sub
 
@@ -325,21 +311,10 @@ Public Class MainForm
             Else Return False
 
             End If
+
         End With
 
     End Function
-
-    Private Sub StopButtonSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs)
-
-        'Supposed to reset mainform controls after cycle stops and PLC resets stop bit to true. NOT WORKING
-
-        If StartButton.Checked = True And ModbusTCPCom1.Read(STOP_BIT) = "1" Then
-
-            StartButton.Checked = False
-
-        End If
-
-    End Sub
 
     Private Sub UpdateGraph()
         Try
@@ -354,15 +329,18 @@ Public Class MainForm
             End If
 
 
-            'Update Live Graph
+            'Update live graph
             Dim x As Double = Now.TimeOfDay.TotalMilliseconds
             Dim y As Double = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
             Dim NewPoint As New DataPoint(x, y)
 
+            'Add datapoint
+            LiveGraph.Series("DisplacementSeries").Points.Insert(0, NewPoint)
+
             Dim datapointsPerSecond As Integer = CInt(1000 / GraphUpdateTimer.Interval) 'ms to Hz
             Dim minimumDataPoint As Integer
 
-            'Find minimum X-value for display based on user selection
+            'Find minimum X-value for display window based on user selection
             If HalfCycleButton.Checked = True Then
                 minimumDataPoint = datapointsPerSecond * CInt(Globals.traverseTime_s / 100)
             End If
@@ -376,12 +354,29 @@ Public Class MainForm
                 minimumDataPoint = CInt(datapointsPerSecond * UserSecondsInput.Value)
             End If
 
-            'LiveGraph.Series("DisplacementSeries").Points.AddXY(x, y)
-            LiveGraph.Series("DisplacementSeries").Points.Insert(0, NewPoint)
+            If minimumDataPoint > LiveGraph.Series("DisplacementSeries").Points.Count Then
+
+                'If there arent enough points to fill the window, just resize to fit all of them until there are
+                'If you don't do this, the graph just freezes and it looks like it crashed
+                minimumDataPoint = LiveGraph.Series("DisplacementSeries").Points.Count - 1
+
+            End If
+
+            If minimumDataPoint > datapointsPerSecond * 5 Then
+
+                'If the graph shows a timespan over 5 seconds, turn markers off automatically
+                DataMarkersCheckbox.CheckState = CheckState.Unchecked
+
+            Else
+
+                'Turn back on automatically
+                DataMarkersCheckbox.CheckState = CheckState.Checked
+
+            End If
 
             If LiveGraph.Series("DisplacementSeries").Points.Count > minimumDataPoint Then
 
-                'Update X-axis boundaries
+                'Update X-axis boundaries so that graph window moves forward with new data
                 LiveGraph.ChartAreas(0).AxisX.Minimum = LiveGraph.Series("DisplacementSeries").Points.Item(minimumDataPoint).XValue
                 LiveGraph.ChartAreas(0).AxisX.Maximum = LiveGraph.Series("DisplacementSeries").Points.Item(0).XValue
 
@@ -443,16 +438,33 @@ Public Class MainForm
                 Dim displacment As Integer = 0
                 Dim force As Integer = 0
 
-                ' Get "high accuracy" position data from PLC
-                displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
+                Try
 
-                ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
-                currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
+                    ' Get "high accuracy" position data from PLC
+                    displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
 
-                ' Log all real-time data
-                Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
+                    ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
+                    currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
 
-                Thread.Sleep(Globals.dataLogRate_ms)
+                    ' Log all real-time data
+                    Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
+
+                    Thread.Sleep(Globals.dataLogRate_ms)
+
+                Catch
+
+                    Debug.WriteLine("Data logging error")
+
+                    ' If a read error occurs, insert a datapoint of "999" to indicate where in the data it happened.
+                    displacment = 999
+                    currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
+
+                    ' Log data
+                    Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
+
+                    Thread.Sleep(Globals.dataLogRate_ms)
+
+                End Try
 
             End If
 
@@ -471,7 +483,9 @@ Public Class MainForm
     End Sub
 
     Private Sub ExperimentRecordingThread_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles ExperimentRecordingThread.RunWorkerCompleted
+
         ExperimentRecordingThread.RunWorkerAsync() 'YOU ARE NOT ALLOWED TO DIE
+
     End Sub
 
     Private Sub ExperimentCompleteSubscriber_DataChanged(sender As Object, e As Drivers.Common.PlcComEventArgs)
@@ -496,7 +510,9 @@ Public Class MainForm
             If homing = True Then
                 LockControls("all")
             Else
-                LockControls("unlock")
+                If StartButton.Checked = False Then
+                    LockControls("unlock")
+                End If
             End If
 
             'Not super clean but *taps watch* not gonna hurt anytihng
