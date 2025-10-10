@@ -24,8 +24,8 @@ Partial Class MainForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ForceItemsIntoToolBox1 = New MfgControl.AdvancedHMI.Drivers.ForceItemsIntoToolbox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -54,7 +54,6 @@ Partial Class MainForm
         Me.GraphUpdateTimer = New System.Windows.Forms.Timer(Me.components)
         Me.GraphControlBox = New System.Windows.Forms.GroupBox()
         Me.UserSecondsButton = New System.Windows.Forms.RadioButton()
-        Me.DataMarkersCheckbox = New System.Windows.Forms.CheckBox()
         Me.UserSecondsInput = New System.Windows.Forms.NumericUpDown()
         Me.TwoCycleButton = New System.Windows.Forms.RadioButton()
         Me.HalfCycleButton = New System.Windows.Forms.RadioButton()
@@ -63,6 +62,7 @@ Partial Class MainForm
         Me.StopButton = New AdvancedHMIControls.BasicButton()
         Me.ExperimentRecordingThread = New System.ComponentModel.BackgroundWorker()
         Me.GeneralCommsUpdateTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.DataMarkersCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -147,7 +147,7 @@ Partial Class MainForm
         Me.ModbusTCPCom1.SwapBytes = True
         Me.ModbusTCPCom1.SwapWords = True
         Me.ModbusTCPCom1.TcpipPort = CType(502US, UShort)
-        Me.ModbusTCPCom1.TimeOut = 100
+        Me.ModbusTCPCom1.TimeOut = 50
         Me.ModbusTCPCom1.UnitId = CType(1, Byte)
         '
         'GroupBox4
@@ -417,85 +417,85 @@ Partial Class MainForm
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LiveGraph.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        ChartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
-        ChartArea1.AxisX.IsLabelAutoFit = False
-        ChartArea1.AxisX.IsMarginVisible = False
-        ChartArea1.AxisX.IsStartedFromZero = False
-        ChartArea1.AxisX.LabelAutoFitMaxFontSize = 12
-        ChartArea1.AxisX.LabelAutoFitMinFontSize = 12
-        ChartArea1.AxisX.LabelAutoFitStyle = System.Windows.Forms.DataVisualization.Charting.LabelAutoFitStyles.StaggeredLabels
-        ChartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisX.LabelStyle.Format = "0"
-        ChartArea1.AxisX.LabelStyle.Interval = 1.0R
-        ChartArea1.AxisX.LabelStyle.IntervalOffset = 0R
-        ChartArea1.AxisX.LabelStyle.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea1.AxisX.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea1.AxisX.LabelStyle.TruncatedLabels = True
-        ChartArea1.AxisX.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisX.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea1.AxisX.MajorGrid.Enabled = False
-        ChartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent
-        ChartArea1.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea1.AxisX.MajorTickMark.Interval = 1.0R
-        ChartArea1.AxisX.MajorTickMark.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisX.MajorTickMark.Size = 2.0!
-        ChartArea1.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.InsideArea
-        ChartArea1.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
-        ChartArea1.AxisY.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea1.AxisY.IsMarginVisible = False
-        ChartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY.LabelStyle.Interval = 10.0R
-        ChartArea1.AxisY.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea1.AxisY.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY.MajorGrid.Interval = 10.0R
-        ChartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray
-        ChartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea1.AxisY.MajorTickMark.Interval = 10.0R
-        ChartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY.MajorTickMark.LineWidth = 5
-        ChartArea1.AxisY.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
-        ChartArea1.AxisY.Maximum = 50.0R
-        ChartArea1.AxisY.Minimum = 0R
-        ChartArea1.AxisY.TitleForeColor = System.Drawing.Color.White
-        ChartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[True]
-        ChartArea1.AxisY2.Interval = 10.0R
-        ChartArea1.AxisY2.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea1.AxisY2.IsMarginVisible = False
-        ChartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY2.LabelStyle.Interval = 10.0R
-        ChartArea1.AxisY2.LabelStyle.IsEndLabelVisible = False
-        ChartArea1.AxisY2.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY2.LineWidth = 2
-        ChartArea1.AxisY2.MajorGrid.Interval = 10.0R
-        ChartArea1.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY2.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea1.AxisY2.MajorTickMark.LineColor = System.Drawing.Color.Bisque
-        ChartArea1.AxisY2.MajorTickMark.LineWidth = 10
-        ChartArea1.AxisY2.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
-        ChartArea1.AxisY2.Maximum = 50.0R
-        ChartArea1.AxisY2.Minimum = 0R
-        ChartArea1.AxisY2.TitleForeColor = System.Drawing.Color.Bisque
-        ChartArea1.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(29, Byte), Integer), CType(CType(28, Byte), Integer))
-        ChartArea1.BorderColor = System.Drawing.Color.Bisque
-        ChartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
-        ChartArea1.Name = "ChartAreaDisp"
-        Me.LiveGraph.ChartAreas.Add(ChartArea1)
+        ChartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
+        ChartArea3.AxisX.IsLabelAutoFit = False
+        ChartArea3.AxisX.IsMarginVisible = False
+        ChartArea3.AxisX.IsStartedFromZero = False
+        ChartArea3.AxisX.LabelAutoFitMaxFontSize = 12
+        ChartArea3.AxisX.LabelAutoFitMinFontSize = 12
+        ChartArea3.AxisX.LabelAutoFitStyle = System.Windows.Forms.DataVisualization.Charting.LabelAutoFitStyles.StaggeredLabels
+        ChartArea3.AxisX.LabelStyle.ForeColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisX.LabelStyle.Format = "0"
+        ChartArea3.AxisX.LabelStyle.Interval = 1.0R
+        ChartArea3.AxisX.LabelStyle.IntervalOffset = 0R
+        ChartArea3.AxisX.LabelStyle.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.AxisX.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.AxisX.LabelStyle.TruncatedLabels = True
+        ChartArea3.AxisX.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisX.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea3.AxisX.MajorGrid.Enabled = False
+        ChartArea3.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent
+        ChartArea3.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea3.AxisX.MajorTickMark.Interval = 1.0R
+        ChartArea3.AxisX.MajorTickMark.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisX.MajorTickMark.Size = 2.0!
+        ChartArea3.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.InsideArea
+        ChartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
+        ChartArea3.AxisY.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.AxisY.IsMarginVisible = False
+        ChartArea3.AxisY.LabelStyle.ForeColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY.LabelStyle.Interval = 10.0R
+        ChartArea3.AxisY.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.AxisY.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY.MajorGrid.Interval = 10.0R
+        ChartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray
+        ChartArea3.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea3.AxisY.MajorTickMark.Interval = 10.0R
+        ChartArea3.AxisY.MajorTickMark.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY.MajorTickMark.LineWidth = 5
+        ChartArea3.AxisY.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
+        ChartArea3.AxisY.Maximum = 50.0R
+        ChartArea3.AxisY.Minimum = 0R
+        ChartArea3.AxisY.TitleForeColor = System.Drawing.Color.White
+        ChartArea3.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[True]
+        ChartArea3.AxisY2.Interval = 10.0R
+        ChartArea3.AxisY2.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea3.AxisY2.IsMarginVisible = False
+        ChartArea3.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY2.LabelStyle.Interval = 10.0R
+        ChartArea3.AxisY2.LabelStyle.IsEndLabelVisible = False
+        ChartArea3.AxisY2.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY2.LineWidth = 2
+        ChartArea3.AxisY2.MajorGrid.Interval = 10.0R
+        ChartArea3.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY2.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea3.AxisY2.MajorTickMark.LineColor = System.Drawing.Color.Bisque
+        ChartArea3.AxisY2.MajorTickMark.LineWidth = 10
+        ChartArea3.AxisY2.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
+        ChartArea3.AxisY2.Maximum = 50.0R
+        ChartArea3.AxisY2.Minimum = 0R
+        ChartArea3.AxisY2.TitleForeColor = System.Drawing.Color.Bisque
+        ChartArea3.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(29, Byte), Integer), CType(CType(28, Byte), Integer))
+        ChartArea3.BorderColor = System.Drawing.Color.Bisque
+        ChartArea3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
+        ChartArea3.Name = "ChartAreaDisp"
+        Me.LiveGraph.ChartAreas.Add(ChartArea3)
         Me.LiveGraph.Location = New System.Drawing.Point(-29, -16)
         Me.LiveGraph.Margin = New System.Windows.Forms.Padding(2)
         Me.LiveGraph.Name = "LiveGraph"
         Me.LiveGraph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Light
-        Series1.BorderColor = System.Drawing.Color.White
-        Series1.BorderWidth = 2
-        Series1.ChartArea = "ChartAreaDisp"
-        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series1.Color = System.Drawing.Color.White
-        Series1.MarkerBorderColor = System.Drawing.Color.White
-        Series1.MarkerBorderWidth = 2
-        Series1.MarkerColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Series1.MarkerSize = 4
-        Series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Star4
-        Series1.Name = "DisplacementSeries"
-        Me.LiveGraph.Series.Add(Series1)
+        Series3.BorderColor = System.Drawing.Color.White
+        Series3.BorderWidth = 2
+        Series3.ChartArea = "ChartAreaDisp"
+        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series3.Color = System.Drawing.Color.White
+        Series3.MarkerBorderColor = System.Drawing.Color.White
+        Series3.MarkerBorderWidth = 2
+        Series3.MarkerColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Series3.MarkerSize = 4
+        Series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Star4
+        Series3.Name = "DisplacementSeries"
+        Me.LiveGraph.Series.Add(Series3)
         Me.LiveGraph.Size = New System.Drawing.Size(971, 709)
         Me.LiveGraph.TabIndex = 39
         '
@@ -595,19 +595,6 @@ Partial Class MainForm
         Me.UserSecondsButton.Text = "Sec."
         Me.UserSecondsButton.UseVisualStyleBackColor = True
         '
-        'DataMarkersCheckbox
-        '
-        Me.DataMarkersCheckbox.AutoSize = True
-        Me.DataMarkersCheckbox.Checked = True
-        Me.DataMarkersCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.DataMarkersCheckbox.Location = New System.Drawing.Point(458, 24)
-        Me.DataMarkersCheckbox.Margin = New System.Windows.Forms.Padding(2)
-        Me.DataMarkersCheckbox.Name = "DataMarkersCheckbox"
-        Me.DataMarkersCheckbox.Size = New System.Drawing.Size(191, 26)
-        Me.DataMarkersCheckbox.TabIndex = 3
-        Me.DataMarkersCheckbox.Text = "Data Point Markers"
-        Me.DataMarkersCheckbox.UseVisualStyleBackColor = True
-        '
         'UserSecondsInput
         '
         Me.UserSecondsInput.BorderStyle = System.Windows.Forms.BorderStyle.None
@@ -699,6 +686,19 @@ Partial Class MainForm
         '
         Me.GeneralCommsUpdateTimer.Interval = 99
         '
+        'DataMarkersCheckbox
+        '
+        Me.DataMarkersCheckbox.AutoSize = True
+        Me.DataMarkersCheckbox.Checked = True
+        Me.DataMarkersCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.DataMarkersCheckbox.Location = New System.Drawing.Point(458, 24)
+        Me.DataMarkersCheckbox.Margin = New System.Windows.Forms.Padding(2)
+        Me.DataMarkersCheckbox.Name = "DataMarkersCheckbox"
+        Me.DataMarkersCheckbox.Size = New System.Drawing.Size(191, 26)
+        Me.DataMarkersCheckbox.TabIndex = 3
+        Me.DataMarkersCheckbox.Text = "Data Point Markers"
+        Me.DataMarkersCheckbox.UseVisualStyleBackColor = True
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(120.0!, 120.0!)
@@ -772,10 +772,10 @@ Partial Class MainForm
     Friend WithEvents TwoCycleButton As RadioButton
     Friend WithEvents HalfCycleButton As RadioButton
     Friend WithEvents OneCycleButton As RadioButton
-    Friend WithEvents DataMarkersCheckbox As CheckBox
     Friend WithEvents ConnectionStatusBox As GroupBox
     Friend WithEvents UserSecondsButton As RadioButton
     Friend WithEvents UserSecondsInput As NumericUpDown
     Friend WithEvents ExperimentRecordingThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents GeneralCommsUpdateTimer As Timer
+    Friend WithEvents DataMarkersCheckbox As CheckBox
 End Class

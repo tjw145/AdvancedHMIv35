@@ -8,6 +8,8 @@ Imports System.IO
 ' controls should be locked against inputs, but the samples cost like $50,000 or whatever and I cost $14/hr. so I might as well fix it.
 '
 ' (if you are reading this, i did not, in fact, fix it)
+'
+' EDIT: it should be running on a separate thread now (declared in MainForm) but still not sure how well it's running
 
 Public Class ExperimentLog
 
@@ -57,8 +59,8 @@ Public Class ExperimentLog
             .WriteLine()
             .WriteLine("No. of Cycles:," & CStr(Globals.numberOfCycles))
             .WriteLine("Traverse Time (s):," & CStr(Globals.traverseTime_s / 100))
-            .WriteLine("Displacement. (mm):," & CStr(Globals.displacement_mm))
-            .WriteLine("#Data Log rate (Hz):," & CStr(1 / (Globals.dataLogRate_ms / 1000) & "Hz")) 'Conv. ms to Hz
+            .WriteLine("Displacement. (mm):," & CStr(Globals.displacement_mm / 10))
+            .WriteLine("#Data Log rate (Hz):," & CStr(1 / (Globals.dataLogRate_ms / 1000))) 'Conv. ms to Hz
             .WriteLine()
 
             'Write "end of metadata" marker

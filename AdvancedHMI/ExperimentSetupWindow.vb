@@ -19,6 +19,7 @@ Public Class ExperimentSetupWindow
 
         'Converts from Hz to ms.
         Globals.dataLogRate_ms = CInt(1000 / DataLogRateInput.Value)
+        MainForm.ExperimentRecordingTimer.Interval = Globals.dataLogRate_ms
 
     End Sub
 
@@ -81,7 +82,7 @@ Public Class ExperimentSetupWindow
 
     Private Sub TraverseTimeInput_ValueChanged(sender As Object, e As EventArgs) Handles TraverseTimeInput.ValueChanged
 
-        If Hardware.TestProfile(TraverseTimeInput.Value, DisplacementInput.Value) = False Then
+        If Hardware.TestAccelProfile(TraverseTimeInput.Value, DisplacementInput.Value) = False Then
 
             DisplacementInput.Value = Hardware.AdjustDisplacement(TraverseTimeInput.Value, DisplacementInput.Value)
 
@@ -93,7 +94,7 @@ Public Class ExperimentSetupWindow
 
     Private Sub DisplacementInput_ValueChanged(sender As Object, e As EventArgs) Handles DisplacementInput.ValueChanged
 
-        If Hardware.TestProfile(TraverseTimeInput.Value, DisplacementInput.Value) = False Then
+        If Hardware.TestAccelProfile(TraverseTimeInput.Value, DisplacementInput.Value) = False Then
 
             TraverseTimeInput.Value = Hardware.AdjustTime(TraverseTimeInput.Value, DisplacementInput.Value)
 
