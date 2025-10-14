@@ -54,6 +54,7 @@ Partial Class MainForm
         Me.GraphUpdateTimer = New System.Windows.Forms.Timer(Me.components)
         Me.GraphControlBox = New System.Windows.Forms.GroupBox()
         Me.UserSecondsButton = New System.Windows.Forms.RadioButton()
+        Me.GraphYInputBox = New System.Windows.Forms.NumericUpDown()
         Me.UserSecondsInput = New System.Windows.Forms.NumericUpDown()
         Me.TwoCycleButton = New System.Windows.Forms.RadioButton()
         Me.HalfCycleButton = New System.Windows.Forms.RadioButton()
@@ -62,7 +63,8 @@ Partial Class MainForm
         Me.StopButton = New AdvancedHMIControls.BasicButton()
         Me.ExperimentRecordingThread = New System.ComponentModel.BackgroundWorker()
         Me.GeneralCommsUpdateTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.DataMarkersCheckbox = New System.Windows.Forms.CheckBox()
+        Me.YMaxLabel = New System.Windows.Forms.Label()
+        Me.DecorativeDivider = New System.Windows.Forms.GroupBox()
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -71,6 +73,7 @@ Partial Class MainForm
         Me.GraphPanel.SuspendLayout()
         CType(Me.LiveGraph, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GraphControlBox.SuspendLayout()
+        CType(Me.GraphYInputBox, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.UserSecondsInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ConnectionStatusBox.SuspendLayout()
         Me.SuspendLayout()
@@ -474,6 +477,9 @@ Partial Class MainForm
         ChartArea3.AxisY2.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
         ChartArea3.AxisY2.Maximum = 50.0R
         ChartArea3.AxisY2.Minimum = 0R
+        ChartArea3.AxisY2.MinorGrid.Interval = 1.0R
+        ChartArea3.AxisY2.MinorGrid.LineColor = System.Drawing.Color.DimGray
+        ChartArea3.AxisY2.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
         ChartArea3.AxisY2.TitleForeColor = System.Drawing.Color.Bisque
         ChartArea3.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(29, Byte), Integer), CType(CType(28, Byte), Integer))
         ChartArea3.BorderColor = System.Drawing.Color.Bisque
@@ -553,7 +559,7 @@ Partial Class MainForm
         Me.ConnectionIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ConnectionIndicator.Font = New System.Drawing.Font("Arial", 11.25!)
         Me.ConnectionIndicator.ForeColor = System.Drawing.Color.White
-        Me.ConnectionIndicator.Location = New System.Drawing.Point(15, 25)
+        Me.ConnectionIndicator.Location = New System.Drawing.Point(15, 22)
         Me.ConnectionIndicator.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.ConnectionIndicator.Name = "ConnectionIndicator"
         Me.ConnectionIndicator.Size = New System.Drawing.Size(195, 22)
@@ -566,8 +572,10 @@ Partial Class MainForm
         '
         'GraphControlBox
         '
+        Me.GraphControlBox.Controls.Add(Me.DecorativeDivider)
+        Me.GraphControlBox.Controls.Add(Me.YMaxLabel)
         Me.GraphControlBox.Controls.Add(Me.UserSecondsButton)
-        Me.GraphControlBox.Controls.Add(Me.DataMarkersCheckbox)
+        Me.GraphControlBox.Controls.Add(Me.GraphYInputBox)
         Me.GraphControlBox.Controls.Add(Me.UserSecondsInput)
         Me.GraphControlBox.Controls.Add(Me.TwoCycleButton)
         Me.GraphControlBox.Controls.Add(Me.HalfCycleButton)
@@ -586,7 +594,7 @@ Partial Class MainForm
         'UserSecondsButton
         '
         Me.UserSecondsButton.AutoSize = True
-        Me.UserSecondsButton.Location = New System.Drawing.Point(299, 24)
+        Me.UserSecondsButton.Location = New System.Drawing.Point(299, 22)
         Me.UserSecondsButton.Margin = New System.Windows.Forms.Padding(2)
         Me.UserSecondsButton.Name = "UserSecondsButton"
         Me.UserSecondsButton.Size = New System.Drawing.Size(70, 26)
@@ -595,10 +603,22 @@ Partial Class MainForm
         Me.UserSecondsButton.Text = "Sec."
         Me.UserSecondsButton.UseVisualStyleBackColor = True
         '
+        'GraphYInputBox
+        '
+        Me.GraphYInputBox.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.GraphYInputBox.Location = New System.Drawing.Point(567, 23)
+        Me.GraphYInputBox.Margin = New System.Windows.Forms.Padding(2)
+        Me.GraphYInputBox.Maximum = New Decimal(New Integer() {50, 0, 0, 0})
+        Me.GraphYInputBox.Minimum = New Decimal(New Integer() {2, 0, 0, 0})
+        Me.GraphYInputBox.Name = "GraphYInputBox"
+        Me.GraphYInputBox.Size = New System.Drawing.Size(75, 25)
+        Me.GraphYInputBox.TabIndex = 1
+        Me.GraphYInputBox.Value = New Decimal(New Integer() {40, 0, 0, 0})
+        '
         'UserSecondsInput
         '
         Me.UserSecondsInput.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.UserSecondsInput.Location = New System.Drawing.Point(372, 24)
+        Me.UserSecondsInput.Location = New System.Drawing.Point(372, 23)
         Me.UserSecondsInput.Margin = New System.Windows.Forms.Padding(2)
         Me.UserSecondsInput.Maximum = New Decimal(New Integer() {600, 0, 0, 0})
         Me.UserSecondsInput.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -611,7 +631,7 @@ Partial Class MainForm
         '
         Me.TwoCycleButton.AutoSize = True
         Me.TwoCycleButton.Checked = True
-        Me.TwoCycleButton.Location = New System.Drawing.Point(208, 24)
+        Me.TwoCycleButton.Location = New System.Drawing.Point(208, 22)
         Me.TwoCycleButton.Margin = New System.Windows.Forms.Padding(2)
         Me.TwoCycleButton.Name = "TwoCycleButton"
         Me.TwoCycleButton.Size = New System.Drawing.Size(85, 26)
@@ -623,7 +643,7 @@ Partial Class MainForm
         'HalfCycleButton
         '
         Me.HalfCycleButton.AutoSize = True
-        Me.HalfCycleButton.Location = New System.Drawing.Point(11, 24)
+        Me.HalfCycleButton.Location = New System.Drawing.Point(11, 22)
         Me.HalfCycleButton.Margin = New System.Windows.Forms.Padding(2)
         Me.HalfCycleButton.Name = "HalfCycleButton"
         Me.HalfCycleButton.Size = New System.Drawing.Size(101, 26)
@@ -634,7 +654,7 @@ Partial Class MainForm
         'OneCycleButton
         '
         Me.OneCycleButton.AutoSize = True
-        Me.OneCycleButton.Location = New System.Drawing.Point(118, 24)
+        Me.OneCycleButton.Location = New System.Drawing.Point(118, 22)
         Me.OneCycleButton.Margin = New System.Windows.Forms.Padding(2)
         Me.OneCycleButton.Name = "OneCycleButton"
         Me.OneCycleButton.Size = New System.Drawing.Size(85, 26)
@@ -686,18 +706,22 @@ Partial Class MainForm
         '
         Me.GeneralCommsUpdateTimer.Interval = 99
         '
-        'DataMarkersCheckbox
+        'YMaxLabel
         '
-        Me.DataMarkersCheckbox.AutoSize = True
-        Me.DataMarkersCheckbox.Checked = True
-        Me.DataMarkersCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.DataMarkersCheckbox.Location = New System.Drawing.Point(458, 24)
-        Me.DataMarkersCheckbox.Margin = New System.Windows.Forms.Padding(2)
-        Me.DataMarkersCheckbox.Name = "DataMarkersCheckbox"
-        Me.DataMarkersCheckbox.Size = New System.Drawing.Size(191, 26)
-        Me.DataMarkersCheckbox.TabIndex = 3
-        Me.DataMarkersCheckbox.Text = "Data Point Markers"
-        Me.DataMarkersCheckbox.UseVisualStyleBackColor = True
+        Me.YMaxLabel.AutoSize = True
+        Me.YMaxLabel.Location = New System.Drawing.Point(490, 24)
+        Me.YMaxLabel.Name = "YMaxLabel"
+        Me.YMaxLabel.Size = New System.Drawing.Size(76, 22)
+        Me.YMaxLabel.TabIndex = 2
+        Me.YMaxLabel.Text = "Y (mm):"
+        '
+        'DecorativeDivider
+        '
+        Me.DecorativeDivider.Location = New System.Drawing.Point(470, 0)
+        Me.DecorativeDivider.Name = "DecorativeDivider"
+        Me.DecorativeDivider.Size = New System.Drawing.Size(1, 59)
+        Me.DecorativeDivider.TabIndex = 3
+        Me.DecorativeDivider.TabStop = False
         '
         'MainForm
         '
@@ -735,6 +759,7 @@ Partial Class MainForm
         CType(Me.LiveGraph, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GraphControlBox.ResumeLayout(False)
         Me.GraphControlBox.PerformLayout()
+        CType(Me.GraphYInputBox, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.UserSecondsInput, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ConnectionStatusBox.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -777,5 +802,7 @@ Partial Class MainForm
     Friend WithEvents UserSecondsInput As NumericUpDown
     Friend WithEvents ExperimentRecordingThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents GeneralCommsUpdateTimer As Timer
-    Friend WithEvents DataMarkersCheckbox As CheckBox
+    Friend WithEvents GraphYInputBox As NumericUpDown
+    Friend WithEvents DecorativeDivider As GroupBox
+    Friend WithEvents YMaxLabel As Label
 End Class

@@ -1,4 +1,4 @@
-﻿dOption Strict On
+﻿Option Strict On
 
 Imports System.Collections.ObjectModel
 Imports System.ComponentModel
@@ -137,6 +137,10 @@ Public Class MainForm
 
             If Globals.ExperimentRunning = True Then
 
+                'Notification chime telling user that experiment is over
+                Beep()
+
+                'Save dialog
                 If SaveFileDialog.ShowDialog() = DialogResult.OK Then
 
                     Log.ExportAsCSV(SaveFileDialog.FileName)
@@ -369,12 +373,15 @@ Public Class MainForm
             If minimumDataPoint > datapointsPerSecond * 5 Then
 
                 'If the graph shows a timespan over 5 seconds, turn markers off automatically
-                DataMarkersCheckbox.CheckState = CheckState.Unchecked
+
+                'FastLine doesn't support datamarkers, so by doing it this way we get a little extra performance as
+                'opposed to just switching markers off :)
+                LiveGraph.Series("DisplacementSeries").ChartType = SeriesChartType.FastLine
 
             Else
 
                 'Turn back on automatically
-                DataMarkersCheckbox.CheckState = CheckState.Checked
+                LiveGraph.Series("DisplacementSeries").ChartType = SeriesChartType.Line
 
             End If
 
@@ -411,24 +418,6 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub DataMarkersCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles DataMarkersCheckbox.CheckedChanged
-
-        'Switches data markers on the live graph on/off.
-
-        If DataMarkersCheckbox.CheckState = CheckState.Checked Then
-
-            LiveGraph.Series("DisplacementSeries").ChartType = SeriesChartType.Line
-
-        Else
-
-            'FastLine doesn't support datamarkers, so by doing it this way we get a little extra performance as
-            'opposed to just switching markers off :)
-            LiveGraph.Series("DisplacementSeries").ChartType = SeriesChartType.FastLine
-
-        End If
-
-    End Sub
-
     Private Sub ExperimentRecordingThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ExperimentRecordingThread.DoWork
 
         'doing this loop /dirty/ because i have 3 hours to have it running and this one is important, all those other
@@ -453,7 +442,7 @@ Public Class MainForm
                     ' Log all real-time data
                     Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
 
-                    Threading.Thread.Sleep(Globals.dataLogRate_ms)
+                    Thread.Sleep(Globals.dataLogRate_ms)
 
                 Catch
 
@@ -466,7 +455,7 @@ Public Class MainForm
                     ' Log data
                     Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
 
-                    Threading.Thread.Sleep(Globals.dataLogRate_ms)
+                    Thread.Sleep(Globals.dataLogRate_ms)
 
                 End Try
 
@@ -500,6 +489,7 @@ Public Class MainForm
                 Dim homing As Boolean = CBool(ModbusTCPCom1.Read(Hardware.HOMING_ACTIVE))
                 Dim experimentComplete As Boolean = CBool(ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE))
                 Dim stopped As Boolean = CBool(ModbusTCPCom1.Read(Hardware.STOP_BIT))
+                Dim currentCycle As String = ModbusTCPCom1.Read(Hardware.CURRENT_CYCLE_NUMBER)
 
                 'Locks the controls if the flex rig is performing a homing operation
                 If homing = True Then
@@ -520,9 +510,28 @@ Public Class MainForm
                     StopButton.PerformClick()
                 End If
 
+
+
             Catch
                 Debug.WriteLine("Error attempting to update UI by reading PLC bits")
             End Try
+
+        End If
+
+    End Sub
+
+    Private Sub GraphYInputBox_ValueChanged(sender As Object, e As EventArgs) Handles GraphYInputBox.ValueChanged
+
+        LiveGraph.ChartAreas("ChartAreaDisp").AxisY.Maximum = GraphYInputBox.Value
+        LiveGraph.ChartAreas("ChartAreaDisp").AxisY2.Maximum = GraphYInputBox.Value
+
+        If GraphYInputBox.Value <= 20 Then
+
+            LiveGraph.ChartAreas("ChartAreaDisp").AxisY2.MinorGrid.Enabled = True
+
+        Else
+
+            LiveGraph.ChartAreas("ChartAreaDisp").AxisY2.MinorGrid.Enabled = False
 
         End If
 
