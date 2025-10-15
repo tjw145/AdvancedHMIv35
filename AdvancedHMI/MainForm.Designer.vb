@@ -24,8 +24,8 @@ Partial Class MainForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ForceItemsIntoToolBox1 = New MfgControl.AdvancedHMI.Drivers.ForceItemsIntoToolbox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -39,7 +39,6 @@ Partial Class MainForm
         Me.JogPlus = New AdvancedHMIControls.BasicButton()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.HW_Zero = New AdvancedHMIControls.BasicButton()
-        Me.ForceZero = New AdvancedHMIControls.BasicButton()
         Me.DisplacementZero = New AdvancedHMIControls.BasicButton()
         Me.GraphPanel = New System.Windows.Forms.Panel()
         Me.LiveGraph = New System.Windows.Forms.DataVisualization.Charting.Chart()
@@ -53,6 +52,8 @@ Partial Class MainForm
         Me.ConnectionIndicator = New System.Windows.Forms.Label()
         Me.GraphUpdateTimer = New System.Windows.Forms.Timer(Me.components)
         Me.GraphControlBox = New System.Windows.Forms.GroupBox()
+        Me.DecorativeDivider = New System.Windows.Forms.GroupBox()
+        Me.YMaxLabel = New System.Windows.Forms.Label()
         Me.UserSecondsButton = New System.Windows.Forms.RadioButton()
         Me.GraphYInputBox = New System.Windows.Forms.NumericUpDown()
         Me.UserSecondsInput = New System.Windows.Forms.NumericUpDown()
@@ -63,8 +64,12 @@ Partial Class MainForm
         Me.StopButton = New AdvancedHMIControls.BasicButton()
         Me.ExperimentRecordingThread = New System.ComponentModel.BackgroundWorker()
         Me.GeneralCommsUpdateTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.YMaxLabel = New System.Windows.Forms.Label()
-        Me.DecorativeDivider = New System.Windows.Forms.GroupBox()
+        Me.ProgressTable = New System.Windows.Forms.TableLayoutPanel()
+        Me.TimeRemaingLabelTitle = New System.Windows.Forms.Label()
+        Me.TimeRemainingLabel = New System.Windows.Forms.Label()
+        Me.CurrentCycleLabel = New System.Windows.Forms.Label()
+        Me.CurrentCycleLabelTitle = New System.Windows.Forms.Label()
+        Me.EstTimeRemiainingCounter = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox2.SuspendLayout()
         CType(Me.ModbusTCPCom1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -76,6 +81,7 @@ Partial Class MainForm
         CType(Me.GraphYInputBox, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.UserSecondsInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ConnectionStatusBox.SuspendLayout()
+        Me.ProgressTable.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -102,7 +108,7 @@ Partial Class MainForm
         Me.GroupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.GroupBox2.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox2.ForeColor = System.Drawing.Color.White
-        Me.GroupBox2.Location = New System.Drawing.Point(11, 294)
+        Me.GroupBox2.Location = New System.Drawing.Point(11, 211)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
@@ -124,7 +130,7 @@ Partial Class MainForm
         Me.SetOrigin.ForeColorAltername = System.Drawing.Color.Black
         Me.SetOrigin.Highlight = False
         Me.SetOrigin.HighlightColor = System.Drawing.Color.Green
-        Me.SetOrigin.Location = New System.Drawing.Point(9, 198)
+        Me.SetOrigin.Location = New System.Drawing.Point(9, 195)
         Me.SetOrigin.Margin = New System.Windows.Forms.Padding(4)
         Me.SetOrigin.MaximumHoldTime = 3000
         Me.SetOrigin.MinimumHoldTime = 500
@@ -158,7 +164,7 @@ Partial Class MainForm
         Me.GroupBox4.Controls.Add(Me.DRO_N)
         Me.GroupBox4.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox4.ForeColor = System.Drawing.Color.White
-        Me.GroupBox4.Location = New System.Drawing.Point(91, 112)
+        Me.GroupBox4.Location = New System.Drawing.Point(91, 109)
         Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4)
@@ -185,7 +191,7 @@ Partial Class MainForm
         Me.DRO_N.KeypadScaleFactor = 1.0R
         Me.DRO_N.KeypadText = Nothing
         Me.DRO_N.KeypadWidth = 300
-        Me.DRO_N.Location = New System.Drawing.Point(16, 22)
+        Me.DRO_N.Location = New System.Drawing.Point(16, 19)
         Me.DRO_N.Margin = New System.Windows.Forms.Padding(4)
         Me.DRO_N.Name = "DRO_N"
         Me.DRO_N.NumberOfDigits = 3
@@ -205,7 +211,7 @@ Partial Class MainForm
         Me.GroupBox3.Controls.Add(Me.DRO_mm)
         Me.GroupBox3.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.ForeColor = System.Drawing.Color.White
-        Me.GroupBox3.Location = New System.Drawing.Point(91, 30)
+        Me.GroupBox3.Location = New System.Drawing.Point(91, 27)
         Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4)
@@ -258,7 +264,7 @@ Partial Class MainForm
         Me.JogMinus.ForeColorAltername = System.Drawing.Color.Black
         Me.JogMinus.Highlight = False
         Me.JogMinus.HighlightColor = System.Drawing.Color.Green
-        Me.JogMinus.Location = New System.Drawing.Point(9, 32)
+        Me.JogMinus.Location = New System.Drawing.Point(9, 29)
         Me.JogMinus.Margin = New System.Windows.Forms.Padding(4)
         Me.JogMinus.MaximumHoldTime = 90000
         Me.JogMinus.MinimumHoldTime = 2
@@ -286,7 +292,7 @@ Partial Class MainForm
         Me.JogPlus.ForeColorAltername = System.Drawing.Color.Black
         Me.JogPlus.Highlight = False
         Me.JogPlus.HighlightColor = System.Drawing.Color.Green
-        Me.JogPlus.Location = New System.Drawing.Point(9, 115)
+        Me.JogPlus.Location = New System.Drawing.Point(9, 112)
         Me.JogPlus.Margin = New System.Windows.Forms.Padding(4)
         Me.JogPlus.MaximumHoldTime = 90000
         Me.JogPlus.MinimumHoldTime = 2
@@ -304,7 +310,6 @@ Partial Class MainForm
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.HW_Zero)
-        Me.GroupBox1.Controls.Add(Me.ForceZero)
         Me.GroupBox1.Controls.Add(Me.DisplacementZero)
         Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.GroupBox1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -314,7 +319,7 @@ Partial Class MainForm
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.GroupBox1.Size = New System.Drawing.Size(228, 282)
+        Me.GroupBox1.Size = New System.Drawing.Size(228, 199)
         Me.GroupBox1.TabIndex = 14
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Auto Home"
@@ -331,7 +336,7 @@ Partial Class MainForm
         Me.HW_Zero.ForeColorAltername = System.Drawing.Color.Black
         Me.HW_Zero.Highlight = False
         Me.HW_Zero.HighlightColor = System.Drawing.Color.Green
-        Me.HW_Zero.Location = New System.Drawing.Point(9, 198)
+        Me.HW_Zero.Location = New System.Drawing.Point(9, 113)
         Me.HW_Zero.Margin = New System.Windows.Forms.Padding(4)
         Me.HW_Zero.MaximumHoldTime = 3000
         Me.HW_Zero.MinimumHoldTime = 500
@@ -346,34 +351,6 @@ Partial Class MainForm
         Me.HW_Zero.UseVisualStyleBackColor = False
         Me.HW_Zero.ValueToWrite = 0
         '
-        'ForceZero
-        '
-        Me.ForceZero.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.ForceZero.BackColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
-        Me.ForceZero.ComComponent = Me.ModbusTCPCom1
-        Me.ForceZero.Enabled = False
-        Me.ForceZero.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
-        Me.ForceZero.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ForceZero.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ForceZero.ForeColor = System.Drawing.SystemColors.Window
-        Me.ForceZero.ForeColorAltername = System.Drawing.Color.Black
-        Me.ForceZero.Highlight = False
-        Me.ForceZero.HighlightColor = System.Drawing.Color.Green
-        Me.ForceZero.Location = New System.Drawing.Point(9, 115)
-        Me.ForceZero.Margin = New System.Windows.Forms.Padding(4)
-        Me.ForceZero.MaximumHoldTime = 3000
-        Me.ForceZero.MinimumHoldTime = 500
-        Me.ForceZero.Name = "ForceZero"
-        Me.ForceZero.OutputType = MfgControl.AdvancedHMI.Controls.OutputType.MomentarySet
-        Me.ForceZero.PLCAddressClick = ""
-        Me.ForceZero.SelectTextAlternate = False
-        Me.ForceZero.Size = New System.Drawing.Size(210, 75)
-        Me.ForceZero.TabIndex = 13
-        Me.ForceZero.Text = "Force"
-        Me.ForceZero.TextAlternate = Nothing
-        Me.ForceZero.UseVisualStyleBackColor = False
-        Me.ForceZero.ValueToWrite = 0
-        '
         'DisplacementZero
         '
         Me.DisplacementZero.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -387,7 +364,7 @@ Partial Class MainForm
         Me.DisplacementZero.ForeColorAltername = System.Drawing.Color.Black
         Me.DisplacementZero.Highlight = False
         Me.DisplacementZero.HighlightColor = System.Drawing.Color.Green
-        Me.DisplacementZero.Location = New System.Drawing.Point(9, 32)
+        Me.DisplacementZero.Location = New System.Drawing.Point(10, 30)
         Me.DisplacementZero.Margin = New System.Windows.Forms.Padding(4)
         Me.DisplacementZero.MaximumHoldTime = 3000
         Me.DisplacementZero.MinimumHoldTime = 500
@@ -420,88 +397,88 @@ Partial Class MainForm
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LiveGraph.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        ChartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
-        ChartArea3.AxisX.IsLabelAutoFit = False
-        ChartArea3.AxisX.IsMarginVisible = False
-        ChartArea3.AxisX.IsStartedFromZero = False
-        ChartArea3.AxisX.LabelAutoFitMaxFontSize = 12
-        ChartArea3.AxisX.LabelAutoFitMinFontSize = 12
-        ChartArea3.AxisX.LabelAutoFitStyle = System.Windows.Forms.DataVisualization.Charting.LabelAutoFitStyles.StaggeredLabels
-        ChartArea3.AxisX.LabelStyle.ForeColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisX.LabelStyle.Format = "0"
-        ChartArea3.AxisX.LabelStyle.Interval = 1.0R
-        ChartArea3.AxisX.LabelStyle.IntervalOffset = 0R
-        ChartArea3.AxisX.LabelStyle.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea3.AxisX.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea3.AxisX.LabelStyle.TruncatedLabels = True
-        ChartArea3.AxisX.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisX.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea3.AxisX.MajorGrid.Enabled = False
-        ChartArea3.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent
-        ChartArea3.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea3.AxisX.MajorTickMark.Interval = 1.0R
-        ChartArea3.AxisX.MajorTickMark.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisX.MajorTickMark.Size = 2.0!
-        ChartArea3.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.InsideArea
-        ChartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
-        ChartArea3.AxisY.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea3.AxisY.IsMarginVisible = False
-        ChartArea3.AxisY.LabelStyle.ForeColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY.LabelStyle.Interval = 10.0R
-        ChartArea3.AxisY.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea3.AxisY.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY.MajorGrid.Interval = 10.0R
-        ChartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray
-        ChartArea3.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea3.AxisY.MajorTickMark.Interval = 10.0R
-        ChartArea3.AxisY.MajorTickMark.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY.MajorTickMark.LineWidth = 5
-        ChartArea3.AxisY.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
-        ChartArea3.AxisY.Maximum = 50.0R
-        ChartArea3.AxisY.Minimum = 0R
-        ChartArea3.AxisY.TitleForeColor = System.Drawing.Color.White
-        ChartArea3.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[True]
-        ChartArea3.AxisY2.Interval = 10.0R
-        ChartArea3.AxisY2.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
-        ChartArea3.AxisY2.IsMarginVisible = False
-        ChartArea3.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY2.LabelStyle.Interval = 10.0R
-        ChartArea3.AxisY2.LabelStyle.IsEndLabelVisible = False
-        ChartArea3.AxisY2.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY2.LineWidth = 2
-        ChartArea3.AxisY2.MajorGrid.Interval = 10.0R
-        ChartArea3.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY2.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea3.AxisY2.MajorTickMark.LineColor = System.Drawing.Color.Bisque
-        ChartArea3.AxisY2.MajorTickMark.LineWidth = 10
-        ChartArea3.AxisY2.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
-        ChartArea3.AxisY2.Maximum = 50.0R
-        ChartArea3.AxisY2.Minimum = 0R
-        ChartArea3.AxisY2.MinorGrid.Interval = 1.0R
-        ChartArea3.AxisY2.MinorGrid.LineColor = System.Drawing.Color.DimGray
-        ChartArea3.AxisY2.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
-        ChartArea3.AxisY2.TitleForeColor = System.Drawing.Color.Bisque
-        ChartArea3.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(29, Byte), Integer), CType(CType(28, Byte), Integer))
-        ChartArea3.BorderColor = System.Drawing.Color.Bisque
-        ChartArea3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
-        ChartArea3.Name = "ChartAreaDisp"
-        Me.LiveGraph.ChartAreas.Add(ChartArea3)
+        ChartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
+        ChartArea2.AxisX.IsLabelAutoFit = False
+        ChartArea2.AxisX.IsMarginVisible = False
+        ChartArea2.AxisX.IsStartedFromZero = False
+        ChartArea2.AxisX.LabelAutoFitMaxFontSize = 12
+        ChartArea2.AxisX.LabelAutoFitMinFontSize = 12
+        ChartArea2.AxisX.LabelAutoFitStyle = System.Windows.Forms.DataVisualization.Charting.LabelAutoFitStyles.StaggeredLabels
+        ChartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisX.LabelStyle.Format = "0"
+        ChartArea2.AxisX.LabelStyle.Interval = 1.0R
+        ChartArea2.AxisX.LabelStyle.IntervalOffset = 0R
+        ChartArea2.AxisX.LabelStyle.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.AxisX.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.AxisX.LabelStyle.TruncatedLabels = True
+        ChartArea2.AxisX.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisX.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea2.AxisX.MajorGrid.Enabled = False
+        ChartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent
+        ChartArea2.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea2.AxisX.MajorTickMark.Interval = 1.0R
+        ChartArea2.AxisX.MajorTickMark.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisX.MajorTickMark.Size = 2.0!
+        ChartArea2.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.InsideArea
+        ChartArea2.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[False]
+        ChartArea2.AxisY.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.AxisY.IsMarginVisible = False
+        ChartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY.LabelStyle.Interval = 10.0R
+        ChartArea2.AxisY.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.AxisY.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY.MajorGrid.Interval = 10.0R
+        ChartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.DarkGray
+        ChartArea2.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea2.AxisY.MajorTickMark.Interval = 10.0R
+        ChartArea2.AxisY.MajorTickMark.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY.MajorTickMark.LineWidth = 5
+        ChartArea2.AxisY.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
+        ChartArea2.AxisY.Maximum = 50.0R
+        ChartArea2.AxisY.Minimum = 0R
+        ChartArea2.AxisY.TitleForeColor = System.Drawing.Color.White
+        ChartArea2.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.[True]
+        ChartArea2.AxisY2.Interval = 10.0R
+        ChartArea2.AxisY2.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number
+        ChartArea2.AxisY2.IsMarginVisible = False
+        ChartArea2.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY2.LabelStyle.Interval = 10.0R
+        ChartArea2.AxisY2.LabelStyle.IsEndLabelVisible = False
+        ChartArea2.AxisY2.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY2.LineWidth = 2
+        ChartArea2.AxisY2.MajorGrid.Interval = 10.0R
+        ChartArea2.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY2.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea2.AxisY2.MajorTickMark.LineColor = System.Drawing.Color.Bisque
+        ChartArea2.AxisY2.MajorTickMark.LineWidth = 10
+        ChartArea2.AxisY2.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis
+        ChartArea2.AxisY2.Maximum = 50.0R
+        ChartArea2.AxisY2.Minimum = 0R
+        ChartArea2.AxisY2.MinorGrid.Interval = 1.0R
+        ChartArea2.AxisY2.MinorGrid.LineColor = System.Drawing.Color.DimGray
+        ChartArea2.AxisY2.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot
+        ChartArea2.AxisY2.TitleForeColor = System.Drawing.Color.Bisque
+        ChartArea2.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(29, Byte), Integer), CType(CType(28, Byte), Integer))
+        ChartArea2.BorderColor = System.Drawing.Color.Bisque
+        ChartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
+        ChartArea2.Name = "ChartAreaDisp"
+        Me.LiveGraph.ChartAreas.Add(ChartArea2)
         Me.LiveGraph.Location = New System.Drawing.Point(-29, -16)
         Me.LiveGraph.Margin = New System.Windows.Forms.Padding(2)
         Me.LiveGraph.Name = "LiveGraph"
         Me.LiveGraph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Light
-        Series3.BorderColor = System.Drawing.Color.White
-        Series3.BorderWidth = 2
-        Series3.ChartArea = "ChartAreaDisp"
-        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series3.Color = System.Drawing.Color.White
-        Series3.MarkerBorderColor = System.Drawing.Color.White
-        Series3.MarkerBorderWidth = 2
-        Series3.MarkerColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
-        Series3.MarkerSize = 4
-        Series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Star4
-        Series3.Name = "DisplacementSeries"
-        Me.LiveGraph.Series.Add(Series3)
+        Series2.BorderColor = System.Drawing.Color.White
+        Series2.BorderWidth = 2
+        Series2.ChartArea = "ChartAreaDisp"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series2.Color = System.Drawing.Color.White
+        Series2.MarkerBorderColor = System.Drawing.Color.White
+        Series2.MarkerBorderWidth = 2
+        Series2.MarkerColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
+        Series2.MarkerSize = 4
+        Series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Star4
+        Series2.Name = "DisplacementSeries"
+        Me.LiveGraph.Series.Add(Series2)
         Me.LiveGraph.Size = New System.Drawing.Size(971, 709)
         Me.LiveGraph.TabIndex = 39
         '
@@ -518,7 +495,7 @@ Partial Class MainForm
         Me.SetupButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(76, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(83, Byte), Integer))
         Me.SetupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SetupButton.ForeColor = System.Drawing.Color.White
-        Me.SetupButton.Location = New System.Drawing.Point(11, 582)
+        Me.SetupButton.Location = New System.Drawing.Point(12, 500)
         Me.SetupButton.Margin = New System.Windows.Forms.Padding(4)
         Me.SetupButton.Name = "SetupButton"
         Me.SetupButton.Size = New System.Drawing.Size(228, 75)
@@ -590,6 +567,23 @@ Partial Class MainForm
         Me.GraphControlBox.TabIndex = 40
         Me.GraphControlBox.TabStop = False
         Me.GraphControlBox.Text = "Graph"
+        '
+        'DecorativeDivider
+        '
+        Me.DecorativeDivider.Location = New System.Drawing.Point(470, 0)
+        Me.DecorativeDivider.Name = "DecorativeDivider"
+        Me.DecorativeDivider.Size = New System.Drawing.Size(1, 59)
+        Me.DecorativeDivider.TabIndex = 3
+        Me.DecorativeDivider.TabStop = False
+        '
+        'YMaxLabel
+        '
+        Me.YMaxLabel.AutoSize = True
+        Me.YMaxLabel.Location = New System.Drawing.Point(490, 24)
+        Me.YMaxLabel.Name = "YMaxLabel"
+        Me.YMaxLabel.Size = New System.Drawing.Size(76, 22)
+        Me.YMaxLabel.TabIndex = 2
+        Me.YMaxLabel.Text = "Y (mm):"
         '
         'UserSecondsButton
         '
@@ -706,22 +700,80 @@ Partial Class MainForm
         '
         Me.GeneralCommsUpdateTimer.Interval = 99
         '
-        'YMaxLabel
+        'ProgressTable
         '
-        Me.YMaxLabel.AutoSize = True
-        Me.YMaxLabel.Location = New System.Drawing.Point(490, 24)
-        Me.YMaxLabel.Name = "YMaxLabel"
-        Me.YMaxLabel.Size = New System.Drawing.Size(76, 22)
-        Me.YMaxLabel.TabIndex = 2
-        Me.YMaxLabel.Text = "Y (mm):"
+        Me.ProgressTable.ColumnCount = 2
+        Me.ProgressTable.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.52174!))
+        Me.ProgressTable.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.47826!))
+        Me.ProgressTable.Controls.Add(Me.TimeRemaingLabelTitle, 0, 1)
+        Me.ProgressTable.Controls.Add(Me.TimeRemainingLabel, 1, 1)
+        Me.ProgressTable.Controls.Add(Me.CurrentCycleLabel, 1, 0)
+        Me.ProgressTable.Controls.Add(Me.CurrentCycleLabelTitle, 0, 0)
+        Me.ProgressTable.Location = New System.Drawing.Point(11, 588)
+        Me.ProgressTable.Margin = New System.Windows.Forms.Padding(4)
+        Me.ProgressTable.Name = "ProgressTable"
+        Me.ProgressTable.RowCount = 2
+        Me.ProgressTable.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.ProgressTable.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.ProgressTable.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.ProgressTable.Size = New System.Drawing.Size(230, 63)
+        Me.ProgressTable.TabIndex = 44
         '
-        'DecorativeDivider
+        'TimeRemaingLabelTitle
         '
-        Me.DecorativeDivider.Location = New System.Drawing.Point(470, 0)
-        Me.DecorativeDivider.Name = "DecorativeDivider"
-        Me.DecorativeDivider.Size = New System.Drawing.Size(1, 59)
-        Me.DecorativeDivider.TabIndex = 3
-        Me.DecorativeDivider.TabStop = False
+        Me.TimeRemaingLabelTitle.AutoSize = True
+        Me.TimeRemaingLabelTitle.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TimeRemaingLabelTitle.Font = New System.Drawing.Font("Arial", 11.25!)
+        Me.TimeRemaingLabelTitle.ForeColor = System.Drawing.Color.White
+        Me.TimeRemaingLabelTitle.Location = New System.Drawing.Point(2, 31)
+        Me.TimeRemaingLabelTitle.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.TimeRemaingLabelTitle.Name = "TimeRemaingLabelTitle"
+        Me.TimeRemaingLabelTitle.Padding = New System.Windows.Forms.Padding(0, 5, 0, 0)
+        Me.TimeRemaingLabelTitle.Size = New System.Drawing.Size(126, 32)
+        Me.TimeRemaingLabelTitle.TabIndex = 5
+        Me.TimeRemaingLabelTitle.Text = "Est. Remain:"
+        '
+        'TimeRemainingLabel
+        '
+        Me.TimeRemainingLabel.AutoSize = True
+        Me.TimeRemainingLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TimeRemainingLabel.Font = New System.Drawing.Font("Arial", 11.25!)
+        Me.TimeRemainingLabel.ForeColor = System.Drawing.Color.White
+        Me.TimeRemainingLabel.Location = New System.Drawing.Point(132, 31)
+        Me.TimeRemainingLabel.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.TimeRemainingLabel.Name = "TimeRemainingLabel"
+        Me.TimeRemainingLabel.Padding = New System.Windows.Forms.Padding(0, 5, 0, 0)
+        Me.TimeRemainingLabel.Size = New System.Drawing.Size(96, 32)
+        Me.TimeRemainingLabel.TabIndex = 4
+        Me.TimeRemainingLabel.Text = "hh:mm:ss"
+        '
+        'CurrentCycleLabel
+        '
+        Me.CurrentCycleLabel.AutoSize = True
+        Me.CurrentCycleLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CurrentCycleLabel.Font = New System.Drawing.Font("Arial", 11.25!)
+        Me.CurrentCycleLabel.ForeColor = System.Drawing.Color.White
+        Me.CurrentCycleLabel.Location = New System.Drawing.Point(133, 0)
+        Me.CurrentCycleLabel.Name = "CurrentCycleLabel"
+        Me.CurrentCycleLabel.Size = New System.Drawing.Size(94, 31)
+        Me.CurrentCycleLabel.TabIndex = 6
+        Me.CurrentCycleLabel.Text = "0/1"
+        '
+        'CurrentCycleLabelTitle
+        '
+        Me.CurrentCycleLabelTitle.AutoSize = True
+        Me.CurrentCycleLabelTitle.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CurrentCycleLabelTitle.Font = New System.Drawing.Font("Arial", 11.25!)
+        Me.CurrentCycleLabelTitle.ForeColor = System.Drawing.Color.White
+        Me.CurrentCycleLabelTitle.Location = New System.Drawing.Point(3, 0)
+        Me.CurrentCycleLabelTitle.Name = "CurrentCycleLabelTitle"
+        Me.CurrentCycleLabelTitle.Size = New System.Drawing.Size(124, 31)
+        Me.CurrentCycleLabelTitle.TabIndex = 7
+        Me.CurrentCycleLabelTitle.Text = "Cycle:"
+        '
+        'EstTimeRemiainingCounter
+        '
+        Me.EstTimeRemiainingCounter.Interval = 1000
         '
         'MainForm
         '
@@ -730,6 +782,7 @@ Partial Class MainForm
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(35, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1151, 751)
+        Me.Controls.Add(Me.ProgressTable)
         Me.Controls.Add(Me.ConnectionStatusBox)
         Me.Controls.Add(Me.GraphControlBox)
         Me.Controls.Add(Me.StartButton)
@@ -762,6 +815,8 @@ Partial Class MainForm
         CType(Me.GraphYInputBox, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.UserSecondsInput, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ConnectionStatusBox.ResumeLayout(False)
+        Me.ProgressTable.ResumeLayout(False)
+        Me.ProgressTable.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -774,7 +829,6 @@ Partial Class MainForm
     Friend WithEvents JogPlus As AdvancedHMIControls.BasicButton
     Friend WithEvents StopButton As AdvancedHMIControls.BasicButton
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents ForceZero As AdvancedHMIControls.BasicButton
     Friend WithEvents DisplacementZero As AdvancedHMIControls.BasicButton
     Friend WithEvents HW_Zero As AdvancedHMIControls.BasicButton
     Friend WithEvents ModbusTCPCom1 As AdvancedHMIDrivers.ModbusTCPCom
@@ -805,4 +859,10 @@ Partial Class MainForm
     Friend WithEvents GraphYInputBox As NumericUpDown
     Friend WithEvents DecorativeDivider As GroupBox
     Friend WithEvents YMaxLabel As Label
+    Friend WithEvents ProgressTable As TableLayoutPanel
+    Friend WithEvents TimeRemaingLabelTitle As Label
+    Friend WithEvents TimeRemainingLabel As Label
+    Friend WithEvents CurrentCycleLabel As Label
+    Friend WithEvents CurrentCycleLabelTitle As Label
+    Friend WithEvents EstTimeRemiainingCounter As Timer
 End Class

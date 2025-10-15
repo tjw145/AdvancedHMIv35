@@ -99,6 +99,8 @@ Public Class MainForm
                     StartButton.Text = "❚❚"
                     Globals.ExperimentRunning = True
 
+                    ExperimentSetupWindow.CalculateRunTime()
+                    EstTimeRemiainingCounter.Start()
                     ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
 
@@ -132,6 +134,7 @@ Public Class MainForm
             If ExperimentStopwatch.IsRunning Then
 
                 ExperimentStopwatch.Stop()
+                EstTimeRemiainingCounter.Stop()
 
             End If
 
@@ -264,7 +267,7 @@ Public Class MainForm
         End If
 
         If keyword = "run" Then
-            ForceZero.Enabled = False
+            'ForceZero.Enabled = False
             DisplacementZero.Enabled = False
             HW_Zero.Enabled = False
             JogMinus.Enabled = False
@@ -510,7 +513,7 @@ Public Class MainForm
                     StopButton.PerformClick()
                 End If
 
-
+                CurrentCycleLabel.Text = currentCycle & "/" & CStr(Globals.numberOfCycles)
 
             Catch
                 Debug.WriteLine("Error attempting to update UI by reading PLC bits")
@@ -534,6 +537,14 @@ Public Class MainForm
             LiveGraph.ChartAreas("ChartAreaDisp").AxisY2.MinorGrid.Enabled = False
 
         End If
+
+    End Sub
+
+    Private Sub EstTimeRemiainingCounter_Tick(sender As Object, e As EventArgs) Handles EstTimeRemiainingCounter.Tick
+
+        'Subtracts one second (every second) for duration of experiment, to display time remainaing
+        Globals.EstTimeRemaining = Globals.EstTimeRemaining - TimeSpan.FromSeconds(1)
+        TimeRemainingLabel.Text = Globals.EstTimeRemaining.ToString("hh\:mm\:ss")
 
     End Sub
 

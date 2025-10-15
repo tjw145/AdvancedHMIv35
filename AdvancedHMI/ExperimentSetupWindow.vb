@@ -21,6 +21,8 @@ Public Class ExperimentSetupWindow
         Globals.dataLogRate_ms = CInt(1000 / DataLogRateInput.Value)
         MainForm.ExperimentRecordingTimer.Interval = Globals.dataLogRate_ms
 
+        CalculateRunTime()
+
     End Sub
 
     Sub LoadExperimentParameters()
@@ -43,10 +45,13 @@ Public Class ExperimentSetupWindow
 
     End Sub
 
-    Private Sub CalculateRunTime()
+    Public Sub CalculateRunTime()
 
         Globals.estRunTime_s = (CyclesInput.Value * TraverseTimeInput.Value * 2)
-        EstTimeLabel.Text = TimeSpan.FromSeconds(Globals.estRunTime_s).ToString("hh\:mm\:ss")
+        Globals.EstTimeRemaining = TimeSpan.FromSeconds(Globals.estRunTime_s)
+        EstTimeLabel.Text = Globals.EstTimeRemaining.ToString("hh\:mm\:ss")
+
+        MainForm.TimeRemainingLabel.Text = Globals.EstTimeRemaining.ToString
 
     End Sub
 

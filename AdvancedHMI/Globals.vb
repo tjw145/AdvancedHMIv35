@@ -27,6 +27,7 @@ Module Globals
     Public ExperimentRunning As Boolean = False
     Public Log As New ExperimentLog
     Public ExperimentStopwatch As New Stopwatch
+    Public EstTimeRemaining As TimeSpan
 
     'Motion Control & Connection:
     Public PLCconnection As String
