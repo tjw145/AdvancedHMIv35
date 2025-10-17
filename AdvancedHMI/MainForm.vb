@@ -51,19 +51,19 @@ Public Class MainForm
         ConnectionCheckTimer.Start()
         ConnectionCheckThread.RunWorkerAsync()
 
-        'Repeatedly run graph updater sub on UI thread (heavy)
-        GraphUpdateTimer.Start()
-
         'General communications for UI
+
         GeneralCommsUpdateTimer.Start()
 
         'Separate thread for recording experiment data so that it doesn't get jammed up by the UI
-        ExperimentRecordingThread.RunWorkerAsync()
+        GeneralCommsThread.RunWorkerAsync()
 
         'Smooth out form graphics
         Me.DoubleBuffered = True
 
     End Sub
+
+    Event PLC_Polled(displacement As Integer, experimentComplete As Boolean, homing As Boolean, stopped As Boolean, currentCycle As String)
 
     Public Sub StopButton_Click(sender As Object, e As EventArgs) Handles StopButton.Click
 
@@ -101,7 +101,6 @@ Public Class MainForm
 
                     ExperimentSetupWindow.CalculateRunTime()
                     EstTimeRemiainingCounter.Start()
-                    ExperimentRecordingTimer.Start()
                     ExperimentStopwatch.Start()
 
                     ModbusTCPCom1.BeginWrite(Hardware.START_BIT, 1, New String() {"1"}) 'Trigger "start" button
@@ -125,15 +124,10 @@ Public Class MainForm
 
             ModbusTCPCom1.BeginWrite(Hardware.STOP_BIT, 1, New String() {"1"}) 'Trigger "stop" button
 
-            If ExperimentRecordingTimer.Enabled = True Then
-
-                ExperimentRecordingTimer.Stop()
-
-            End If
-
             If ExperimentStopwatch.IsRunning Then
 
                 ExperimentStopwatch.Stop()
+                ExperimentStopwatch.Reset()
                 EstTimeRemiainingCounter.Stop()
 
             End If
@@ -326,11 +320,10 @@ Public Class MainForm
 
     End Function
 
-    Private Sub UpdateGraph()
+    Private Sub UpdateGraph(DRO_val As Double, currentDisplacement As Integer)
 
-        Try
-            'Update DRO
-            DRO_mm.Value = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
+        'Update DRO
+        DRO_mm.Value = CDbl(DRO_val)
 
             'DRO reads as two decimal places if the number is under 10mm, one if over
             If DRO_mm.Value < 10 Then
@@ -342,13 +335,13 @@ Public Class MainForm
 
             'Update live graph
             Dim x As Double = Now.TimeOfDay.TotalMilliseconds
-            Dim y As Double = CDbl(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ROUGH)) / 100 'ROUGH values are *100
+            Dim y As Double = CDbl(currentDisplacement / 1000)
             Dim NewPoint As New DataPoint(x, y)
 
             'Add datapoint
             LiveGraph.Series("DisplacementSeries").Points.Insert(0, NewPoint)
 
-            Dim datapointsPerSecond As Integer = CInt(1000 / GraphUpdateTimer.Interval) 'ms to Hz
+            Dim datapointsPerSecond As Integer = CInt(1000 / Globals.dataLogRate_ms) 'ms to Hz <------FIX
             Dim minimumDataPoint As Integer
 
             'Find minimum X-value for display window based on user selection
@@ -396,81 +389,22 @@ Public Class MainForm
 
             End If
 
-            'Graph data storage tops out at approximately 10 full minutes of recording time, or 600 seconds. Should work?
-            If LiveGraph.Series("DisplacementSeries").Points.Count >= datapointsPerSecond * 60 * 10 Then
+        'Graph data storage tops out at approximately 10 full minutes of recording time, or 600 seconds. Should work?
+        If LiveGraph.Series("DisplacementSeries").Points.Count >= datapointsPerSecond * 60 * 10 Then
 
-                '= last point in series
-                Dim lastPoint As Integer = LiveGraph.Series("DisplacementSeries").Points.Count - 1
+            '= last point in series
+            Dim lastPoint As Integer = LiveGraph.Series("DisplacementSeries").Points.Count - 1
 
-                'Remove last item
-                LiveGraph.Series("DisplacementSeries").Points.RemoveAt(lastPoint)
+            'Remove last item
+            LiveGraph.Series("DisplacementSeries").Points.RemoveAt(lastPoint)
 
-            End If
-        Catch
-            Debug.WriteLine("Error attempting to update graph/DRO")
-        End Try
-
-    End Sub
-
-    Private Sub GraphUpdateTimer_Tick(sender As Object, e As EventArgs) Handles GraphUpdateTimer.Tick
-
-        'As long as connection is good, update graph
-        If Globals.PLCconnection = "Connection Status: ✔" Then
-            UpdateGraph()
         End If
 
     End Sub
 
-    Private Sub ExperimentRecordingThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles ExperimentRecordingThread.DoWork
+    Private Sub ExperimentRecordingThread_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles GeneralCommsThread.RunWorkerCompleted
 
-        'doing this loop /dirty/ because i have 3 hours to have it running and this one is important, all those other
-        '"precious" system resources can get off my recording thread's fucking lawn
-
-        While True
-
-            If StartButton.Checked = True Then
-
-                Dim currentTime As String
-                Dim displacment As Integer = 0
-                Dim force As Integer = 0
-
-                Try
-
-                    ' Get "high accuracy" position data from PLC
-                    displacment = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
-
-                    ' Get current stopwatch time in seconds, and rounds to nearest 0.1 ms
-                    currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
-
-                    ' Log all real-time data
-                    Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
-
-                    Thread.Sleep(Globals.dataLogRate_ms)
-
-                Catch
-
-                    Debug.WriteLine("Data logging error")
-
-                    ' If a read error occurs, insert a datapoint of "999" to indicate where in the data it happened.
-                    displacment = 999
-                    currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
-
-                    ' Log data
-                    Log.AddData(currentTime, displacment, force) '<----- arg format will need changed when force param is added
-
-                    Thread.Sleep(Globals.dataLogRate_ms)
-
-                End Try
-
-            End If
-
-        End While
-
-    End Sub
-
-    Private Sub ExperimentRecordingThread_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles ExperimentRecordingThread.RunWorkerCompleted
-
-        ExperimentRecordingThread.RunWorkerAsync() 'YOU ARE NOT ALLOWED TO DIE
+        GeneralCommsThread.RunWorkerAsync() 'YOU ARE NOT ALLOWED TO DIE
 
     End Sub
 
@@ -482,45 +416,78 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub GeneralCommsUpdateTimer_Tick(sender As Object, e As EventArgs) Handles GeneralCommsUpdateTimer.Tick
+    Private Sub PollPLC()
 
-        'As one final act of spite, the ONLY remaining thing that actually worked in the AdvancedHMI lib has also inexplicably
-        'broken. this is my replacement - testing the state of each individual bit manually every 0.1s. I hate you, Archie.
+        'All reglar PLC polling I/O is handled in this sub. This sub is called every X milliseconds as specified by the data capture rate
+        'parameter defined by the user in the experiment setup window. All repetitive I/O is run sequentially in this sub to hopefully
+        'cut down on MODBUS crosstalk and reduce polling times.
+
         If Globals.PLCconnection = "Connection Status: ✔" Then
 
             Try
-                Dim homing As Boolean = CBool(ModbusTCPCom1.Read(Hardware.HOMING_ACTIVE))
-                Dim experimentComplete As Boolean = CBool(ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE))
-                Dim stopped As Boolean = CBool(ModbusTCPCom1.Read(Hardware.STOP_BIT))
-                Dim currentCycle As String = ModbusTCPCom1.Read(Hardware.CURRENT_CYCLE_NUMBER)
 
-                'Locks the controls if the flex rig is performing a homing operation
-                If homing = True Then
-                    LockControls("all")
-                Else
-                    If StartButton.Checked = False Then
-                        LockControls("unlock")
-                    End If
-                End If
+                'Live numerical readouts:
+                Dim currentDisplacement = CInt(ModbusTCPCom1.Read(Hardware.CURRENT_DISPLACEMENT_ACCURATE))
 
-                'Not super clean but *taps watch* not gonna hurt anytihng
-                If stopped = True Then
-                    StartButton.Checked = False
-                End If
+                'Bit states:
+                Dim homing = CBool(ModbusTCPCom1.Read(Hardware.HOMING_ACTIVE))
+                Dim experimentComplete = CBool(ModbusTCPCom1.Read(Hardware.CYCLE_COMPLETE))
+                Dim stopped = CBool(ModbusTCPCom1.Read(Hardware.STOP_BIT))
+                Dim currentCycle = ModbusTCPCom1.Read(Hardware.CURRENT_CYCLE_NUMBER)
 
-                If experimentComplete = True Then
-                    Globals.ExperimentRunning = False
-                    StopButton.PerformClick()
-                End If
-
-                CurrentCycleLabel.Text = currentCycle & "/" & CStr(Globals.numberOfCycles)
+                'Trigger UI update sub immediately after polling (structured this way to avoid illegal cross thread ops)
+                RaiseEvent PLC_Polled(currentDisplacement, experimentComplete, homing, stopped, currentCycle)
 
             Catch
-                Debug.WriteLine("Error attempting to update UI by reading PLC bits")
+
+                Debug.WriteLine("Error attempting TypeOf poll PLC")
+
             End Try
 
         End If
 
+    End Sub
+
+    Sub ProcessPollingData(displacement As Integer, experimentComplete As Boolean, homing As Boolean, stopped As Boolean, currentCycle As String) Handles Me.PLC_Polled
+
+
+        Me.Invoke((Sub()
+                       Dim currentTime = CStr(Math.Round(ExperimentStopwatch.Elapsed.TotalSeconds, 4))
+                       Dim force As Integer = 0 'currently uneeded
+                       Dim DRO_val As Double = CDbl(Math.Round(displacement, 2) / 1000)
+
+                       If StartButton.Checked = True Then
+
+                           'Log experiment data while recording is active
+                           Log.AddData(currentTime, displacement, force)
+
+                       End If
+
+                       'Locks the controls if the flex rig is performing a homing operation
+                       If homing = True Then
+                           LockControls("all")
+                       Else
+                           If StartButton.Checked = False Then
+                               LockControls("unlock")
+                           End If
+                       End If
+
+                       'Not super clean but *taps watch* not gonna hurt anytihng
+                       If stopped = True Then
+                           StartButton.Checked = False
+                       End If
+
+                       'If experiment is finished, change internal "running" var to false and trigger stop button
+                       If experimentComplete = True Then
+                           Globals.ExperimentRunning = False
+                           StopButton.PerformClick()
+                       End If
+
+                       CurrentCycleLabel.Text = currentCycle & "/" & CStr(Globals.numberOfCycles)
+
+                       'Lastly, update graph elements
+                       UpdateGraph(DRO_val, displacement)
+                   End Sub))
     End Sub
 
     Private Sub GraphYInputBox_ValueChanged(sender As Object, e As EventArgs) Handles GraphYInputBox.ValueChanged
@@ -548,4 +515,15 @@ Public Class MainForm
 
     End Sub
 
+    Private Sub GeneralCommsThread_DoWork(sender As Object, e As DoWorkEventArgs) Handles GeneralCommsThread.DoWork
+
+        While True
+
+            PollPLC()
+
+            Thread.Sleep(Globals.dataLogRate_ms)
+
+        End While
+
+    End Sub
 End Class

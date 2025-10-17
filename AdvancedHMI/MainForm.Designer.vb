@@ -43,7 +43,6 @@ Partial Class MainForm
         Me.GraphPanel = New System.Windows.Forms.Panel()
         Me.LiveGraph = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.ExperimentRecordingTimer = New System.Windows.Forms.Timer(Me.components)
         Me.SetupButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.CheckBox()
         Me.ConnectionCheckThread = New System.ComponentModel.BackgroundWorker()
@@ -62,7 +61,7 @@ Partial Class MainForm
         Me.OneCycleButton = New System.Windows.Forms.RadioButton()
         Me.ConnectionStatusBox = New System.Windows.Forms.GroupBox()
         Me.StopButton = New AdvancedHMIControls.BasicButton()
-        Me.ExperimentRecordingThread = New System.ComponentModel.BackgroundWorker()
+        Me.GeneralCommsThread = New System.ComponentModel.BackgroundWorker()
         Me.GeneralCommsUpdateTimer = New System.Windows.Forms.Timer(Me.components)
         Me.ProgressTable = New System.Windows.Forms.TableLayoutPanel()
         Me.TimeRemaingLabelTitle = New System.Windows.Forms.Label()
@@ -693,7 +692,7 @@ Partial Class MainForm
         Me.StopButton.UseVisualStyleBackColor = False
         Me.StopButton.ValueToWrite = 1
         '
-        'ExperimentRecordingThread
+        'GeneralCommsThread
         '
         '
         'GeneralCommsUpdateTimer
@@ -838,7 +837,6 @@ Partial Class MainForm
     Friend WithEvents SaveFileDialog As SaveFileDialog
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents DRO_N As AdvancedHMIControls.SevenSegment2
-    Friend WithEvents ExperimentRecordingTimer As Timer
     Friend WithEvents SetupButton As Button
     Friend WithEvents StartButton As CheckBox
     Friend WithEvents ConnectionCheckThread As System.ComponentModel.BackgroundWorker
@@ -854,7 +852,7 @@ Partial Class MainForm
     Friend WithEvents ConnectionStatusBox As GroupBox
     Friend WithEvents UserSecondsButton As RadioButton
     Friend WithEvents UserSecondsInput As NumericUpDown
-    Friend WithEvents ExperimentRecordingThread As System.ComponentModel.BackgroundWorker
+    Friend WithEvents GeneralCommsThread As System.ComponentModel.BackgroundWorker
     Friend WithEvents GeneralCommsUpdateTimer As Timer
     Friend WithEvents GraphYInputBox As NumericUpDown
     Friend WithEvents DecorativeDivider As GroupBox

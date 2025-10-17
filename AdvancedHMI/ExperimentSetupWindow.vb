@@ -19,7 +19,6 @@ Public Class ExperimentSetupWindow
 
         'Converts from Hz to ms.
         Globals.dataLogRate_ms = CInt(1000 / DataLogRateInput.Value)
-        MainForm.ExperimentRecordingTimer.Interval = Globals.dataLogRate_ms
 
         CalculateRunTime()
 
